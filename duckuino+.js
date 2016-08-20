@@ -225,7 +225,7 @@ function parseDucky(toParse)
         for (z = 0; z < keyMap[2].length; z++)
         {
           commandKnown = true;
-          if (wordArray[0] == keyMap[2][z])
+          if (wordArray[0] == keyMap[2][z].toUpperCase() || wordArray[0] == keyMap[2][z].toLowerCase())
           {
             // Replace the DuckyScript key by the Arduino key name
             parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
