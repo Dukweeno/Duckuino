@@ -2,16 +2,18 @@
 <html lang=en>
     <head>
 	<meta charset="utf-8" />
-        <script src="duckuino+.js"></script>
-	<title>Duckuino+</title>
+        <script src="js/duckuinoPlus.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+	<title>DuckuinoPlus</title>
     </head>
     <body>
 	Input duckyscript:
-	<textarea id="duckyScript" style="width: 300px; height: 300px;"></textarea>
+	<textarea id="duckyScript"></textarea>
 
 	Output arduino sketch:
-	<textarea readonly id="arduiCode" style="width: 300px; height: 300px;"></textarea>
+	<textarea readonly id="arduiCode"></textarea>
 	<br>
-        <button onclick="document.getElementById('arduiCode').value = duckyCompile(document.getElementById('duckyScript').value);">Quack !</button>
+        <button onclick="document.getElementById('arduiCode').value = duckyCompile(document.getElementById('duckyScript').value);">Compile</button>
     </body>
 </html>
