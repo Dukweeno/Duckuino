@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+	<meta charset="utf-8" />
+        <script src="duckuino+.js"></script>
+	<title>Duckuino+</title>
+    </head>
+    <body>
+	Input duckyscript:
+	<textarea id="duckyScript" style="width: 300px; height: 300px;"></textarea>
+
+	Output arduino sketch:
+	<textarea readonly id="arduiCode" style="width: 300px; height: 300px;"></textarea>
+	<br>
+        <button onclick="document.getElementById('arduiCode').value = duckyCompile(document.getElementById('duckyScript').value);">Quack !</button>
+    </body>
+</html>
