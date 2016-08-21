@@ -3,7 +3,8 @@ Simple DuckyScript to Arduino converter, improved version of https://github.com/
 
 # Why DuckuinoPlus
 You can use the entire project in the [Live](https://thecakeisgit.github.io/DuckuinoPlus/ "DuckuinoPlus Live") version, or reuse <code>js/duckuinoPlus.js</code> for standalone use :
-<code>
+
+```javascript
 // Create the instance
 Duck = new Duckuino();
 
@@ -15,7 +16,7 @@ var DuckyScript = "CTRL ALT t"
 + "STRING Hello World !"
 
 var ArduinoCode = Duck.toArduino(DuckyScript); 
-</code>
+```
 
 # Live version:
 https://thecakeisgit.github.io/DuckuinoPlus/
