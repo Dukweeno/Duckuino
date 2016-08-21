@@ -210,8 +210,9 @@ function parseDucky(toParse)
       } else {
         console.error('Error: at line: ' + (i + 1) + ', TYPE needs a key to type...')
         return;
-      }      // Wiping other arguments
-
+      }     
+      
+      // Wiping other arguments
       while (wordArray.length) {
         wordArray.shift();
       }
@@ -224,9 +225,10 @@ function parseDucky(toParse)
       {
         for (z = 0; z < keyMap[2].length; z++)
         {
-          commandKnown = true;
-          if (wordArray[0] == keyMap[2][z].toUpperCase() || wordArray[0] == keyMap[2][z].toLowerCase())
+          if (wordArray[0] == keyMap[2][z])
           {
+            commandKnown = true;
+           
             // Replace the DuckyScript key by the Arduino key name
             parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
             break;
@@ -256,7 +258,7 @@ function parseDucky(toParse)
     }
     if (wordArray.length)
     {
-      console.error('Error: Unknown command \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
+      console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
       return;
     }    // If we need to release keys, we do
 
