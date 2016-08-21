@@ -21,7 +21,7 @@ console.log(ArduinoCode);
 ```
 Output:
 
-```
+```C
 // Init function
 void setup()
 {
