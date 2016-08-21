@@ -98,173 +98,179 @@ var keyMap = [ // Special keys
    122
   ]];
 
-// The main function
-function duckyCompile(toParse)
-{
-  // Check if the parameter is empty or undefined
-  if (toParse == '' || toParse == undefined)
+class Duckuino {
+  constructor(lang) {
+    this.keyMap = keyMap; 
+  }
+  
+  toArduino(inputCode)
   {
-    console.error('Error: No ducky script was entered !');
-    return 'Error, please see console...';
-  }  // Parsing
-
-  var parsedDucky = parseDucky(toParse);
-  if (parsedDucky == '' || parsedDucky == undefined)
-  {
-    return 'Error, please see console...';
-  }  // Returning the total uploadable script
-
-  return '// Init function\n'
-  + 'void setup()\n'
-  + '{\n'
-  + '  // Begining the stream\n'
-  + '  Keyboard.begin();\n\n'
-  + '  // Waiting 500ms for init\n'
-  + '  delay(500);\n'
-  + parsedDucky
-  + '}\n'
-  + '\n'
-  + 'void typeKey(int key)\n'
-  + '{\n'
-  + '  Keyboard.press(key);\n'
-  + '  delay(50);\n'
-  + '  Keyboard.release(key);\n'
-  + '}\n\n'
-  + '// Unused\n'
-  + 'void loop() {}';
-}// The parsing function
-
-function parseDucky(toParse)
-{
-  var parsedScript = '';
-  // Cuting the input in lines
-  var lineArray = toParse.split('\n');
-  // Var who indicates to release all at the line end
-  var releaseAll = false;
-  // Loop every line
-  for (i = 0; i < lineArray.length; i++)
-  {
-    // Line empty, skip
-    if (lineArray[i] == '' || lineArray[i] == '\n')
+    // Check if the parameter is empty or undefined
+    if (inputCode == '' || inputCode == undefined)
     {
-      console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
-      break;
-    }    // Make sure to be false
+      console.error('Error: No ducky script was entered !');
+      return 'Error, please see console...';
+    }  // Parsing
 
-    releaseAll = false;
-    parsedScript += '\n';
-    // Cutting every line in words
-    var wordArray = lineArray[i].split(' ');
-    // Handle commands
-    if (wordArray[0] == 'STRING')
+    var parsedDucky = this._parse(inputCode);
+    if (parsedDucky == '' || parsedDucky == undefined)
     {
-      // Wipe the command
-      wordArray.shift();
-      var textString = '';
-      while (wordArray.length)
-      {
-        if (wordArray.length > 1)
-        textString += wordArray[0] + ' ';
-         else
-        textString += wordArray[0];
-        wordArray.shift();
-      }      // Replace all '"' by '\"' and all '\' by '\\'
+      return 'Error, please see console...';
+    }  // Returning the total uploadable script
 
-      var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
-      if (textString != '')
+    return '// Init function\n'
+    + 'void setup()\n'
+    + '{\n'
+    + '  // Begining the stream\n'
+    + '  Keyboard.begin();\n\n'
+    + '  // Waiting 500ms for init\n'
+    + '  delay(500);\n'
+    + parsedDucky
+    + '}\n'
+    + '\n'
+    + 'void typeKey(int key)\n'
+    + '{\n'
+    + '  Keyboard.press(key);\n'
+    + '  delay(50);\n'
+    + '  Keyboard.release(key);\n'
+    + '}\n\n'
+    + '// Unused\n'
+    + 'void loop() {}';
+  }
+  
+  // The parsing function
+   _parse(toParse)
+  {
+    var parsedScript = '';
+    // Cuting the input in lines
+    var lineArray = toParse.split('\n');
+    // Var who indicates to release all at the line end
+    var releaseAll = false;
+    // Loop every line
+    for (var i = 0; i < lineArray.length; i++)
+    {
+      // Line empty, skip
+      if (lineArray[i] == '' || lineArray[i] == '\n')
       {
-        parsedScript += '  Keyboard.print("' + textString + '");\n';
-      } else {
-        console.error('Error: at line: ' + (i + 1) + ', STRING needs a text to type...')
-        return;
-      }
-    } else if (wordArray[0] == 'DELAY') {
-      // Wipe the command
-      wordArray.shift();
-      if (wordArray[0] != undefined && wordArray[0] != '')
-      {
-        parsedScript += '  delay(' + wordArray[0] + ');\n';
-      } else {
-        console.error('Error: at line: ' + (i + 1) + ', DELAY needs a time to delay...')
-        return;
-      }      // Wiping other arguments
+        console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
+        break;
+      }    // Make sure to be false
 
-      while (wordArray.length) {
-        wordArray.shift();
-      }
-    } else if (wordArray[0] == 'TYPE') {
-      // Wipe the command
-      wordArray.shift();
-      if (wordArray[0] != undefined && wordArray[0] != '')
+      releaseAll = false;
+      parsedScript += '\n';
+      // Cutting every line in words
+      var wordArray = lineArray[i].split(' ');
+      // Handle commands
+      if (wordArray[0] == 'STRING')
       {
-        for (z = 0; z < keyMap[2].length; z++)
+        // Wipe the command
+        wordArray.shift();
+        var textString = '';
+        while (wordArray.length)
         {
-          commandKnown = true;
-          if (wordArray[0] == keyMap[2][z])
-          {
-            // Replace the DuckyScript key by the Arduino key name
-            parsedScript += '  typeKey(' + keyMap[3][z] + ');\n';
-            break;
-          }
+          if (wordArray.length > 1)
+          textString += wordArray[0] + ' ';
+           else
+          textString += wordArray[0];
+          wordArray.shift();
+        }      // Replace all '"' by '\"' and all '\' by '\\'
+
+        var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
+        if (textString != '')
+        {
+          parsedScript += '  Keyboard.print("' + textString + '");\n';
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', STRING needs a text to type...')
+          return;
         }
-      } else {
-        console.error('Error: at line: ' + (i + 1) + ', TYPE needs a key to type...')
-        return;
-      }     
-      
-      // Wiping other arguments
-      while (wordArray.length) {
+      } else if (wordArray[0] == 'DELAY') {
+        // Wipe the command
         wordArray.shift();
-      }
-    }    // Loop for special key
-
-    while (wordArray.length)
-    {
-      var commandKnown = false;
-      if (releaseAll && wordArray[0].length == 1)
-      {
-        for (z = 0; z < keyMap[2].length; z++)
+        if (wordArray[0] != undefined && wordArray[0] != '')
         {
-          if (wordArray[0] == keyMap[2][z])
+          parsedScript += '  delay(' + wordArray[0] + ');\n';
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', DELAY needs a time to delay...')
+          return;
+        }      // Wiping other arguments
+
+        while (wordArray.length) {
+          wordArray.shift();
+        }
+      } else if (wordArray[0] == 'TYPE') {
+        // Wipe the command
+        wordArray.shift();
+        if (wordArray[0] != undefined && wordArray[0] != '')
+        {
+          for (z = 0; z < keyMap[2].length; z++)
           {
             commandKnown = true;
-           
-            // Replace the DuckyScript key by the Arduino key name
-            parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
+            if (wordArray[0] == keyMap[2][z])
+            {
+              // Replace the DuckyScript key by the Arduino key name
+              parsedScript += '  typeKey(' + keyMap[3][z] + ');\n';
+              break;
+            }
+          }
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', TYPE needs a key to type...')
+          return;
+        }     
+        
+        // Wiping other arguments
+        while (wordArray.length) {
+          wordArray.shift();
+        }
+      }    // Loop for special key
+
+      while (wordArray.length)
+      {
+        var commandKnown = false;
+        if (releaseAll && wordArray[0].length == 1)
+        {
+          for (z = 0; z < keyMap[2].length; z++)
+          {
+            if (wordArray[0] == keyMap[2][z])
+            {
+              commandKnown = true;
+             
+              // Replace the DuckyScript key by the Arduino key name
+              parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
+              break;
+            }
+          }
+        }
+        for (var y = 0; y < this.keyMap[0].length; y++)
+        {
+          if (wordArray[0] == this.keyMap[0][y])
+          {
+            commandKnown = true;
+            if (wordArray.length == 1 && !releaseAll)
+            {
+              parsedScript += '  typeKey(' + this.keyMap[1][y] + ');\n';
+            } else {
+              // Indicate that we need to release all keys at EOL
+              releaseAll = true;
+              // Replace the DuckyScript key by the Arduino key name
+              parsedScript += '  Keyboard.press(' + this.keyMap[1][y] + ');\n';
+            }
             break;
           }
         }
+        if (!commandKnown)
+        break;
+        wordArray.shift();
       }
-      for (y = 0; y < keyMap[0].length; y++)
+      if (wordArray.length)
       {
-        if (wordArray[0] == keyMap[0][y])
-        {
-          commandKnown = true;
-          if (wordArray.length == 1 && !releaseAll)
-          {
-            parsedScript += '  typeKey(' + keyMap[1][y] + ');\n';
-          } else {
-            // Indicate that we need to release all keys at EOL
-            releaseAll = true;
-            // Replace the DuckyScript key by the Arduino key name
-            parsedScript += '  Keyboard.press(' + keyMap[1][y] + ');\n';
-          }
-          break;
-        }
-      }
-      if (!commandKnown)
-      break;
-      wordArray.shift();
-    }
-    if (wordArray.length)
-    {
-      console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
-      return;
-    }    // If we need to release keys, we do
+        console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
+        return;
+      }    // If we need to release keys, we do
 
-    if (releaseAll)
-    parsedScript += '  Keyboard.releaseAll();\n';
+      if (releaseAll)
+      parsedScript += '  Keyboard.releaseAll();\n';
+    }
+    console.log('Done parsed ' + (lineArray.length) + ' lines.');
+    return parsedScript;
   }
-  console.log('Done parsed ' + (lineArray.length) + ' lines.');
-  return parsedScript;
 }

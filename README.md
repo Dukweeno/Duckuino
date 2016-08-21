@@ -2,15 +2,20 @@
 Simple DuckyScript to Arduino converter, improved version of https://github.com/Plazmaz/Duckuino
 
 # Why DuckuinoPlus
-You can use the entire project in the [Live](https://thecakeisgit.github.io/DuckuinoPlus/ "DuckuinoPlus Live") version, or reuse <code>js/duckuinoPlus.js</code> for standalone use.
+You can use the entire project in the [Live](https://thecakeisgit.github.io/DuckuinoPlus/ "DuckuinoPlus Live") version, or reuse <code>js/duckuinoPlus.js</code> for standalone use :
+<code>
+// Create the instance
+Duck = new Duckuino();
 
-Usage:
+var DuckyScript = "CTRL ALT t"
++ "DELAY 1000"
++ "STRING gedit"
++ "ENTER"
++ "DELAY 1000"
++ "STRING Hello World !"
 
-Get a full arduino code: <code>duckyCompile(duckyScript);</code><br>
-That's return the total script.
-
-Just parse the ducky script: <code>parseDucky(duckyScript);</code><br>
-That's just return the parsed script.
+var ArduinoCode = Duck.toArduino(DuckyScript); 
+</code>
 
 # Live version:
 https://thecakeisgit.github.io/DuckuinoPlus/

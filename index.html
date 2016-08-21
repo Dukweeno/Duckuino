@@ -2,7 +2,10 @@
 <html lang=en>
     <head>
 	<meta charset="utf-8" />
+
         <script src="js/duckuinoPlus.js"></script>
+        <script src="js/jquery-3.1.0.min.js"></script>
+        <script src="js/main.js"></script> 
 
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 	<title>DuckuinoPlus</title>
@@ -14,6 +17,6 @@
 	Output arduino sketch:
 	<textarea readonly id="arduiCode"></textarea>
 	<br>
-        <button onclick="document.getElementById('arduiCode').value = duckyCompile(document.getElementById('duckyScript').value);">Compile</button>
+        <button id="compileThis">Compile</button>
     </body>
 </html>
