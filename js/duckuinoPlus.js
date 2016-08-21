@@ -228,7 +228,7 @@ class Duckuino {
         var commandKnown = false;
         if (releaseAll && wordArray[0].length == 1)
         {
-          for (z = 0; z < keyMap[2].length; z++)
+          for (var z = 0; z < keyMap[2].length; z++)
           {
             if (wordArray[0] == keyMap[2][z])
             {
