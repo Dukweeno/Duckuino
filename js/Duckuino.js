@@ -1,124 +1,134 @@
-var keyMap = [ // Special keys
-  ['ALT',
-  'REM',
-  'GUI',
-  'CTRL',
-  'CONTROL',
-  'SHIFT',
-  'WINDOWS',
-  'COMMAND',
-  'MENU',
-  'ESC',
-  'END',
-  'SPACE',
-  'TAB',
-  'PRINTSCREEN',
-  'ENTER',
-  'UPARROW',
-  'DOWNARROW',
-  'LEFTARROW',
-  'RIGHTARROW',
-  'CAPSLOCK',
-  'DELETE',
-  'DEL'
+var keyMap = [
+  // Special keys
+  [
+    'ALT',
+    'REM',
+    'GUI',
+    'CTRL',
+    'CONTROL',
+    'SHIFT',
+    'WINDOWS',
+    'COMMAND',
+    'MENU',
+    'ESC',
+    'END',
+    'SPACE',
+    'TAB',
+    'PRINTSCREEN',
+    'ENTER',
+    'UPARROW',
+    'DOWNARROW',
+    'LEFTARROW',
+    'RIGHTARROW',
+    'CAPSLOCK',
+    'DELETE',
+    'DEL'
   ],
-  ['KEY_LEFT_ALT',
-   'KEY_LEFT_GUI',
-   'KEY_LEFT_CTRL',
-   'KEY_LEFT_CTRL',
-   'KEY_LEFT_SHIFT',
-   'KEY_LEFT_GUI',
-   'KEY_LEFT_GUI',
-   '229',
-   'KEY_LEFT_ESC',
-   'KEY_END',
-   '\' \'',
-   'KEY_TAB',
-   '206',
-   'KEY_RETURN',
-   'KEY_UP_ARROW',
-   'KEY_DOWN_ARROW',
-   'KEY_LEFT_ARROW',
-   'KEY_RIGHT_ARROW',
-   'KEY_CAPS_LOCK',
-   'KEY_DELETE',
-   'KEY_DELETE'
-  ], // Normal keys
-  ['a',
-   'b',
-   'c',
-   'd',
-   'e',
-   'f',
-   'g',
-   'h',
-   'i',
-   'j',
-   'k',
-   'l',
-   'm',
-   'n',
-   'o',
-   'p',
-   'q',
-   'r',
-   's',
-   't',
-   'u',
-   'v',
-   'w',
-   'x',
-   'y',
-   'z'
+  [
+    'KEY_LEFT_ALT',
+    'KEY_LEFT_GUI',
+    'KEY_LEFT_CTRL',
+    'KEY_LEFT_CTRL',
+    'KEY_LEFT_SHIFT',
+    'KEY_LEFT_GUI',
+    'KEY_LEFT_GUI',
+    '229',
+    'KEY_LEFT_ESC',
+    'KEY_END',
+    '\' \'',
+    'KEY_TAB',
+    '206',
+    'KEY_RETURN',
+    'KEY_UP_ARROW',
+    'KEY_DOWN_ARROW',
+    'KEY_LEFT_ARROW',
+    'KEY_RIGHT_ARROW',
+    'KEY_CAPS_LOCK',
+    'KEY_DELETE',
+    'KEY_DELETE'
   ],
-  [97,
-   98,
-   99,
-   100,
-   101,
-   102,
-   103,
-   104,
-   105,
-   106,
-   107,
-   108,
-   109,
-   110,
-   111,
-   112,
-   113,
-   114,
-   115,
-   116,
-   117,
-   118,
-   119,
-   120,
-   121,
-   122
-  ]];
+  // Normal keys
+  [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z'
+  ],
+  [
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122
+  ]
+];
 
 class Duckuino {
+
   constructor(lang) {
     this.keyMap = keyMap;
   }
 
-  toArduino(inputCode)
-  {
+  compile(inputCode){
+
     // Check if the parameter is empty or undefined
     if (inputCode == '' || inputCode == undefined)
     {
       console.error('Error: No ducky script was entered !');
       return 'Error, please see console...';
-    }  // Parsing
+    }
 
+    // Parsing
     var parsedDucky = this._parse(inputCode);
     if (parsedDucky == '' || parsedDucky == undefined)
     {
       return 'Error, please see console...';
-    }  // Returning the total uploadable script
+    }
 
+    // Returning the total uploadable script
     return '// Init function\n'
     + 'void setup()\n'
     + '{\n'
@@ -143,10 +153,13 @@ class Duckuino {
    _parse(toParse)
   {
     var parsedScript = '';
+
     // Cuting the input in lines
     var lineArray = toParse.split('\n');
+
     // Var who indicates to release all at the line end
     var releaseAll = false;
+
     // Loop every line
     for (var i = 0; i < lineArray.length; i++)
     {
@@ -155,13 +168,18 @@ class Duckuino {
       {
         console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
         break;
-      }    // Make sure to be false
+      }
 
+      // Make sure to be false
       releaseAll = false;
       parsedScript += '\n';
+
       // Cutting every line in words
       var wordArray = lineArray[i].split(' ');
+
       // Handle commands
+
+      // STRING
       if (wordArray[0] == 'STRING')
       {
         // Wipe the command
@@ -174,9 +192,11 @@ class Duckuino {
            else
           textString += wordArray[0];
           wordArray.shift();
-        }      // Replace all '"' by '\"' and all '\' by '\\'
+        }
 
+        // Replace all '"' by '\"' and all '\' by '\\'
         var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
+
         if (textString != '')
         {
           parsedScript += '  Keyboard.print("' + textString + '");\n';
@@ -184,7 +204,10 @@ class Duckuino {
           console.error('Error: at line: ' + (i + 1) + ', STRING needs a text to type...')
           return;
         }
+
+        // DELAY
       } else if (wordArray[0] == 'DELAY') {
+
         // Wipe the command
         wordArray.shift();
         if (wordArray[0] != undefined && wordArray[0] != '')
@@ -193,12 +216,16 @@ class Duckuino {
         } else {
           console.error('Error: at line: ' + (i + 1) + ', DELAY needs a time to delay...')
           return;
-        }      // Wiping other arguments
+        }
 
+        // Wiping other arguments
         while (wordArray.length) {
           wordArray.shift();
         }
+
+      // TYPE
       } else if (wordArray[0] == 'TYPE') {
+
         // Wipe the command
         wordArray.shift();
         if (wordArray[0] != undefined && wordArray[0] != '')
@@ -222,10 +249,14 @@ class Duckuino {
         while (wordArray.length) {
           wordArray.shift();
         }
+
+      // REM
       } else if(wordArray[0] == 'REM'){
+
         // Wipe the command
         wordArray.shift();
         var textString = '';
+
         while (wordArray.length)
         {
           if (wordArray.length > 1)
@@ -236,7 +267,6 @@ class Duckuino {
         }
 
         // Replace all '"' by '\"' and all '\' by '\\'
-
         var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
         if (textString != '')
         {
@@ -275,6 +305,7 @@ class Duckuino {
             } else {
               // Indicate that we need to release all keys at EOL
               releaseAll = true;
+
               // Replace the DuckyScript key by the Arduino key name
               parsedScript += '  Keyboard.press(' + this.keyMap[1][y] + ');\n';
             }
@@ -289,11 +320,13 @@ class Duckuino {
       {
         console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
         return;
-      }    // If we need to release keys, we do
+      }
 
+      // If we need to release keys, we do
       if (releaseAll)
       parsedScript += '  Keyboard.releaseAll();\n';
     }
+    
     console.log('Done parsed ' + (lineArray.length) + ' lines.');
     return parsedScript;
   }
