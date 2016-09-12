@@ -1,5 +1,6 @@
 var keyMap = [ // Special keys
   ['ALT',
+  'REM',
   'GUI',
   'CTRL',
   'CONTROL',
@@ -100,9 +101,9 @@ var keyMap = [ // Special keys
 
 class Duckuino {
   constructor(lang) {
-    this.keyMap = keyMap; 
+    this.keyMap = keyMap;
   }
-  
+
   toArduino(inputCode)
   {
     // Check if the parameter is empty or undefined
@@ -137,7 +138,7 @@ class Duckuino {
     + '// Unused\n'
     + 'void loop() {}';
   }
-  
+
   // The parsing function
    _parse(toParse)
   {
@@ -215,13 +216,36 @@ class Duckuino {
         } else {
           console.error('Error: at line: ' + (i + 1) + ', TYPE needs a key to type...')
           return;
-        }     
-        
+        }
+
         // Wiping other arguments
         while (wordArray.length) {
           wordArray.shift();
         }
-      }    // Loop for special key
+      } else if(wordArray[0] == 'REM'){
+        // Wipe the command
+        wordArray.shift();
+        var textString = '';
+        while (wordArray.length)
+        {
+          if (wordArray.length > 1)
+          textString += wordArray[0] + ' ';
+           else
+          textString += wordArray[0];
+          wordArray.shift();
+        }
+
+        // Replace all '"' by '\"' and all '\' by '\\'
+
+        var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
+        if (textString != '')
+        {
+          parsedScript += '  // ' + textString + '\n';
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', REM was left empty')
+          return;
+        }
+      }
 
       while (wordArray.length)
       {
@@ -233,7 +257,7 @@ class Duckuino {
             if (wordArray[0] == keyMap[2][z])
             {
               commandKnown = true;
-             
+
               // Replace the DuckyScript key by the Arduino key name
               parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
               break;
