@@ -21,7 +21,8 @@ var keyMap = [
     'RIGHTARROW',
     'CAPSLOCK',
     'DELETE',
-    'DEL'
+    'DEL',
+    'ESCAPE'
   ],
   [
     'KEY_LEFT_ALT',
@@ -44,7 +45,8 @@ var keyMap = [
     'KEY_RIGHT_ARROW',
     'KEY_CAPS_LOCK',
     'KEY_DELETE',
-    'KEY_DELETE'
+    'KEY_DELETE',
+    'KEY_ESC'
   ],
   // Normal keys
   [
