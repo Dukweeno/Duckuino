@@ -1,5 +1,5 @@
-#DuckuinoPlus
-Simple DuckyScript to Arduino converter, all props goes to https://github.com/Thecakeisgit/DuckuinoPlus
+#Duckuino
+Simple DuckyScript to Arduino converter/compiler, all props goes to https://github.com/Thecakeisgit/DuckuinoPlus
 I just improved it a little-bit...
 
 # Added functionality
