@@ -2,7 +2,6 @@ var keyMap = [
   // Special keys
   [
     'ALT',
-    'REM',
     'GUI',
     'CTRL',
     'CONTROL',
@@ -326,7 +325,7 @@ class Duckuino {
       if (releaseAll)
       parsedScript += '  Keyboard.releaseAll();\n';
     }
-    
+
     console.log('Done parsed ' + (lineArray.length) + ' lines.');
     return parsedScript;
   }
