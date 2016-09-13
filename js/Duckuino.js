@@ -155,6 +155,9 @@ class Duckuino {
   {
     var parsedScript = '';
 
+    // Remove unnecessary empty lines
+    toParse = toParse.replace(/[\n]{2,}/g, '\n');
+    
     // Cuting the input in lines
     var lineArray = toParse.split('\n');
 
