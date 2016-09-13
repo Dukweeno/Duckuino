@@ -1,4 +1,4 @@
-#Duckuino
+#Duckuino (THE COMPILER SUCKS, IM BUILDING A NEW ONE)
 Simple DuckyScript to Arduino converter/compiler, all props goes to https://github.com/Thecakeisgit/DuckuinoPlus
 I just improved it a little-bit...
 
