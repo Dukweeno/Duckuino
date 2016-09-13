@@ -114,28 +114,27 @@ class Duckuino {
   }
 
   compile(inputCode){
-
+    var errorMsg = 'Error! check the console.';
+    
     // Check if the parameter is empty or undefined
-    if (inputCode == '' || inputCode == undefined)
-    {
-      console.error('Error: No ducky script was entered !');
-      return 'Error, please see console...';
+    if (inputCode == '' || inputCode == undefined){
+      console.error('Error: the compiler was not able to identify the code as valid DuckyScript.');
+      return errorMsg;
     }
 
     // Parsing
     var parsedDucky = this._parse(inputCode);
-    if (parsedDucky == '' || parsedDucky == undefined)
-    {
-      return 'Error, please see console...';
+    if (parsedDucky == '' || parsedDucky == undefined){
+      return errorMsg;
     }
 
-    // Returning the total uploadable script
+    // Build the Arduino code skeleton
     return '// Init function\n'
     + 'void setup()\n'
     + '{\n'
-    + '  // Begining the stream\n'
+    + '  // Start payload\n'
     + '  Keyboard.begin();\n\n'
-    + '  // Waiting 500ms for init\n'
+    + '  // Wait 500ms\n'
     + '  delay(500);\n'
     + parsedDucky
     + '}\n'
@@ -150,39 +149,38 @@ class Duckuino {
     + 'void loop() {}';
   }
 
-  // The parsing function
+  // The parser
    _parse(toParse){
     var parsedScript = '';
 
     // Remove unnecessary empty lines
     toParse = toParse.replace(/[\n]{2,}/g, '\n');
 
-    // Cuting the input in lines
+    // Split the input into lines
     var lineArray = toParse.split('\n');
 
     // Var who indicates to release all at the line end
     var releaseAll = false;
 
-    // Loop every line
+    // Loop all lines
     for (var i = 0; i < lineArray.length; i++){
-      // Line empty, skip
+      
+      // Skip line if empty
       if (lineArray[i] == '' || lineArray[i] == '\n'){
-        console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
         break;
       }
 
-      // Make sure to be false
       releaseAll = false;
       parsedScript += '\n';
 
-      // Cutting every line in words
+      // Split line to words
       var wordArray = lineArray[i].split(' ');
 
-      // Handle commands
+      // Compile commands
 
       // STRING
       if (wordArray[0] == 'STRING'){
-        // Wipe the command
+        // Get string text
         wordArray.shift();
         var textString = '';
         while (wordArray.length){
@@ -193,35 +191,35 @@ class Duckuino {
           wordArray.shift();
         }
 
-        // Replace all '"' by '\"' and all '\' by '\\'
+        // Replace " with \" and \ with \\
         var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
 
         if (textString != ''){
           parsedScript += '  Keyboard.print("' + textString + '");\n';
         } else {
-          console.error('Error: at line: ' + (i + 1) + ', STRING needs a text to type...')
+          console.error('Error: at line: ' + (i + 1) + ', STRING requires text (e.g. STRING Example text).')
           return;
         }
 
       // DELAY
       } else if (wordArray[0] == 'DELAY') {
-        // Wipe the command
+        // Get delay time
         wordArray.shift();
         if (wordArray[0] != undefined && wordArray[0] != ''){
           parsedScript += '  delay(' + wordArray[0] + ');\n';
         } else {
-          console.error('Error: at line: ' + (i + 1) + ', DELAY needs a time to delay...')
+          console.error('Error: at line: ' + (i + 1) + ', DELAY requires a number (e.g. DELAY 1000)')
           return;
         }
 
-        // Wiping other arguments
+        // Clear other arguments
         while (wordArray.length) {
           wordArray.shift();
         }
 
       // TYPE
       } else if (wordArray[0] == 'TYPE') {
-        // Wipe the command
+        // Get type key
         wordArray.shift();
         if (wordArray[0] != undefined && wordArray[0] != ''){
           for (z = 0; z < keyMap[2].length; z++){
@@ -233,18 +231,18 @@ class Duckuino {
             }
           }
         } else {
-          console.error('Error: at line: ' + (i + 1) + ', TYPE needs a key to type...')
+          console.error('Error: at line: ' + (i + 1) + ', TYPE requires a key')
           return;
         }
 
-        // Wiping other arguments
+        // Clear other arguments
         while (wordArray.length) {
           wordArray.shift();
         }
 
       // REM
       } else if(wordArray[0] == 'REM'){
-        // Wipe the command
+        // Get the string
         wordArray.shift();
         var textString = '';
 
@@ -256,10 +254,9 @@ class Duckuino {
           wordArray.shift();
         }
 
-        // Replace all '"' by '\"' and all '\' by '\\'
+        // Replace all '"' with '\"' and '\' with '\\'
         var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
-        if (textString != '')
-        {
+        if (textString != ''){
           parsedScript += '  // ' + textString + '\n';
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REM was left empty')
@@ -274,7 +271,7 @@ class Duckuino {
             if (wordArray[0] == keyMap[2][z]){
               commandKnown = true;
 
-              // Replace the DuckyScript key by the Arduino key name
+              // Swap keyboard codes
               parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
               break;
             }
@@ -287,10 +284,10 @@ class Duckuino {
             if (wordArray.length == 1 && !releaseAll){
               parsedScript += '  typeKey(' + this.keyMap[1][y] + ');\n';
             } else {
-              // Indicate that we need to release all keys at EOL
+              // Release all keys at EOL
               releaseAll = true;
 
-              // Replace the DuckyScript key by the Arduino key name
+              // Swap keyboard codes
               parsedScript += '  Keyboard.press(' + this.keyMap[1][y] + ');\n';
             }
             break;
@@ -301,18 +298,17 @@ class Duckuino {
         wordArray.shift();
       }
 
-      if (wordArray.length)
-      {
+      if (wordArray.length){
         console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
         return;
       }
 
-      // If we need to release keys, we do
+      // Release all keys if needed
       if (releaseAll)
       parsedScript += '  Keyboard.releaseAll();\n';
     }
 
-    console.log('Done parsed ' + (lineArray.length) + ' lines.');
+    console.log('Done: compiling ' + (lineArray.length) + ' lines.');
     return parsedScript;
   }
 }
