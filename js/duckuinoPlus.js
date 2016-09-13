@@ -146,6 +146,7 @@ class Duckuino {
     var lineArray = toParse.split('\n');
     // Var who indicates to release all at the line end
     var releaseAll = false;
+    
     // Loop every line
     for (var i = 0; i < lineArray.length; i++)
     {
@@ -153,7 +154,7 @@ class Duckuino {
       if (lineArray[i] == '' || lineArray[i] == '\n')
       {
         console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
-        break;
+        continue;
       }
 
       releaseAll = false;
@@ -226,9 +227,17 @@ class Duckuino {
         wordArray.shift();
         
         // Placing the comment to arduino code
-        while (wordArray.length) {
-          parsedScript += '  // ' + wordArray[0];
-          wordArray.shift();
+        if (wordArray[0] != undefined && wordArray[0] != '')
+        {
+          var remTmp = '  //';
+          while (wordArray.length) {
+            remTmp += ' ' + wordArray[0];
+            wordArray.shift();
+          }
+          parsedScript += remTmp;
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', REM needs a comment...')
+          return;
         }
       }
     }
