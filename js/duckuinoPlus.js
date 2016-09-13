@@ -154,7 +154,7 @@ class Duckuino {
       {
         console.log('Info: Skipped line ' + (i + 1) + ', because was empty.');
         break;
-      }    // Make sure to be false
+      }
 
       releaseAll = false;
       parsedScript += '\n';
@@ -173,8 +173,9 @@ class Duckuino {
            else
           textString += wordArray[0];
           wordArray.shift();
-        }      // Replace all '"' by '\"' and all '\' by '\\'
-
+        }      
+        
+        // Replace all '"' by '\"' and all '\' by '\\'
         var textString = textString.split('\\').join('\\\\').split('"').join('\\"');
         if (textString != '')
         {
@@ -221,55 +222,66 @@ class Duckuino {
         while (wordArray.length) {
           wordArray.shift();
         }
-      }    // Loop for special key
-
-      while (wordArray.length)
-      {
-        var commandKnown = false;
-        if (releaseAll && wordArray[0].length == 1)
-        {
-          for (var z = 0; z < keyMap[2].length; z++)
-          {
-            if (wordArray[0] == keyMap[2][z])
-            {
-              commandKnown = true;
-             
-              // Replace the DuckyScript key by the Arduino key name
-              parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
-              break;
-            }
-          }
+      } else if (wordArray[0] == 'REM') { 
+        wordArray.shift();
+        
+        // Placing the comment to arduino code
+        while (wordArray.length) {
+          parsedScript += '  // ' + wordArray[0];
+          wordArray.shift();
         }
-        for (var y = 0; y < this.keyMap[0].length; y++)
+      }
+    }
+    
+    // Loop for special key
+    while (wordArray.length)
+    {
+      var commandKnown = false;
+      if (releaseAll && wordArray[0].length == 1)
+      {
+        for (var z = 0; z < keyMap[2].length; z++)
         {
-          if (wordArray[0] == this.keyMap[0][y])
+          if (wordArray[0] == keyMap[2][z])
           {
             commandKnown = true;
-            if (wordArray.length == 1 && !releaseAll)
-            {
-              parsedScript += '  typeKey(' + this.keyMap[1][y] + ');\n';
-            } else {
-              // Indicate that we need to release all keys at EOL
-              releaseAll = true;
-              // Replace the DuckyScript key by the Arduino key name
-              parsedScript += '  Keyboard.press(' + this.keyMap[1][y] + ');\n';
-            }
+           
+            // Replace the DuckyScript key by the Arduino key name
+            parsedScript += '  Keyboard.press(' + keyMap[3][z] + ');\n';
             break;
           }
         }
-        if (!commandKnown)
-        break;
-        wordArray.shift();
       }
-      if (wordArray.length)
+      
+      for (var y = 0; y < this.keyMap[0].length; y++)
       {
-        console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
-        return;
-      }    // If we need to release keys, we do
-
-      if (releaseAll)
-      parsedScript += '  Keyboard.releaseAll();\n';
+        if (wordArray[0] == this.keyMap[0][y])
+        {
+          commandKnown = true;
+          if (wordArray.length == 1 && !releaseAll)
+          {
+            parsedScript += '  typeKey(' + this.keyMap[1][y] + ');\n';
+          } else {
+            // Indicate that we need to release all keys at EOL
+            releaseAll = true;
+            // Replace the DuckyScript key by the Arduino key name
+            parsedScript += '  Keyboard.press(' + this.keyMap[1][y] + ');\n';
+          }
+          break;
+        }
+      }
+      if (!commandKnown)
+      break;
+      wordArray.shift();
     }
+    if (wordArray.length)
+    {
+      console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.')
+      return;
+    }    // If we need to release keys, we do
+
+    if (releaseAll)
+      parsedScript += '  Keyboard.releaseAll();\n';
+  
     console.log('Done parsed ' + (lineArray.length) + ' lines.');
     return parsedScript;
   }
