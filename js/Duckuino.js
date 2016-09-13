@@ -174,7 +174,7 @@ class Duckuino{
             remTmp += ' ' + words[0];
             words.shift();
           }
-          parsed += remTmp+'\n';
+          parsed += remTmp;
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REM requires a comment')
           return;
