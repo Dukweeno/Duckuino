@@ -82,24 +82,21 @@ class Duckuino{
       // Parse special commands
       if(words[0]== "STRING"){
         words.shift();
-        var string = '';
 
-        while (words.length){
-          if (words.length > 1){
-            string += words[0] + ' ';
-          } else {
-            string += words[0];
+        if (words[0] != undefined && words[0] != '')
+        {
+          var string = '';
+          while (words.length) {
+            string += ' ' + words[0];
             words.shift();
           }
-        }
+          // Replace all '"' by '\"' and all '\' by '\\'
+          string = string.replace(/\\/g, '\\\\');
+          string = string.replace(/"/g, '\\"');
 
-        // Replace " with \" and \ with \\
-        string = string.split('\\').join('\\\\').split('"').join('\\"');
-
-        if (string != ''){
           parsed += '  Keyboard.print("' + string + '");\n';
         } else {
-          console.error('Error: at line: ' + (i + 1) + ', STRING requires text (e.g. STRING Example text).')
+          console.error('Error: at line: ' + (i + 1) + ', STRING requires a text')
           return;
         }
 
