@@ -210,6 +210,9 @@ class Duckuino{
     + '  // Wait 500ms\n'
     + '  delay(500);\n'
     + parsed
+    + '\n'
+    + '  // End payload\n'
+    + '  Keyboard.releaseAll();\n'
     + '}\n'
     + '\n'
     + '// Unused\n'
