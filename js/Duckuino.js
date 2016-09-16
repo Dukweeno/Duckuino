@@ -223,6 +223,7 @@ class Duckuino{
       }
     }
     }
+    parsed = parsed.replace(/[\n]{2,}/g, '\n\n');
     return parsed;
   }
 
