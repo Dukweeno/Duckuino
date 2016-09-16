@@ -68,7 +68,7 @@ class Duckuino{
 
     // Indicate to release all at the of line
     var releaseAll = false;
-
+    var countRepeats = 1;
     for (var i = 0; i < lines.length; i++) {
 
       var line = lines[i];
@@ -90,11 +90,12 @@ class Duckuino{
             string += ' ' + words[0];
             words.shift();
           }
+
           // Replace all " with \" and all \ with \\
           string = string.replace(/\\/g, '\\\\');
           string = string.replace(/"/g, '\\"');
 
-          parsed += '  Keyboard.print("' + string + '");\n';
+          parsed += '  Keyboard.print("' + string + '");';
         } else {
           console.error('Error: at line: ' + (i + 1) + ', STRING requires a text')
           return;
@@ -187,14 +188,16 @@ class Duckuino{
 
           // Get rid of last parsed line
           var parsedLines = parsed.split('\n');
-          var test = parsedLines.length-3;
+          var test = parsedLines.length-2;
           parsedLines[test] = '';
           //parsedLines = parsedLines.splice(parsedLines, parsedLines.length-1);
-          parsed = parsedLines.join('');
-          var replay = '\n  for (int i = 0; i < '+words[0]+'; i++) {\n';
-          replay += '     '+this.parser(lastLine)+'\n';
-          replay += '  };\n';
+          parsed = parsedLines.join('\n');
+          var replay = '\n  for (int rID_'+countRepeats+' = 0; rID_'+countRepeats+' < '+words[0]+'; rID_'+countRepeats+'++) {';
+          replay += this.parser(lastLine);
+          replay += '\n  };\n';
           parsed += replay;
+
+          countRepeats++;
           words.shift();
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
@@ -210,7 +213,7 @@ class Duckuino{
           parsed += '  Keyboard.press(' + key + ');\n    delay(50);\n  Keyboard.release(' + key + ');\n';
         } else if(this.commandMap[key] != undefined){
           if (words.length == 1 && !releaseAll){
-            parsed += '  typeKey(' + this.commandMap[key] + ');';
+            parsed += '  typeKey(' + this.commandMap[key] + ');\n';
           } else {
             parsed += '  Keyboard.press("' + this.commandMap[key] + '");\n  delay(50);\n  Keyboard.release("' + this.commandMap[key] + '");\n';
           }
