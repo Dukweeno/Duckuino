@@ -90,7 +90,7 @@ class Duckuino{
             string += ' ' + words[0];
             words.shift();
           }
-          // Replace all '"' by '\"' and all '\' by '\\'
+          // Replace all " with \" and all \ with \\
           string = string.replace(/\\/g, '\\\\');
           string = string.replace(/"/g, '\\"');
 
@@ -176,7 +176,31 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', REM requires a comment')
           return;
         }
-      }
+      } else if(words[0] == "REPEAT" || words[0] == "REPLAY" ){
+        words.shift();
+
+        if (words[0] != undefined && words[0] != ''){
+          // Get the code to repeat/replay
+          var lines = code.split('\n');
+          var lastLine = lines.length-2;
+          lastLine = lines[lastLine];
+
+          // Get rid of last parsed line
+          var parsedLines = parsed.split('\n');
+          var test = parsedLines.length-3;
+          parsedLines[test] = '';
+          //parsedLines = parsedLines.splice(parsedLines, parsedLines.length-1);
+          parsed = parsedLines.join('');
+          var replay = '\n  for (int i = 0; i < '+words[0]+'; i++) {\n';
+          replay += '     '+this.parser(lastLine)+'\n';
+          replay += '  };\n';
+          parsed += replay;
+          words.shift();
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
+          return;
+        }
+      } else {
 
       while (words.length){
         var key = words[0];
@@ -186,7 +210,7 @@ class Duckuino{
           parsed += '  Keyboard.press(' + key + ');\n    delay(50);\n  Keyboard.release(' + key + ');\n';
         } else if(this.commandMap[key] != undefined){
           if (words.length == 1 && !releaseAll){
-            parsed += '  typeKey(' + this.commandMap[key] + ');\n';
+            parsed += '  typeKey(' + this.commandMap[key] + ');';
           } else {
             parsed += '  Keyboard.press("' + this.commandMap[key] + '");\n  delay(50);\n  Keyboard.release("' + this.commandMap[key] + '");\n';
           }
@@ -195,9 +219,11 @@ class Duckuino{
         words.shift();
       }
     }
+    }
+    return parsed;
+  }
 
-    console.log('Done: compiling ' + (lines.length) + ' lines.');
-
+  compile(code){
     // Build the Arduino code skeleton
     return '// Init function\n'
     + 'void setup()\n'
@@ -206,7 +232,7 @@ class Duckuino{
     + '  Keyboard.begin();\n\n'
     + '  // Wait 500ms\n'
     + '  delay(500);\n'
-    + parsed
+    + this.parser(code)
     + '\n'
     + '  // End payload\n'
     + '  Keyboard.releaseAll();\n'
