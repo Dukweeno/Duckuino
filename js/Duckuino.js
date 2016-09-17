@@ -95,7 +95,7 @@ class Duckuino{
           string = string.replace(/\\/g, '\\\\');
           string = string.replace(/"/g, '\\"');
 
-          parsed += '  Keyboard.print("' + string + '");';
+          parsed += '  Keyboard.print(\'' + string + '\');';
         } else {
           console.error('Error: at line: ' + (i + 1) + ', STRING requires a text')
           return;
@@ -126,18 +126,18 @@ class Duckuino{
           var key = words[0];
           key = this.keyMap[key];
           if (words.length > 1){
-            press +=  '    Keyboard.press(' + key + ');\n';
-            release +=  '    Keyboard.release(' + key + ');\n';
+            press +=  '    Keyboard.press(\'' + key + '\');\n';
+            release +=  '    Keyboard.release(\'' + key + ');\n';
           } else {
-            press +=  '    Keyboard.press(' + key + ');\n';
-            release +=  '    Keyboard.release(' + key + ');\n';
+            press +=  '    Keyboard.press(\'' + key + '\');\n';
+            release +=  '    Keyboard.release(\'' + key + '\');\n';
             words.shift();
           }
         }
         if (string != ''){
-          parsed += '  Keyboard.press('+keep+');\n  '+press+'        delay(50);\n  '+release+'  Keyboard.release('+keep+');\n';
+          parsed += '  Keyboard.press(\''+keep+'\');\n  '+press+'        delay(50);\n  '+release+'  Keyboard.release(\''+keep+'\');\n';
         } else {
-          parsed += '  Keyboard.press('+keep+');\n    delay(50);\n  Keyboard.release('+keep+');\n';
+          parsed += '  Keyboard.press(\''+keep+'\');\n    delay(50);\n  Keyboard.release(\''+keep+'\');\n';
         }
         // Clear other arguments
         while (words.length) {
@@ -214,12 +214,16 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires two parameters 40,0')
           return;
         }
-      } else if(words[0] == "MOUSELEFT"){
+      } else if(words[0] == "MOUSECLICK"){
         words.shift();
-        parsed += '  Mouse.click(MOUSE_LEFT);\n'
-      } else if(words[0] == "MOUSERIGHT"){
-        words.shift();
-        parsed += '  Mouse.click(MOUSE_RIGHT);\n'
+        words[0] = words[0].toUpperCase();
+        if (words[0] == 'LEFT' || words[0] == 'RIGHT' || words[0] == 'MIDDLE' && words[0] != undefined && words[0] != ''){
+          parsed += '  Mouse.click(\'MOUSE_'+words[0]+'\');\n'
+          words.shift();
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', MOUSECLICK requires key (left/middle/right)')
+          return;
+        }
       } else {
 
       while (words.length){
@@ -227,12 +231,12 @@ class Duckuino{
 
         if(this.keyMap[key] != undefined){
           key = this.keyMap[key];
-          parsed += '  Keyboard.press(' + key + ');\n    delay(50);\n  Keyboard.release(' + key + ');\n';
+          parsed += '  Keyboard.press(\' '+ key +' \');\n    delay(50);\n  Keyboard.release(\'' + key + '\');\n';
         } else if(this.commandMap[key] != undefined){
           if (words.length == 1 && !releaseAll){
             parsed += '  typeKey(' + this.commandMap[key] + ');\n';
           } else {
-            parsed += '  Keyboard.press("' + this.commandMap[key] + '");\n  delay(50);\n  Keyboard.release("' + this.commandMap[key] + '");\n';
+            parsed += '  Keyboard.press(\'' + this.commandMap[key] + '\');\n  delay(50);\n  Keyboard.release(\'' + this.commandMap[key] + '\');\n';
           }
         }
 
@@ -258,6 +262,8 @@ class Duckuino{
     + '\n'
     + '  // End payload\n'
     + '  Keyboard.releaseAll();\n'
+    + '  Keyboard.end();\n'
+    + '  Mouse.end();\n'
     + '}\n'
     + '\n'
     + '// Unused\n'
