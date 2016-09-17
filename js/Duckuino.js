@@ -116,30 +116,30 @@ class Duckuino{
 
       // Command: GUI/CONTROL/CTRL/COMMAND/WINDOWS/SHIFT/ALT
       } else if(words[0] == "GUI" || words[0] == "WINDOWS" || words[0] == "CTRL" || words[0] == "COMMAND" || words[0] == "ALT" || words[0] == "SHIFT"){
-        var keep = words[0];
-        keep = this.commandMap[keep];
-        words.shift();
+        //var keep = words[0];
+        //keep = this.commandMap[keep];
+        //words.shift();
         var press = '';
         var release = '';
 
         while (words.length){
           var key = words[0];
-          key = this.keyMap[key];
+          if(this.keyMap[key] != undefined){
+            key = this.keyMap[key];
+          } else if(this.commandMap[key] != undefined){
+            key = this.commandMap[key];
+          }
           if (words.length > 1){
             press +=  '    Keyboard.press(\'' + key + '\');\n';
             release +=  '    Keyboard.release(\'' + key + ');\n';
           } else {
             press +=  '    Keyboard.press(\'' + key + '\');\n';
             release +=  '    Keyboard.release(\'' + key + '\');\n';
-            words.shift();
           }
+          words.shift();
         }
+        parsed += '  '+press+'delay(50);\n  '+release;
 
-        if (string != ''){
-          parsed += '  Keyboard.press(\''+keep+'\');\n  '+press+'        delay(50);\n  '+release+'  Keyboard.release(\''+keep+'\');\n';
-        } else {
-          parsed += '  Keyboard.press(\''+keep+'\');\n    delay(50);\n  Keyboard.release(\''+keep+'\');\n';
-        }
         // Clear other arguments
         continue;
 
