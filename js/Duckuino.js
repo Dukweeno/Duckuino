@@ -135,7 +135,7 @@ class Duckuino{
           }
           words.shift();
         }
-        parsed += '  '+press+'delay(50);\n  '+release;
+        parsed += '  '+press+'      delay(50);\n  '+release;
 
         // Clear other arguments
         continue;
