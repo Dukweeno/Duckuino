@@ -1,11 +1,4 @@
 var commandMap = {
-  ALT:'KEY_LEFT_ALT',
-  GUI:'KEY_LEFT_GUI',
-  WINDOWS:'KEY_LEFT_GUI',
-  COMMAND:'KEY_LEFT_GUI',
-  CTRL:'KEY_LEFT_CTRL',
-  CONTROL:'KEY_LEFT_CTRL',
-  SHIFT:'KEY_LEFT_SHIFT',
   ESCAPE:'KEY_ESC',
   MENU:'229',
   ESC:'KEY_LEFT_ESC',
@@ -21,6 +14,15 @@ var commandMap = {
   CAPSLOCK:'KEY_CAPS_LOCK',
   DELETE:'KEY_DELETE',
   DEL:'KEY_DELETE'
+};
+var comboMap = {
+  ALT:'KEY_LEFT_ALT',
+  GUI:'KEY_LEFT_GUI',
+  WINDOWS:'KEY_LEFT_GUI',
+  COMMAND:'KEY_LEFT_GUI',
+  CTRL:'KEY_LEFT_CTRL',
+  CONTROL:'KEY_LEFT_CTRL',
+  SHIFT:'KEY_LEFT_SHIFT'
 };
 var keyMap = {
   a:'97',
@@ -56,6 +58,7 @@ class Duckuino{
   constructor(lang) {
     this.keyMap = keyMap;
     this.commandMap = commandMap;
+    this.comboMap = comboMap;
   }
 
   parser(code){
@@ -70,6 +73,7 @@ class Duckuino{
     // Indicate to release all at the of line
     var releaseAll = false;
     var countRepeats = 1;
+
     for (var i = 0; i < lines.length; i++) {
 
       var line = lines[i];
@@ -79,6 +83,7 @@ class Duckuino{
 
       // Split line to words
       var words = line.split(' ');
+      var firstWord = words[0];
 
       // Parse special commands
       if(words[0]== "STRING"){
@@ -115,10 +120,10 @@ class Duckuino{
         continue;
 
       // Command: GUI/CONTROL/CTRL/COMMAND/WINDOWS/SHIFT/ALT
-      } else if(words[0] == "GUI" || words[0] == "WINDOWS" || words[0] == "CTRL" || words[0] == "COMMAND" || words[0] == "ALT" || words[0] == "SHIFT"){
-
+    } else if(comboMap[firstWord] != undefined){
         var press = '';
         var release = '';
+        var parsedLines = code.split('\n');
 
         while (words.length){
           var key = words[0];
@@ -126,14 +131,16 @@ class Duckuino{
             key = this.keyMap[key];
           } else if(this.commandMap[key] != undefined){
             key = this.commandMap[key];
+          } else if(this.comboMap[key] != undefined){
+            key = this.comboMap[key];
           }
-          if (words.length > 1){
-            press +=  '    Keyboard.press(\'' + key + '\');\n';
-            release +=  '    Keyboard.release(\'' + key + ');\n';
+          if (words[0] != undefined && words[0] != ''){
+            press +=  'Keyboard.press(\'' + key + '\');';
+            release +=  'Keyboard.release(\'' + key + ');';
           }
           words.shift();
         }
-        parsed += '  '+press+'      delay(50);\n  '+release;
+        parsed += press+' delay(50); '+release;
 
         // Clear other arguments
         continue;
@@ -210,23 +217,29 @@ class Duckuino{
 
         if (words[0] != undefined && words[0] != ''){
           // Get the code to repeat/replay
+          console.log(line);
+          var id = i - 1;
           var lines = code.split('\n');
-          var lastLine = lines.length-2;
-          lastLine = lines[lastLine];
+          //var lastLine = lines.length-2;
+          var lastLine = lines[id];
+          console.log(lastLine);
 
           // Get rid of last parsed line
           var parsedLines = parsed.split('\n');
           var lastParsed = parsedLines.length-2;
+          //var mostParsed = parsedLines.length-3;
+
+
           parsedLines[lastParsed] = '';
+          //parsedLines[mostParsed] = '';
 
           parsed = parsedLines.join('\n');
-          var replay = '\n  for (int rID_'+countRepeats+' = 0; rID_'+countRepeats+' < '+words[0]+'; rID_'+countRepeats+'++) {';
-          replay += this.parser(lastLine);
-          replay += '\n  };\n';
-          parsed += replay;
+          parsed += '\n  for (int rID_'+countRepeats+' = 0; rID_'+countRepeats+' < '+words[0]+'; rID_'+countRepeats+'++) {';
+          parsed += this.parser(lastLine);
+          parsed += '\n  };\n';
 
           countRepeats++;
-          words.shift();
+          continue;
 
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
@@ -240,12 +253,12 @@ class Duckuino{
 
           if(this.keyMap[key] != undefined){
             key = this.keyMap[key];
-            parsed += '  Keyboard.press(\' '+ key +' \');\n    delay(50);\n  Keyboard.release(\'' + key + '\');\n';
+            parsed += '  Keyboard.press(\' '+ key +' \'); delay(50); Keyboard.release(\'' + key + '\');';
           } else if(this.commandMap[key] != undefined){
-            if (words.length == 1 && !releaseAll){
-              parsed += '  typeKey(' + this.commandMap[key] + ');\n';
+            if (words.length == 1){
+              parsed += '  typeKey(' + this.commandMap[key] + ');';
             } else {
-              parsed += '  Keyboard.press(\'' + this.commandMap[key] + '\');\n  delay(50);\n  Keyboard.release(\'' + this.commandMap[key] + '\');\n';
+              parsed += '  Keyboard.press(\'' + this.commandMap[key] + '\'); delay(50); Keyboard.release(\'' + this.commandMap[key] + '\');';
             }
           }
 
