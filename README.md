@@ -1,7 +1,7 @@
 #Duckuino
 Simple DuckyScript -> Arduino converter/compiler, Props to Thecakeisgit/DuckuinoPlus for the original compiler.
 
-Basicaly, the Rubber Ducky cannot preform Mouse control, But the Duckuino sure can (Well.. at least only this compiler).
+Basically, the Rubber Ducky cannot preform Mouse control, But the Duckuino sure can (Well.. at least only this compiler).
 
 
 # Added functionality
