@@ -6,7 +6,7 @@ Basicaly, the Rubber Ducky cannot preform Mouse control, But the Duckuino sure c
 
 # Added functionality
 1. Added support for: REM,ESCAPE and REPLAY/REPEAT.
-2. Added support for mouse movements and clicks (MOUSEMOVE x,y | MOUSELEFT | MOUSERIGHT).
+2. Added support for mouse movements and clicks (MOUSEMOVE x,y | MOUSECLICK left/right/middle).
 3. Fixed empty lines bug.
 4. Rearranged the code and files.
 5. Added simple Bootstrap CDN UI.
