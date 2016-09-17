@@ -177,6 +177,27 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', REM requires a comment')
           return;
         }
+      } else if(words[0] == "MOUSEMOVE"){
+        words.shift();
+
+        if (words[0] != undefined && words[0] != ''){
+          var mouseParams = words[0].split(',');
+          parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1]+');'
+          words.shift();
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires two parameters 40,0')
+          return;
+        }
+      } else if(words[0] == "MOUSECLICK"){
+        words.shift();
+        words[0] = words[0].toUpperCase();
+        if (words[0] == 'LEFT' || words[0] == 'RIGHT' || words[0] == 'MIDDLE' && words[0] != undefined && words[0] != ''){
+          parsed += '  Mouse.click(\'MOUSE_'+words[0]+'\');'
+          words.shift();
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', MOUSECLICK requires key (left/middle/right)')
+          return;
+        }
       } else if(words[0] == "REPEAT" || words[0] == "REPLAY" ){
         words.shift();
 
@@ -201,27 +222,6 @@ class Duckuino{
           words.shift();
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
-          return;
-        }
-      } else if(words[0] == "MOUSEMOVE"){
-        words.shift();
-
-        if (words[0] != undefined && words[0] != ''){
-          var mouseParams = words[0].split(',');
-          parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1]+');\n'
-          words.shift();
-        } else {
-          console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires two parameters 40,0')
-          return;
-        }
-      } else if(words[0] == "MOUSECLICK"){
-        words.shift();
-        words[0] = words[0].toUpperCase();
-        if (words[0] == 'LEFT' || words[0] == 'RIGHT' || words[0] == 'MIDDLE' && words[0] != undefined && words[0] != ''){
-          parsed += '  Mouse.click(\'MOUSE_'+words[0]+'\');\n'
-          words.shift();
-        } else {
-          console.error('Error: at line: ' + (i + 1) + ', MOUSECLICK requires key (left/middle/right)')
           return;
         }
       } else {
