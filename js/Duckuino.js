@@ -132,9 +132,6 @@ class Duckuino{
           if (words.length > 1){
             press +=  '    Keyboard.press(\'' + key + '\');\n';
             release +=  '    Keyboard.release(\'' + key + ');\n';
-          } else {
-            press +=  '    Keyboard.press(\'' + key + '\');\n';
-            release +=  '    Keyboard.release(\'' + key + '\');\n';
           }
           words.shift();
         }
