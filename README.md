@@ -3,12 +3,10 @@ Simple DuckyScript -> Arduino converter/compiler, Props to Thecakeisgit/Duckuino
 
 The original Rubber Ducky cannot preform Mouse control, But the Duckuino sure can (Well.. at least only this compiler).
 
-You can emulate mouse movements with MOUSEMOVE xPos,yPos,wheelPos
-
 
 # Added functionality
 1. Added support for: REM,ESCAPE and REPLAY/REPEAT.
-2. Added support for mouse movements and clicks (MOUSEMOVE xPos,yPos,wheelPos | MOUSECLICK left/right/middle).
+2. Added support for mouse movements and clicks ("MOUSEMOVE xPos,yPos,wheelPos" | "MOUSECLICK left/right/middle").
 3. Fixed empty lines bug.
 4. Rearranged the code and files.
 5. Added simple Bootstrap CDN UI.
