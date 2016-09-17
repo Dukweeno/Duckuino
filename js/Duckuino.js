@@ -123,6 +123,7 @@ class Duckuino{
         words.shift();
         var press = '';
         var release = '';
+
         while (words.length){
           var key = words[0];
           key = this.keyMap[key];
@@ -135,6 +136,7 @@ class Duckuino{
             words.shift();
           }
         }
+
         if (string != ''){
           parsed += '  Keyboard.press(\''+keep+'\');\n  '+press+'        delay(50);\n  '+release+'  Keyboard.release(\''+keep+'\');\n';
         } else {
@@ -169,10 +171,12 @@ class Duckuino{
         if (words[0] != undefined && words[0] != '')
         {
           var remTmp = '  //';
+
           while (words.length) {
             remTmp += ' ' + words[0];
             words.shift();
           }
+
           parsed += remTmp;
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REM requires a comment')
@@ -185,10 +189,13 @@ class Duckuino{
 
         if (words[0] != undefined && words[0] != ''){
           var mouseParams = words[0].split(',');
+
           parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1];
+
           if(mouseParams[2] != undefined && mouseParams[2] != ''){
             parsed += ', '+mouseParams[2];
           }
+
           parsed += ');';
           words.shift();
         } else {
@@ -200,6 +207,7 @@ class Duckuino{
       } else if(words[0] == "MOUSECLICK"){
         words.shift();
         words[0] = words[0].toUpperCase();
+
         if (words[0] == 'LEFT' || words[0] == 'RIGHT' || words[0] == 'MIDDLE' && words[0] != undefined && words[0] != ''){
           parsed += '  Mouse.click(\'MOUSE_'+words[0]+'\');'
           words.shift();
@@ -220,9 +228,9 @@ class Duckuino{
 
           // Get rid of last parsed line
           var parsedLines = parsed.split('\n');
-          var test = parsedLines.length-2;
-          parsedLines[test] = '';
-          //parsedLines = parsedLines.splice(parsedLines, parsedLines.length-1);
+          var lastParsed = parsedLines.length-2;
+          parsedLines[lastParsed] = '';
+
           parsed = parsedLines.join('\n');
           var replay = '\n  for (int rID_'+countRepeats+' = 0; rID_'+countRepeats+' < '+words[0]+'; rID_'+countRepeats+'++) {';
           replay += this.parser(lastLine);
@@ -231,6 +239,7 @@ class Duckuino{
 
           countRepeats++;
           words.shift();
+
         } else {
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
           return;
