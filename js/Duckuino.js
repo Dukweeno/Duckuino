@@ -50,6 +50,7 @@ var keyMap = {
   y:'121',
   z:'122'
 };
+
 class Duckuino{
 
   constructor(lang) {
@@ -177,6 +178,8 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', REM requires a comment')
           return;
         }
+
+      // Command: MOUSEMOVE
       } else if(words[0] == "MOUSEMOVE"){
         words.shift();
 
@@ -192,6 +195,8 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires at least two parameters')
           return;
         }
+
+      // Command: MOUSECLICK
       } else if(words[0] == "MOUSECLICK"){
         words.shift();
         words[0] = words[0].toUpperCase();
@@ -202,6 +207,8 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', MOUSECLICK requires key (left/middle/right)')
           return;
         }
+
+      // Command: REPEAT / REPLAY
       } else if(words[0] == "REPEAT" || words[0] == "REPLAY" ){
         words.shift();
 
@@ -228,25 +235,26 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
           return;
         }
+
+      // Everything else
       } else {
+        while (words.length){
+          var key = words[0];
 
-      while (words.length){
-        var key = words[0];
-
-        if(this.keyMap[key] != undefined){
-          key = this.keyMap[key];
-          parsed += '  Keyboard.press(\' '+ key +' \');\n    delay(50);\n  Keyboard.release(\'' + key + '\');\n';
-        } else if(this.commandMap[key] != undefined){
-          if (words.length == 1 && !releaseAll){
-            parsed += '  typeKey(' + this.commandMap[key] + ');\n';
-          } else {
-            parsed += '  Keyboard.press(\'' + this.commandMap[key] + '\');\n  delay(50);\n  Keyboard.release(\'' + this.commandMap[key] + '\');\n';
+          if(this.keyMap[key] != undefined){
+            key = this.keyMap[key];
+            parsed += '  Keyboard.press(\' '+ key +' \');\n    delay(50);\n  Keyboard.release(\'' + key + '\');\n';
+          } else if(this.commandMap[key] != undefined){
+            if (words.length == 1 && !releaseAll){
+              parsed += '  typeKey(' + this.commandMap[key] + ');\n';
+            } else {
+              parsed += '  Keyboard.press(\'' + this.commandMap[key] + '\');\n  delay(50);\n  Keyboard.release(\'' + this.commandMap[key] + '\');\n';
+            }
           }
-        }
 
-        words.shift();
+          words.shift();
+        }
       }
-    }
     }
     parsed = parsed.replace(/[\n]{2,}/g, '\n\n');
     return parsed;
