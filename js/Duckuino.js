@@ -15,6 +15,7 @@ var commandMap = {
   DELETE:'KEY_DELETE',
   DEL:'KEY_DELETE'
 };
+
 var comboMap = {
   ALT:'KEY_LEFT_ALT',
   GUI:'KEY_LEFT_GUI',
@@ -24,6 +25,7 @@ var comboMap = {
   CONTROL:'KEY_LEFT_CTRL',
   SHIFT:'KEY_LEFT_SHIFT'
 };
+
 var keyMap = {
   a:'97',
   b:'98',
