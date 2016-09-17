@@ -116,9 +116,7 @@ class Duckuino{
 
       // Command: GUI/CONTROL/CTRL/COMMAND/WINDOWS/SHIFT/ALT
       } else if(words[0] == "GUI" || words[0] == "WINDOWS" || words[0] == "CTRL" || words[0] == "COMMAND" || words[0] == "ALT" || words[0] == "SHIFT"){
-        //var keep = words[0];
-        //keep = this.commandMap[keep];
-        //words.shift();
+
         var press = '';
         var release = '';
 
