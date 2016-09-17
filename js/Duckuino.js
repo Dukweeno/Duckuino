@@ -203,6 +203,23 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', REPLAY/REPEAT requires a number')
           return;
         }
+      } else if(words[0] == "MOUSEMOVE"){
+        words.shift();
+
+        if (words[0] != undefined && words[0] != ''){
+          var mouseParams = words[0].split(',');
+          parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1]+');\n'
+          words.shift();
+        } else {
+          console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires two parameters 40,0')
+          return;
+        }
+      } else if(words[0] == "MOUSELEFT"){
+        words.shift();
+        parsed += '  Mouse.click(MOUSE_LEFT);\n'
+      } else if(words[0] == "MOUSERIGHT"){
+        words.shift();
+        parsed += '  Mouse.click(MOUSE_RIGHT);\n'
       } else {
 
       while (words.length){
@@ -233,6 +250,7 @@ class Duckuino{
     + 'void setup()\n'
     + '{\n'
     + '  // Start payload\n'
+    + '  Mouse.begin();\n'
     + '  Keyboard.begin();\n\n'
     + '  // Wait 500ms\n'
     + '  delay(500);\n'
