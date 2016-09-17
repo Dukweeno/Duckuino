@@ -111,10 +111,8 @@ class Duckuino{
           console.error('Error: at line: ' + (i + 1) + ', DELAY requires a number (e.g. DELAY 1000)')
           return;
         }
-        // Clear other arguments
-        while (words.length) {
-          words.shift();
-        }
+
+        continue;
 
       // Command: GUI/CONTROL/CTRL/COMMAND/WINDOWS/SHIFT/ALT
       } else if(words[0] == "GUI" || words[0] == "WINDOWS" || words[0] == "CTRL" || words[0] == "COMMAND" || words[0] == "ALT" || words[0] == "SHIFT"){
@@ -143,9 +141,7 @@ class Duckuino{
           parsed += '  Keyboard.press(\''+keep+'\');\n    delay(50);\n  Keyboard.release(\''+keep+'\');\n';
         }
         // Clear other arguments
-        while (words.length) {
-          words.shift();
-        }
+        continue;
 
       // Command: TYPE
       } else if(words[0] == "TYPE"){
@@ -159,10 +155,7 @@ class Duckuino{
           return;
         }
 
-        // Clear other arguments
-        while (words.length) {
-          words.shift();
-        }
+        continue;
 
       // Command: REM
       } else if(words[0] == "REM"){
@@ -282,7 +275,6 @@ class Duckuino{
     + this.parser(code)
     + '\n'
     + '  // End payload\n'
-    + '  Keyboard.releaseAll();\n'
     + '  Keyboard.end();\n'
     + '  Mouse.end();\n'
     + '}\n'
