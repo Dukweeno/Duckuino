@@ -182,10 +182,14 @@ class Duckuino{
 
         if (words[0] != undefined && words[0] != ''){
           var mouseParams = words[0].split(',');
-          parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1]+');'
+          parsed += '  Mouse.move('+mouseParams[0]+', '+mouseParams[1];
+          if(mouseParams[2] != undefined && mouseParams[2] != ''){
+            parsed += ', '+mouseParams[2];
+          }
+          parsed += ');';
           words.shift();
         } else {
-          console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires two parameters 40,0')
+          console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires at least two parameters')
           return;
         }
       } else if(words[0] == "MOUSECLICK"){
