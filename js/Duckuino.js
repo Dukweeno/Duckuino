@@ -124,7 +124,6 @@ class Duckuino{
       // Command: GUI/CONTROL/CTRL/COMMAND/WINDOWS/SHIFT/ALT
     } else if(comboMap[firstWord] != undefined){
         var press = '';
-        var release = '';
         var parsedLines = code.split('\n');
 
         while (words.length){
@@ -138,11 +137,10 @@ class Duckuino{
           }
           if (words[0] != undefined && words[0] != ''){
             press +=  'Keyboard.press(' + key + ');';
-            release +=  'Keyboard.release(' + key + ');';
           }
           words.shift();
         }
-        parsed += press+' delay(50); '+release;
+        parsed += '    '+press+' delay(50); Keyboard.releaseAll();'
 
         // Clear other arguments
         continue;
