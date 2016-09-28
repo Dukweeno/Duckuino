@@ -128,15 +128,20 @@ class Duckuino{
 
         while (words.length){
           var key = words[0];
+          var nKey = words[0];
           if(this.keyMap[key] != undefined){
-            key = this.keyMap[key];
+            nKey = this.keyMap[key];
           } else if(this.commandMap[key] != undefined){
-            key = this.commandMap[key];
+            nKey = this.commandMap[key];
           } else if(this.comboMap[key] != undefined){
-            key = this.comboMap[key];
+            nKey = this.comboMap[key];
           }
           if (words[0] != undefined && words[0] != ''){
-            press +=  'Keyboard.press(' + key + ');';
+          	if(this.comboMap[key] != undefined || this.commandMap[key] != undefined || this.keyMap[key] != undefined){
+              press +=  'Keyboard.press(' + nKey + ');';
+          	} else {
+              press +=  'Keyboard.print(\'' + nKey + '\');';
+        	}
           }
           words.shift();
         }
