@@ -222,21 +222,16 @@ class Duckuino{
 
         if (words[0] != undefined && words[0] != ''){
           // Get the code to repeat/replay
-          console.log(line);
           var id = i - 1;
           var lines = code.split('\n');
-          //var lastLine = lines.length-2;
           var lastLine = lines[id];
-          console.log(lastLine);
 
           // Get rid of last parsed line
           var parsedLines = parsed.split('\n');
           var lastParsed = parsedLines.length-2;
-          //var mostParsed = parsedLines.length-3;
 
 
           parsedLines[lastParsed] = '';
-          //parsedLines[mostParsed] = '';
 
           parsed = parsedLines.join('\n');
           parsed += '\n  for (int rID_'+countRepeats+' = 0; rID_'+countRepeats+' < '+words[0]+'; rID_'+countRepeats+'++) {';
