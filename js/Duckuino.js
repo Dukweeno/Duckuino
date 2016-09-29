@@ -91,11 +91,17 @@ class Duckuino{
       if(words[0]== "STRING"){
         words.shift();
 
-        if (words[0] != undefined && words[0] != '')
+        if (words[0] != undefined)
         {
           var string = '';
+          var count = 0;
           while (words.length) {
-            string += ' ' + words[0];
+            if(count != 0){
+             string += ' ' + words[0];
+            } else {
+              string += words[0];             
+            }
+            count++;
             words.shift();
           }
 
