@@ -10,11 +10,14 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/clike/clike.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/vbscript/vbscript.js"></script>
         <style type="text/css">
-        	#console,#duckyScript{
+        	#console,#console-head{
         		background-color: #eeeeee;
         		padding: 5px;
         		border: solid 1px; 
         		border-color: #cacaca;
+        	}
+        	#console{
+        		font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
         	}
         </style>
 	</head>
@@ -32,8 +35,9 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-				<div id="console" style="width: 100%; height: 300px;"></div>
+			<div class="row" id="console-head">
+				Console:
+				<div id="console" style="width: 100%;">&nbsp;</div>
 			</div>
 		</div>
 	</div>

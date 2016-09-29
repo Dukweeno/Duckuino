@@ -20,7 +20,7 @@ $(function() { // Wait for jQuery
 
   $("#compileThis").click(function(e) {
   	  console.clear();
-  	  $('#console').html('');
+  	  $('#console').html('&nbsp;');
   	  //clear();
   	  editor.getDoc().setValue(Duck.compile(editor2.getValue()));
   });
