@@ -29,7 +29,7 @@ jQuery(function() { // Wait for jQuery
     zipHandler.file(sketchName + "/" + sketchName + ".ino", $(".arduino").val());
     zipHandler.file("readme", $.ajax({
       url: 'readme.default',
-      type: 'post',
+      type: 'get',
       success: function(data) {return data;}
     }));
     zipHandler.generateAsync({type:"blob"})
