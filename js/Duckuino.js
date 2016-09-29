@@ -64,6 +64,8 @@ class Duckuino{
   }
 
   parser(code){
+
+    // Parsing
     var parsed = '';
 
     // Remove unnecessary empty lines
@@ -277,6 +279,18 @@ class Duckuino{
   }
 
   compile(code){
+    // Check if there is any code input at all
+    if (code == '' || code == undefined)
+    {
+      console.error('Error: No ducky script was entered!');
+      return 'Error, please see console...';
+    } 
+
+    var parsedDucky = this.parser(code);
+    if (parsedDucky == '' || parsedDucky == undefined)
+    {
+      return 'Error, please see console...';
+    } 
     // Build the Arduino code skeleton
     return '// Init function\n'
     + 'void setup()\n'
@@ -284,7 +298,7 @@ class Duckuino{
     + '  // Start payload\n'
     + '  Mouse.begin();\n'
     + '  Keyboard.begin();\n\n'
-    + this.parser(code)
+    + parsedDucky
     + '\n\n'
     + '  // End payload\n'
     + '  Keyboard.end();\n'
