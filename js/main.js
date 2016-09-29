@@ -29,7 +29,7 @@ $(function() { // Wait for jQuery
 
 $("#download").click(function() {
 	var payloadValue = editor.getValue();
-	if(payloadValue == undefined || payloadValue == ''){
+	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, please see console...'){
 		console.error("Payload is empty!");
 		return;
 	}
