@@ -196,7 +196,7 @@ class Duckuino {
           }
           break;
         case "REPEAT":
-		  commandKnown = true;
+		  // commandKnown = true;
           break;
         default:
           if (wordArray.length == 1)

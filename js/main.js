@@ -7,6 +7,6 @@ $(function() { // Wait for jQuery
   });
   
   $(".dl-but").click(function(e) {
-      $(".arduino").val(Duck.toArduino($(".duckyscript").val()));
+      // Create a zip and download
   });
 });
