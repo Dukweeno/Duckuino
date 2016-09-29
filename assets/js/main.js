@@ -23,7 +23,7 @@ jQuery(function() { // Wait for jQuery
   // Download button
   $(".dl-but").click(function(e) {
     // Create a zip and download
-    var sketchName = "iLoveDuck-" + makeId(4);
+    var sketchName = "Dckuino.js-" + makeId(4);
 
     var zipHandler = new JSZip();
     zipHandler.file(sketchName + "/" + sketchName + ".ino", $(".arduino").val());
