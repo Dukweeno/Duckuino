@@ -216,8 +216,14 @@ class Dckuinojs {
         case "REPLAY":
           wordArray.shift();
 
-          if(wordArray[0] === undefined || wordArray[0] === '') {
+          if (wordArray[0] === undefined || wordArray[0] === '') {
             console.error('Error: at line: ' + (i + 1) + ', REPEAT/REPLAY needs a loop count');
+            return;
+          }
+
+          if (lastLines === undefined)
+          {
+            console.error('Error: at line: ' + (i + 1) + ', nothing to repeat, this is the first line.');
             return;
           }
 
@@ -226,7 +232,12 @@ class Dckuinojs {
             // Remove the lines we just created
             var linesTmp = parsedScript.split('\n');
             linesTmp.splice(-lastCount, lastCount);
-            parsedScript = linesTmp.join('\n');
+
+            if (linesTmp.join('\n') === '')
+              parsedScript = linesTmp.join('\n');
+            else {
+              parsedScript = linesTmp.join('\n') + '\n';
+            }
 
             // Add two spaces at Begining
             lastLines = lastLines.replace(/^  /gm,'    ');
