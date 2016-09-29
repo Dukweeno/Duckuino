@@ -277,7 +277,7 @@ class Duckuino{
     if (code == '' || code == undefined)
     {
       console.error('Error: No ducky script was entered!');
-      return 'Error, look at the console console...';
+      return 'Error, look at the console...';
     } 
 
     var parsedDucky = this.parser(code);

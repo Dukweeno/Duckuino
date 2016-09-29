@@ -31,7 +31,7 @@ $(function() { // Wait for jQuery
 $("#download").click(function() {
 	var payloadValue = editor.getValue();
 	var payloadName = $("#payloadName").val();
-	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, look at the console console...' || payloadName == '' || payloadName == undefined){
+	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, look at the console...' || payloadName == '' || payloadName == undefined){
 		alert("Download Error: The payload or payload name are empty!");
 		return;
 	}
