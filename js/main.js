@@ -29,14 +29,15 @@ $(function() { // Wait for jQuery
 
 $("#download").click(function() {
 	var payloadValue = editor.getValue();
-	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, please see console...'){
-		console.error("Payload is empty!");
+	var payloadName = $("#payloadName").val();
+	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, please see console...' || payloadName == '' || payloadName == undefined){
+		alert("Download Error: The payload or payload name are empty!");
 		return;
 	}
   // create `a` element
   $("<a />", {
       // if supported , set name of file
-      download: $("#payloadName").val() + ".ino",
+      download: payloadName + ".ino",
       // set `href` to `objectURL` of `Blob` of `textarea` value
       href: URL.createObjectURL(
         new Blob([editor.getValue()], {
