@@ -2,7 +2,11 @@ $(function() { // Wait for jQuery
   
   Duck = new Duckuino();
 
-  $("#compileThis").click(function(e) {
-      $("#arduiCode").val(Duck.toArduino($("#duckyScript").val()));
+  $(".compile-but").click(function(e) {
+    $(".arduino").val(Duck.toArduino($(".duckyscript").val()));
+  });
+  
+  $(".dl-but").click(function(e) {
+      $(".arduino").val(Duck.toArduino($(".duckyscript").val()));
   });
 });

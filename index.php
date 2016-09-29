@@ -12,11 +12,12 @@
     </head>
     <body>
 	Input duckyscript:
-	<textarea id="duckyScript"></textarea>
+	<textarea class="duckyscript"></textarea>
 
 	Output arduino sketch:
-	<textarea readonly id="arduiCode"></textarea>
+	<textarea class="arduino" readonly></textarea>
 	<br>
-        <button id="compileThis">Compile</button>
+    <button class="compile-but">Compile</button>
+	<button class="dl-but">Download as arduino sketch</button>
     </body>
 </html>

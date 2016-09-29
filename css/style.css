@@ -3,10 +3,10 @@ body {
 
 }
 
-#duckyScript {
+.duckyscript {
   width: 300px; height: 500px;
 }
 
-#arduiCode {
+.arduino {
    width: 300px; height: 500px;
 }
