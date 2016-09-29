@@ -283,7 +283,7 @@ class Duckuino{
     var parsedDucky = this.parser(code);
     if (parsedDucky == '' || parsedDucky == undefined)
     {
-      return 'Error, please see console...';
+      return 'Error, look at the console...';
     } 
     // Build the Arduino code skeleton
     return '// Init function\n'
