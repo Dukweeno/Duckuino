@@ -8,12 +8,27 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.css">
         <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/lib/codemirror.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/codemirror/CodeMirror/master/mode/clike/clike.js"></script>
-	   </style>
+        <style type="text/css">
+        	#console{
+        		background-color: #eeeeee;
+        		padding: 5px;
+        		border: solid 1px; 
+        		border-radius: 4px;
+        	}
+        	#duckyScript{
+        		background-color: #eeeeee;
+        		padding: 5px;
+        		border: solid 1px; 
+        		border-radius: 4px;		
+        	}
+        </style>
 	</head>
 	<body>
+	<div class="container">
 		<div class="row">
 			<div class="col-xs-6">
-				<label for="duckyScript"><h2>Ducky Script:</h2></label> <button class="btn btn-lg btn-success" id="compileThis">&#9658; Run Compiler</button><br/>
+				<label for="duckyScript"><h2>Ducky Script:</h2></label> <button class="btn btn-lg btn-success" id="compileThis">&#9658; Run</button>
+				<br/>
 				<textarea id="duckyScript" style="width: 100%; height: 300px;" placeholder="Enter DuckyScript here"></textarea>
 			</div>
 			<div class="col-xs-6">
@@ -21,7 +36,19 @@
 				<textarea readonly id="arduiCode" style="width: 100%;"></textarea>
 			</div>
 		</div>
+		<div class="row">
+			<div id="console" style="width: 100%; height: 300px;"></div>
+		</div>
+	</div>
     <script>
+		var realConsoleLog = console.error;
+		console.error = function () {
+		    var message = [].join.call(arguments, " ");
+		    // Display the message somewhere... (jQuery example)
+		    $("#console").text(message);
+		    realConsoleLog.apply(console, arguments);
+		};
+
         var editor = CodeMirror.fromTextArea(document.getElementById("arduiCode"), {
             lineNumbers: true,
 			mode: "text/x-c++src"
