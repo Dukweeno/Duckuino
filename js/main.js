@@ -2,7 +2,7 @@ var consoleError = console.error;
 console.error = function () {
 	var message = [].join.call(arguments, " ");
 	$("#console").text(message);
-	rConsole.apply(console, arguments);
+	consoleError.apply(console, arguments);
 };
 
 var editor = CodeMirror.fromTextArea(document.getElementById("arduiCode"), {
@@ -21,7 +21,6 @@ $(function() { // Wait for jQuery
   $("#compileThis").click(function(e) {
   	  console.clear();
   	  $('#console').html('&nbsp;');
-  	  //clear();
   	  editor.getDoc().setValue(Duck.compile(editor2.getValue()));
   });
 });
