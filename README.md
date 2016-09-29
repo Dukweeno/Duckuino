@@ -1,12 +1,12 @@
-#DuckuinoPlus
+#Dckuino.js
 Simple DuckyScript to Arduino converter, improved version of https://github.com/Plazmaz/Duckuino
 
-# Why DuckuinoPlus
-You can use the entire project in the [Live](https://thecakeisgit.github.io/DuckuinoPlus/ "DuckuinoPlus Live") version, or reuse <code>js/duckuinoPlus.js</code> for standalone use :
+# Why Dckuino.js
+You can use the entire project in the [Live](https://thecakeisgit.github.io/Dckuino.js/ "Dckuino.js Live") version, or reuse <code>dckuino.js</code> for standalone use :
 
 ```javascript
 // Create the instance
-Duck = new Duckuino();
+Duck = new Dckuinojs();
 
 var DuckyScript = "CTRL ALT t"
 + "DELAY 1000"
@@ -15,7 +15,7 @@ var DuckyScript = "CTRL ALT t"
 + "DELAY 1000"
 + "STRING Hello World !"
 
-var ArduinoCode = Duck.toArduino(DuckyScript); 
+var ArduinoCode = Duck.toArduino(DuckyScript);
 
 console.log(ArduinoCode);
 ```
@@ -59,4 +59,4 @@ void loop() {}
 ```
 
 # Live version:
-https://thecakeisgit.github.io/DuckuinoPlus/
+https://thecakeisgit.github.io/Dckuino.js/
