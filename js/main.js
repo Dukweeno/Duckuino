@@ -7,12 +7,14 @@ console.error = function () {
 
 var editor = CodeMirror.fromTextArea(document.getElementById("arduiCode"), {
     lineNumbers: true,
-	mode: "text/x-c++src"
+	mode: "text/x-c++src",
+	theme: "monokai"
 });
 
 var editor2 = CodeMirror.fromTextArea(document.getElementById("duckyScript"), {
     lineNumbers: true,
-	mode: "text/vbscript"
+	mode: "text/vbscript",
+	theme: "monokai"
 });
 
 $(function() { // Wait for jQuery
