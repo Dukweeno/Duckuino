@@ -26,3 +26,24 @@ $(function() { // Wait for jQuery
   	  editor.getDoc().setValue(Duck.compile(editor2.getValue()));
   });
 });
+
+$("#download").click(function() {
+  // create `a` element
+  $("<a />", {
+      // if supported , set name of file
+      download: $("#payloadName").val() + ".txt",
+      // set `href` to `objectURL` of `Blob` of `textarea` value
+      href: URL.createObjectURL(
+        new Blob([editor.getValue()], {
+          type: "text/plain"
+        }))
+    })
+    // append `a` element to `body`
+    // call `click` on `DOM` element `a`
+    .appendTo("body")[0].click();
+    // remove appended `a` element after "Save File" dialog,
+    // `window` regains `focus` 
+    $(window).one("focus", function() {
+      $("a").last().remove()
+    })
+})
