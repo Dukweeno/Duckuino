@@ -284,8 +284,6 @@ class Duckuino{
     + '  // Start payload\n'
     + '  Mouse.begin();\n'
     + '  Keyboard.begin();\n\n'
-    + '  // Wait 500ms\n'
-    + '  delay(500);\n'
     + this.parser(code)
     + '\n\n'
     + '  // End payload\n'
