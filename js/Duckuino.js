@@ -93,29 +93,23 @@ class Duckuino{
       if(words[0]== "STRING"){
         words.shift();
 
-        if (words[0] != undefined)
-        {
-          var string = '';
-          var count = 0;
-          while (words.length) {
-            if(count != 0){
-             string += ' ' + words[0];
-            } else {
-              string += words[0];             
-            }
-            count++;
-            words.shift();
+        var string = '';
+        var count = 0;
+        while (words.length) {
+          if(count != 0){
+           string += ' ' + words[0];
+          } else {
+            string += words[0];             
           }
-
-          // Replace all " with \" and all \ with \\
-          string = string.replace(/\\/g, '\\\\');
-          string = string.replace(/"/g, '\\"');
-
-          parsed += '  Keyboard.print(\'' + string + '\');';
-        } else {
-          console.error('Error: at line: ' + (i + 1) + ', STRING requires a text')
-          return;
+          count++;
+          words.shift();
         }
+
+        // Replace all " with \" and all \ with \\
+        string = string.replace(/\\/g, '\\\\');
+        string = string.replace(/"/g, '\\"');
+
+        parsed += '  Keyboard.print(\'' + string + '\');';
 
       // Command: DELAY
       } else if(words[0] == "DELAY"){
