@@ -28,6 +28,11 @@ $(function() { // Wait for jQuery
 });
 
 $("#download").click(function() {
+	var payloadValue = editor.getValue();
+	if(payloadValue == undefined || payloadValue == ''){
+		console.error("Payload is empty!");
+		return;
+	}
   // create `a` element
   $("<a />", {
       // if supported , set name of file
