@@ -31,7 +31,7 @@ $("#download").click(function() {
   // create `a` element
   $("<a />", {
       // if supported , set name of file
-      download: $("#payloadName").val() + ".txt",
+      download: $("#payloadName").val() + ".ino",
       // set `href` to `objectURL` of `Blob` of `textarea` value
       href: URL.createObjectURL(
         new Blob([editor.getValue()], {
