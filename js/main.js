@@ -27,21 +27,21 @@ $(function() { // Wait for jQuery
   });
 });
 
-
-
 // Download button
-$("#download").click(function() {
-  var payloadValue = editor.getValue();
-  var payloadName = $("#payloadName").val();
-  if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, look at the console console...' || payloadName == '' || payloadName == undefined){
-    alert("Download Error: The payload or payload name are empty!");
-    return;
-  }
-  var zip = new JSZip();
+  $("#download").click(function(e) {
+    // Create a zip and download
+    var sketchName = $("#payloadName").val();
 
-  zip.file(payloadName + ".ino", payloadValue);
-
-  zip.generateAsync({type:"blob"}).then(function(content) {
-      saveAs(content, ".zip");
+    var zipHandler = new JSZip();
+    zipHandler.file(sketchName + "/" + sketchName + ".ino", editor.getValue());
+    zipHandler.file("readme", $.ajax({
+      url: 'readme.default',
+      type: 'get',
+      success: function(data) {return data;}
+    }));
+    zipHandler.generateAsync({type:"blob"})
+      .then(function(content) {
+        saveAs(content, sketchName + ".zip");
+      }
+    );
   });
-})
