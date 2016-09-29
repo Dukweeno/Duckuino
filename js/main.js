@@ -29,20 +29,28 @@ $(function() { // Wait for jQuery
 
 // Download button
 $("#download").click(function() {
-    // Create a zip and download
-  var payloadValue = editor.getValue();
-  var payloadName = $("#payloadName").val();
-
-    var zipHandler = new JSZip();
-    zipHandler.file(payloadName + "/" + payloadName + ".ino", $(".arduino").val());
-    zipHandler.file("readme", $.ajax({
-      url: 'readme.default',
-      type: 'get',
-      success: function(data) {return data;}
-    }));
-    zipHandler.generateAsync({type:"blob"})
-      .then(function(content) {
-        saveAs(payloadValue, payloadName + ".zip");
-      }
-    );
-});
+	var payloadValue = editor.getValue();
+	var payloadName = $("#payloadName").val();
+	if(payloadValue == undefined || payloadValue == '' || payloadValue == 'Error, look at the console console...' || payloadName == '' || payloadName == undefined){
+		alert("Download Error: The payload or payload name are empty!");
+		return;
+	}
+  // create `a` element
+  $("<a />", {
+      // if supported , set name of file
+      download: payloadName + ".ino",
+      // set `href` to `objectURL` of `Blob` of `textarea` value
+      href: URL.createObjectURL(
+        new Blob([editor.getValue()], {
+          type: "text/plain"
+        }))
+    })
+    // append `a` element to `body`
+    // call `click` on `DOM` element `a`
+    .appendTo("body")[0].click();
+    // remove appended `a` element after "Save File" dialog,
+    // `window` regains `focus` 
+    $(window).one("focus", function() {
+      $("a").last().remove()
+    })
+})
