@@ -347,7 +347,7 @@ class Duckuino {
     var timerEnd = Date.now();
     var timePassed = new Date(timerEnd - timerStart);
 
-    console.log('Done parsed ' + (lineArray.length) + ' lines in ' + timePassed.getMilliseconds() + 'ms');
+    console.log('Successfuly parsed ' + (lineArray.length) + ' lines in ' + timePassed.getMilliseconds() + 'ms');
     return parsedScript;
   }
 }
