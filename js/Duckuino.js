@@ -13,7 +13,19 @@ var commandMap = {
   RIGHTARROW:'KEY_RIGHT_ARROW',
   CAPSLOCK:'KEY_CAPS_LOCK',
   DELETE:'KEY_DELETE',
-  DEL:'KEY_DELETE'
+  DEL:'KEY_DELETE',
+  F1:'KEY_F1',
+  F2:'KEY_F2',
+  F3:'KEY_F3',
+  F4:'KEY_F4',
+  F5:'KEY_F5',
+  F6:'KEY_F6',
+  F7:'KEY_F7',
+  F8:'KEY_F8',
+  F9:'KEY_F9',
+  F10:'KEY_F10',
+  F11:'KEY_F11',
+  F12:'KEY_F12'
 };
 
 var comboMap = {
