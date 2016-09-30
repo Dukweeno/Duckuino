@@ -232,7 +232,7 @@ class Duckuino {
               parsedOut += ', '+mouseParams[2];
             }
 
-            parsedOut += ');';
+            parsedOut += ');\n';
             wordArray.shift();
           } else {
             console.error('Error: at line: ' + (i + 1) + ', MOUSEMOVE requires at least two parameters')
