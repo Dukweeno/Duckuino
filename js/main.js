@@ -5,6 +5,13 @@ console.error = function () {
 	consoleError.apply(console, arguments);
 };
 
+var consoleLog = console.log;
+console.log = function () {
+  var message = [].join.call(arguments, " ");
+  $("#console").text(message);
+  consoleLog.apply(console, arguments);
+};
+
 var editor = CodeMirror.fromTextArea(document.getElementById("arduiCode"), {
     lineNumbers: true,
 	mode: "text/x-c++src",
