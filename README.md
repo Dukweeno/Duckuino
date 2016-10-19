@@ -1,6 +1,8 @@
 #Dckuino.js
 Simple DuckyScript to Arduino converter, improved version of https://github.com/Plazmaz/Duckuino
 
+*NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
+
 # Why Dckuino.js
 You can use the entire project in the [Live](https://thecakeisgit.github.io/Dckuino.js/ "Dckuino.js Live") version, or reuse <code>dckuino.js</code> for standalone use :
 
@@ -21,7 +23,7 @@ console.log(ArduinoCode);
 ```
 Output:
 
-```C
+```c
 // Init function
 void setup()
 {

@@ -1,6 +1,9 @@
 var commandMap = { // Key that can be typed
   ESCAPE:'KEY_LEFT_ESC',
   ESC:'KEY_LEFT_ESC',
+  GUI:'KEY_LEFT_GUI',
+  WINDOWS:'KEY_LEFT_GUI',
+  COMMAND:'KEY_LEFT_GUI',
   MENU:'229',
   APP:'229',
   END:'KEY_END',
@@ -8,6 +11,7 @@ var commandMap = { // Key that can be typed
   TAB:'KEY_TAB',
   PRINTSCREEN:'206',
   ENTER:'KEY_RETURN',
+  RETURN:'KEY_RETURN',
   UPARROW:'KEY_UP_ARROW',
   DOWNARROW:'KEY_DOWN_ARROW',
   LEFTARROW:'KEY_LEFT_ARROW',
@@ -30,17 +34,16 @@ var commandMap = { // Key that can be typed
   F9:'KEY_F9',
   F10:'KEY_F10',
   F11:'KEY_F11',
-  F12:'KEY_F12'
+  F12:'KEY_F12',
+  PAGEUP:'KEY_PAGE_UP',
+  PAGEDOWN:'KEY_PAGE_DOWN'
 };
 
 var comboMap = { // Key that can only be used in combos
   ALT:'KEY_LEFT_ALT',
   SHIFT:'KEY_LEFT_SHIFT',
   CTRL:'KEY_LEFT_CTRL',
-  CONTROL:'KEY_LEFT_CTRL',
-  GUI:'KEY_LEFT_GUI',
-  WINDOWS:'KEY_LEFT_GUI',
-  COMMAND:'KEY_LEFT_GUI'
+  CONTROL:'KEY_LEFT_CTRL'
 };
 
 var keyMap = { // Normal keys
@@ -96,22 +99,24 @@ class Dckuinojs {
 
     return '/*\n'
     + ' * Generated with <3 by Dckuino.js, an open source project !\n'
-    + ' */\n'
-    + '\n// Init function\n'
+    + ' */\n\n'
+    + '#include <Keyboard.h>\n\n'
+    + 'void typeKey(int key)\n'
+    + '{\n'
+    + '  Keyboard.press(key);\n'
+    + '  delay(50);\n'
+    + '  Keyboard.release(key);\n'
+    + '}\n\n'
+    + '// Init function\n'
     + 'void setup()\n'
     + '{\n'
     + '  // Begining the stream\n'
     + '  Keyboard.begin();\n\n'
     + '  // Waiting 500ms for init\n'
     + '  delay(500);\n'
-    + '\n' + parsedDucky
-    + '}\n'
-    + '\n'
-    + 'void typeKey(int key)\n'
-    + '{\n'
-    + '  Keyboard.press(key);\n'
-    + '  delay(50);\n'
-    + '  Keyboard.release(key);\n'
+    + '\n' + parsedDucky + '\n'
+    + '  // Ending stream\n'
+    + '  Keyboard.end();\n'
     + '}\n\n'
     + '// Unused\n'
     + 'void loop() {}';
