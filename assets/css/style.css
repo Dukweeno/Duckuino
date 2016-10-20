@@ -1,12 +1,78 @@
-body {
+/* Main css stylesheet */
 
+@import 'https://fonts.googleapis.com/css?family=Lato:900,300';
 
+html, body {
+  /* Margin & Padding */
+  margin: 0; padding: 0;
+
+  /* Global text params */
+  font-family: Lato, sans-serif;
+  font-size: 16px;
+
+  /* Scroll */
+  overflow: hidden;
+
+  /* Background */
+  background: #2B2B2B;
+
+  /* Size */
+  height: 100%; width: 100%;
 }
 
-.duckyscript {
-  width: 300px; height: 500px;
+menu {
+  /* Position */
+  position: relative;
+  top: 0;
+
+  /* Color */
+  background: #F6F6F6;
+
+  /* Size and spacing */
+  margin: 0; padding: 0;
+  width: 100%; height: 48px;
+
+  /* Prepare underligning */
+  padding-bottom: 2px;
+
+  /* Text style overrride */
+  font-size: 16px;
+}
+menu .left {float: left;}
+menu .right {float: right;}
+menu a {
+  /* Position */
+  display: block;
+  padding: 0 16px;
+
+  /* Height */
+  height: 48px;
+
+  /* Text styling */
+  text-decoration: none;
+  text-align: center;
+  line-height: 48px;
+  color: #2B2B2B;
+}
+menu a.hoverable:hover {
+  /* On hover */
+  background: #EEEEEE;
+  box-shadow: 0 2px 0 0 #2B2B2B;
+
+  /* Cursor style */
+  cursor: pointer;
 }
 
-.arduino {
-   width: 300px; height: 500px;
+.inout-wrapper {
+  position: relative;
+
+  width: 100%; height: 100%;
+}
+.inout {
+  display: inline-block;
+
+  resize: none;
+
+  margin: 16px;
+  width: calc(50% - calc(32px + 6px)); /* Page width - (margin + textarea borders) */ height: calc(100% - 50px - 32px); /* Page height - menu - margin */
 }

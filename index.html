@@ -15,18 +15,42 @@
     <!-- Page style -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 
+    <!-- Fontawesome -->
+    <script src="https://use.fontawesome.com/3db0bc0c36.js"></script>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
     <title>Dckuino.js</title>
   </head>
   <body>
-    Input duckyscript:
-    <textarea class="duckyscript"></textarea>
+    <!-- Menu -->
+    <menu>
+      <a class="left compile-but hoverable">
+        <i class="fa fa-play"></i>
+        Compile
+      </a>
+      <a class="left dl-but hoverable">
+        <span class="fa-stack fa">
+          <i class="fa fa-download fa-stack-1x"></i>
+          <i class="fa fa-ban text-danger fa-stack-1x" style="color: #DE1B1B;"></i>
+        </span>
+        Download sketch !
+      </a>
 
-    Output arduino sketch:
-    <textarea class="arduino" readonly></textarea>
-    <br>
-    <button class="compile-but">Compile</button>
-    <button class="dl-but">Download as arduino sketch</button>
+      <a class="right hoverable" href="https://github.com/Thecakeisgit/Dckuino.js" target="_blank">
+        <i class="fa fa-github-alt"></i>
+        See this on GitHub &#60;3 !
+      </a>
+      <a class="right hoverable" href="https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Payloads" target="_blank">
+        <i class="fa fa-code"></i>
+        Hak5 Payloads
+      </a>
+    </menu>
+
+    <!-- I/O Dckuino -->
+    <div class="inout-wrapper">
+      <textarea class="inout duckyscript"></textarea>
+      <textarea class="inout arduino" readonly></textarea>
+    </div>
   </body>
 </html>
