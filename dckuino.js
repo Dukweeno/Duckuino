@@ -114,7 +114,7 @@ class Dckuinojs {
     + '  Keyboard.begin();\n\n'
     + '  // Waiting 500ms for init\n'
     + '  delay(500);\n'
-    + '\n' + parsedDucky + '\n'
+    + '\n' + parsedDucky
     + '  // Ending stream\n'
     + '  Keyboard.end();\n'
     + '}\n\n'
