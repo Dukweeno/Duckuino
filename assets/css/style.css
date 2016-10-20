@@ -37,6 +37,9 @@ menu {
 
   /* Text style overrride */
   font-size: 16px;
+
+  /* Overflow */
+  overflow: hidden;
 }
 menu .left {float: left;}
 menu .right {float: right;}
@@ -76,4 +79,10 @@ menu a.hoverable:hover {
   margin: 16px; padding: 2px;
   width: calc(50% - calc(32px + 2px + 6px)); /* Page width - (margin + padding + textarea borders) */
   height: calc(100% - 50px - 32px); /* Page height - menu - margin */
+}
+.inout .duckyscript {
+  float: left;
+}
+.inout .arduino {
+  float: right;
 }
