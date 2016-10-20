@@ -77,7 +77,7 @@ menu a.hoverable:hover {
   border: 1px dashed #F6F6F6;
   border-radius: 2px;
 
-  background: #2B2B2B;
+  background: transparent;
   color: #F6F6F6;
 
   resize: none;
