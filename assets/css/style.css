@@ -74,8 +74,8 @@ menu a.hoverable:hover {
 .inout {
   display: inline-block;
 
-  border: 1px dashed #F6F6F6;
-  border-radius: 2px;
+  border: 1px solid #F6F6F6;
+  border-radius: 3px;
 
   background: transparent;
   color: #F6F6F6;
