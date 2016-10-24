@@ -69,7 +69,7 @@ menu a.hoverable:hover {
 .inout-wrapper {
   position: relative;
 
-  width: 100%; height: 100%;
+  width: 100%; height: 90%;
 }
 .inout {
   display: inline-block;
@@ -77,13 +77,13 @@ menu a.hoverable:hover {
   border: 1px solid #F6F6F6;
   border-radius: 3px;
 
-  background: transparent;
-  color: #F6F6F6;
+  background: #F6F6F6;
+  color: #2B2B2B;
 
   resize: none;
 
   margin: 16px; padding: 2px;
-  width: calc(50% - calc(32px + 2px + 6px)); /* Page width - (margin + padding + textarea borders) */
+  width: calc(50% - calc(32px + 2px + 6px)); /* Object width - (margin + padding + textarea borders) */
   height: calc(100% - 50px - 32px); /* Page height - menu - margin */
 }
 .inout .duckyscript {
@@ -91,4 +91,28 @@ menu a.hoverable:hover {
 }
 .inout .arduino {
   float: right;
+}
+
+.console-wrapper {
+  position: relative;
+
+  width: 100%; height: 10%;
+
+  top: -50px;
+}
+.console {
+  display: inline-block;
+
+  border: 1px solid #F6F6F6;
+  border-radius: 3px;
+
+  background: #F6F6F6;
+  color: #2B2B2B;
+
+  resize: none;
+
+  margin: 16px; padding: 2px;
+  width: calc(100% - calc(32px + 2px + 6px)); /* Page width - (margin + padding + textarea borders) */
+  height: calc(100% - 32px); /* Page height - margin */
+  line-height: calc(100% - 32px); /* Same */
 }

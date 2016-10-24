@@ -11,12 +11,12 @@ jQuery(function() { // Wait for jQuery
   (function(){
     var oldLog = console.log;
     console.log = function (message) {
-      $(".console").val($(".console").val() + message + '\n');
+      $(".console").val("  ℹ - " + message + '\n');
       oldLog.apply(console, arguments);
     };
     var oldErrorLog = console.error;
     console.error = function (message) {
-      $(".console").val($(".console").val() + message + '\n');
+      $(".console").val("  ⚠ - " + message + '\n');
       oldErrorLog.apply(console, arguments);
     };
   })();
