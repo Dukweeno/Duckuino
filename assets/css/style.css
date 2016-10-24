@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
 
   /* Background */
-  background: #2B2B2B;
+  background: #2b2b2b;
 
   /* Size */
   height: 100%; width: 100%;
@@ -26,7 +26,7 @@ menu {
   top: 0;
 
   /* Color */
-  background: #F6F6F6;
+  background: #f6f6f6;
 
   /* Size and spacing */
   margin: 0; padding: 0;
@@ -55,12 +55,12 @@ menu a {
   text-decoration: none;
   text-align: center;
   line-height: 48px;
-  color: #2B2B2B;
+  color: #2b2b2b;
 }
 menu a.hoverable:hover {
   /* On hover */
-  background: #EEEEEE;
-  box-shadow: 0 2px 0 0 #2B2B2B;
+  background: #eeeeee;
+  box-shadow: 0 2px 0 0 #2b2b2b;
 
   /* Cursor style */
   cursor: pointer;
@@ -74,11 +74,11 @@ menu a.hoverable:hover {
 .inout {
   display: inline-block;
 
-  border: 1px solid #F6F6F6;
+  border: 1px solid #f6f6f6;
   border-radius: 3px;
 
-  background: #F6F6F6;
-  color: #2B2B2B;
+  background: #f6f6f6;
+  color: #2b2b2b;
 
   resize: none;
 
@@ -103,11 +103,11 @@ menu a.hoverable:hover {
 .console {
   display: inline-block;
 
-  border: 1px solid #F6F6F6;
+  border: 1px solid #f6f6f6;
   border-radius: 3px;
 
-  background: #F6F6F6;
-  color: #2B2B2B;
+  background: #f6f6f6;
+  color: #2b2b2b;
 
   resize: none;
 

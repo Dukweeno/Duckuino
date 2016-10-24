@@ -12,11 +12,13 @@ jQuery(function() { // Wait for jQuery
     var oldLog = console.log;
     console.log = function (message) {
       $(".console").val("  ℹ - " + message + '\n');
+      $(".console").css("color", "#2b2b2b");
       oldLog.apply(console, arguments);
     };
     var oldErrorLog = console.error;
     console.error = function (message) {
       $(".console").val("  ⚠ - " + message + '\n');
+      $(".console").css("color", "#ff3434");
       oldErrorLog.apply(console, arguments);
     };
   })();
@@ -35,7 +37,7 @@ jQuery(function() { // Wait for jQuery
         enableDl(500); // Enable download button
     }
     else {
-      $(".arduino").val('Error, please see console...');
+      $(".arduino").val('An error occured, the compiler returned undefined content !');
       disableDl(500); // Disable download button
     }
   });
