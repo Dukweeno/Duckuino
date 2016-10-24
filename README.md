@@ -12,11 +12,11 @@ You can use the entire project in the [Live](https://thecakeisgit.github.io/Dcku
 // Create the instance
 Duck = new Dckuinojs();
 
-var DuckyScript = "CTRL ALT t"
-+ "DELAY 1000"
-+ "STRING gedit"
-+ "ENTER"
-+ "DELAY 1000"
+var DuckyScript = "CTRL ALT t\n"
++ "DELAY 1000\n"
++ "STRING gedit\n"
++ "ENTER\n"
++ "DELAY 1000\n"
 + "STRING Hello World !"
 
 var ArduinoCode = Duck.toArduino(DuckyScript);
@@ -26,6 +26,19 @@ console.log(ArduinoCode);
 Output:
 
 ```c
+/*
+ * Generated with <3 by Dckuino.js, an open source project !
+ */
+
+#include <Keyboard.h>
+
+void typeKey(int key)
+{
+  Keyboard.press(key);
+  delay(50);
+  Keyboard.release(key);
+}
+
 // Init function
 void setup()
 {
@@ -49,13 +62,8 @@ void setup()
   delay(1000);
 
   Keyboard.print("Hello World !");
-}
-
-void typeKey(int key)
-{
-  Keyboard.press(key);
-  delay(50);
-  Keyboard.release(key);
+  // Ending stream
+  Keyboard.end();
 }
 
 // Unused
