@@ -84,7 +84,7 @@ menu a.hoverable:hover {
 
   margin: 16px; padding: 2px;
   width: calc(50% - calc(32px + 2px + 6px)); /* Object width - (margin + padding + textarea borders) */
-  height: calc(100% - 50px - 32px); /* Page height - menu - margin */
+  height: calc(100% - 50px - 32px); /* Wrapper height - menu - margin */
 }
 .inout .duckyscript {
   float: left;
@@ -112,7 +112,7 @@ menu a.hoverable:hover {
   resize: none;
 
   margin: 16px; padding: 2px;
-  width: calc(100% - calc(32px + 2px + 6px)); /* Page width - (margin + padding + textarea borders) */
-  height: calc(100% - 32px); /* Page height - margin */
+  width: calc(100% - calc(32px + 2px + 6px)); /* Wrapper width - (margin + padding + textarea borders) */
+  height: calc(100% - 32px); /* Wrapper height - margin */
   line-height: calc(100% - 32px); /* Same */
 }
