@@ -107,18 +107,16 @@ class Dckuinojs {
     + '  delay(50);\n'
     + '  Keyboard.release(key);\n'
     + '}\n\n'
-    + '// Init function\n'
+    + '/* Init function */\n'
     + 'void setup()\n'
     + '{\n'
-    + '  // Begining the stream\n'
-    + '  Keyboard.begin();\n\n'
-    + '  // Waiting 500ms for init\n'
-    + '  delay(500);\n'
+    + '  // Begining the Keyboard stream\n'
+    + '  Keyboard.begin();\n'
     + '\n' + parsedDucky
     + '  // Ending stream\n'
     + '  Keyboard.end();\n'
     + '}\n\n'
-    + '// Unused\n'
+    + '/* Unused endless loop */\n'
     + 'void loop() {}';
   }
 
@@ -225,6 +223,8 @@ class Dckuinojs {
           {
             commandKnown = true;
             parsedOut += '  // ' + wordArray.join(' ');
+            if (i == (lineArray.length - 1))
+              parsedOut += '\n';
           } else {
             console.error('Error: at line: ' + (i + 1) + ', REM needs a comment');
             return;
@@ -325,8 +325,7 @@ class Dckuinojs {
         parsedOut += '  Keyboard.releaseAll();\n';
 
       parsedScript += parsedOut; // Add what we parsed
-      if (i != (lineArray.length - 1))
-        parsedScript += '\n'; // Add new line if not the last line
+      parsedScript += '\n'; // Add new line
     }
 
     var timerEnd = Date.now();
