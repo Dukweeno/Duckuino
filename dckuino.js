@@ -129,7 +129,10 @@ class Dckuinojs {
     var parsedScript = '';
 
     // Trim whitespaces
-    toParse = toParse.replace(/^ +| +$/gm, "");
+    toParse = toParse.replace(/^ +| +$/gm, '');
+
+    // Remove all *ugly* tabs
+    toParse = toParse.replace(/\t/g, '');
 
     // Cuting the input in lines
     var lineArray = toParse.split('\n');
