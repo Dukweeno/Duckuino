@@ -222,7 +222,7 @@ class Dckuinojs {
           wordArray.shift();
 
           // Placing the comment to arduino code
-          if (wordArray[0] !== undefined && wordArray[0] !== '')
+          if (wordArray.length > 0)
           {
             commandKnown = true;
             parsedOut += '  // ' + wordArray.join(' ');
