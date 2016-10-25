@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
 
   /* Background */
-  background: #2b2b2b;
+  background: #333333;
 
   /* Size */
   height: 100%; width: 100%;
@@ -55,12 +55,12 @@ menu a {
   text-decoration: none;
   text-align: center;
   line-height: 48px;
-  color: #2b2b2b;
+  color: #333333;
 }
 menu a.hoverable:hover {
   /* On hover */
   background: #eeeeee;
-  box-shadow: 0 2px 0 0 #2b2b2b;
+  box-shadow: 0 2px 0 0 #333333;
 
   /* Cursor style */
   cursor: pointer;
@@ -78,7 +78,7 @@ menu a.hoverable:hover {
   border-radius: 3px;
 
   background: #f6f6f6;
-  color: #2b2b2b;
+  color: #333333;
 
   resize: none;
 
@@ -107,7 +107,7 @@ menu a.hoverable:hover {
   border-radius: 3px;
 
   background: #f6f6f6;
-  color: #2b2b2b;
+  color: #333333;
 
   resize: none;
 
@@ -115,4 +115,25 @@ menu a.hoverable:hover {
   width: calc(100% - calc(32px + 2px + 6px)); /* Wrapper width - (margin + padding + textarea borders) */
   height: calc(100% - 32px); /* Wrapper height - margin */
   line-height: calc(100% - 32px); /* Same */
+}
+
+/* The ribbons */
+
+.issue-ribbon{
+  width: 300px;
+  background: #333333;
+
+  text-align: center;
+  line-height: 50px;
+  letter-spacing: 1px;
+  color: #f0f0f0;
+
+  z-index: 1;
+
+  box-shadow: 0 0 3px rgba(0,0,0,.3);
+
+  top: 50px;
+  right: -80px;
+  position: fixed;
+  transform: rotate(45deg);
 }
