@@ -1,3 +1,9 @@
+/*
+ *  Dckuino.js, an open source project licenced under MIT License
+ */
+
+/* jshint esversion: 6 */
+
 var commandMap = { // Key that can be typed
   ESCAPE:'KEY_LEFT_ESC',
   ESC:'KEY_LEFT_ESC',
@@ -127,6 +133,8 @@ class Dckuinojs {
     var timerStart = Date.now();
 
     var parsedScript = '';
+    var lastLines;
+    var lastCount;
 
     // Trim whitespaces
     toParse = toParse.replace(/^ +| +$/gm, '');
@@ -153,8 +161,8 @@ class Dckuinojs {
       // Outputs, for REPLAY/REPEAT COMMANDS
       if (parsedOut !== undefined && parsedOut !== '')
       {
-        var lastLines = parsedOut;
-        var lastCount = ((lastLines.split('\n')).length + 1);
+        lastLines = parsedOut;
+        lastCount = ((lastLines.split('\n')).length + 1);
       }
       var parsedOut = '';
 
