@@ -55,6 +55,7 @@ jQuery(function() { // Wait for jQuery
       // Add readme
       zipHandler.file("readme", $.ajax({
         url: 'readme.default',
+        mimeType: 'text/plain',
         type: 'get',
         success: function(data) {return data;}
       }));
