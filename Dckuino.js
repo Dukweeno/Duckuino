@@ -53,32 +53,32 @@ var comboMap = { // Key that can only be used in combos
 };
 
 var keyMap = { // Normal keys
-  a:'97',
-  b:'98',
-  c:'99',
-  d:'100',
-  e:'101',
-  f:'102',
-  g:'103',
-  h:'104',
-  i:'105',
-  j:'106',
-  k:'107',
-  l:'108',
-  m:'109',
-  n:'110',
-  o:'111',
-  p:'112',
-  q:'113',
-  r:'114',
-  s:'115',
-  t:'116',
-  u:'117',
-  v:'118',
-  w:'119',
-  x:'120',
-  y:'121',
-  z:'122'
+  a:'a',
+  b:'b',
+  c:'c',
+  d:'d',
+  e:'e',
+  f:'f',
+  g:'g',
+  h:'h',
+  i:'i',
+  j:'j',
+  k:'k',
+  l:'l',
+  m:'m',
+  n:'n',
+  o:'o',
+  p:'p',
+  q:'q',
+  r:'r',
+  s:'s',
+  t:'t',
+  u:'u',
+  v:'v',
+  w:'w',
+  x:'x',
+  y:'y',
+  z:'z'
 };
 
 class Dckuinojs {
@@ -222,7 +222,7 @@ class Dckuinojs {
           {
             commandKnown = true;
             // Replace the DuckyScript key by the Arduino key name
-            parsedOut += '  typeKey(' + keyMap[wordArray[0]] + ');\n';
+            parsedOut += '  typeKey(\'' + keyMap[wordArray[0]] + '\');\n';
           } else {
             console.error('Error: Unknown letter \'' + wordArray[0] +'\' at line: ' + (i + 1));
             return;
