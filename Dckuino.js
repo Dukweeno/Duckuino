@@ -318,7 +318,7 @@ class Dckuinojs {
               commandKnown = true;
               releaseAll = true;
 
-              parsedOut += '  Keyboard.press(' + keyMap[wordArray[0]] + ');\n';
+              parsedOut += '  Keyboard.press(\'' + keyMap[wordArray[0]] + '\');\n';
             }else {
               commandKnown = false;
               break;
