@@ -8,6 +8,9 @@
     <script src="assets/js/lib/jszip-3.1.2.min.js"></script>
     <script src="assets/js/lib/FileSaver-1.3.2.min.js"></script>
 
+    <!-- LocaleKeyboard.js -->
+    <script src="https://raw.githubusercontent.com/Thecakeisgit/LocaleKeyboard.js/master/LocaleKeyboard.js"></script>
+
     <!-- Page style -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 
@@ -21,6 +24,19 @@
   <body>
     <!-- Ribbon -->
     <a href="https://github.com/Thecakeisgit/Dckuino.js/issues/new" target="_blank"><div class="issue-ribbon red"><i class="fa fa-exclamation"></i> Submit an issue !</div></a>
+
+    <!-- The popup -->
+    <div id="dl-popup" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">x</span>
+        Select a locale :
+        <select id="locale-select"></select>
+        <input id="dl-filename" type="text"></input>
+        <button id="start-dl">Start Download !</button>
+      </div>
+
+    </div>
 
     <!-- Menu -->
     <menu>
