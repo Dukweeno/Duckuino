@@ -107,7 +107,7 @@ class Dckuinojs {
     + ' * Generated with <3 by Dckuino.js, an open source project !\n'
     + ' */\n\n'
     + '#include "Keyboard.h"\n\n'
-    + 'void typeKey(int key)\n'
+    + 'void typeKey(uint8_t key)\n'
     + '{\n'
     + '  Keyboard.press(key);\n'
     + '  delay(50);\n'
