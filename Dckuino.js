@@ -138,6 +138,9 @@ class Dckuinojs {
     var lastLines;
     var lastCount;
 
+    // Init default delay
+    var defaultDelay = 0;
+
     // Trim whitespaces
     toParse = toParse.replace(/^ +| +$/gm, '');
 
@@ -170,6 +173,13 @@ class Dckuinojs {
 
       // Command known
       var commandKnown = false;
+
+      // NoOut
+      var noOut = false;
+
+      // If there is a default delay add it
+      if (defaultDelay > 0)
+        parsedOut += '  delay(' + defaultDelay + ');\n';
 
       // Cutting every line in words
       var wordArray = lineArray[i].split(' ');
@@ -207,6 +217,24 @@ class Dckuinojs {
             commandKnown = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', DELAY only acceptes numbers');
+            return;
+          }
+          break;
+        case "DEFAULT_DELAY":
+          wordArray.shift();
+
+          if(wordArray[0] === undefined || wordArray[0] === '') {
+            console.error('Error: at line: ' + (i + 1) + ', DEFAULT_DELAY needs a time');
+            return;
+          }
+
+          if (! isNaN(wordArray[0]))
+          {
+            defaultDelay = wordArray[0];
+            noOut = true;
+            commandKnown = true;
+          } else {
+            console.error('Error: at line: ' + (i + 1) + ', DEFAULT_DELAY only acceptes numbers');
             return;
           }
           break;
@@ -337,8 +365,10 @@ class Dckuinojs {
       if (releaseAll)
         parsedOut += '  Keyboard.releaseAll();\n';
 
-      parsedScript += parsedOut; // Add what we parsed
-      parsedScript += '\n'; // Add new line
+      if (!noOut) {
+        parsedScript += parsedOut; // Add what we parsed
+        parsedScript += '\n'; // Add new line
+      }
     }
 
     var timerEnd = Date.now();

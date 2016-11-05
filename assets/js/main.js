@@ -42,23 +42,28 @@ jQuery(function() { // Wait for jQuery
     }
   });
 
+  // Generate locale list
+  var LocaleKeyboardjs = new LocaleKeyboard();
+
   // Download popup
   $(".dl-but").click(function() {
     $("#dl-popup").fadeIn(400);
+
+    // Fill filename area
+    $("#dl-filename").val("Dckuino.js-" + makeId(4));
+
+    // Clear locale list
+    $('#locale-select').find('option').remove();
+
+    // Fill locale list
+    $(LocaleKeyboardjs.listLocales()).each(function() {
+      $("#locale-select").append($("<option>").attr('value',this).text(this));
+    });
   });
   // Close ><
   $("#dl-popup .modal-content .close").click(function() {
     $("#dl-popup").fadeOut(400);
   });
-
-  // Generate locale list
-  var LocaleKeyboardjs = new LocaleKeyboard();
-  $(LocaleKeyboardjs.listLocales()).each(function() {
-    $("#locale-select").append($("<option>").attr('value',this).text(this));
-  });
-
-  // Fill filename area
-  $("#dl-filename").val("Dckuino.js-" + makeId(4));
 
   // Download button
   $("#start-dl").click(function() {
