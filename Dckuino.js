@@ -3,6 +3,7 @@
  */
 
 /* jshint esversion: 6 */
+/* jshint laxbreak: true */
 
 var commandMap = { // Key that can be typed
   ESCAPE:'KEY_LEFT_ESC',
@@ -134,9 +135,20 @@ class Dckuinojs {
     // Init chronometer
     var timerStart = Date.now();
 
+    // Preset all used vars
     var parsedScript = '';
     var lastLines;
     var lastCount;
+    var parsedOut = '';
+
+    var commandKnown = false;
+    var releaseAll = false;
+    var noNewline = false;
+    var noDelay = false;
+    var nextNoDelay = false;
+
+    var wordArray;
+    var wordOne;
 
     // Init default delay
     var defaultDelay = 0;
@@ -147,7 +159,7 @@ class Dckuinojs {
     // Remove all *ugly* tabs
     toParse = toParse.replace(/\t/g, '');
 
-    // Cuting the input in lines
+    // Cut the input in lines
     var lineArray = toParse.split('\n');
 
     // Loop every line
@@ -160,32 +172,30 @@ class Dckuinojs {
         continue;
       }
 
-      // Var who indicates to release all at the line end
-      var releaseAll = false;
-
       // Outputs, for REPLAY/REPEAT COMMANDS
       if (parsedOut !== undefined && parsedOut !== '')
       {
         lastLines = parsedOut;
         lastCount = ((lastLines.split('\n')).length + 1);
       }
-      var parsedOut = '';
 
-      // Command known
-      var commandKnown = false;
+      // Reset line buffer
+      parsedOut = '';
 
-      // NoOut
-      var noOut = false;
+      // Set to unknown command by default
+      commandKnown = false;
 
-      // If there is a default delay add it
-      if (defaultDelay > 0)
-        parsedOut += '  delay(' + defaultDelay + ');\n';
+      // releaseAll & noNewline & noDelay; *Line Modifiers*
+      releaseAll = false;
+      noNewline = false;
+      noDelay = nextNoDelay;
+      nextNoDelay = false;
 
-      // Cutting every line in words
-      var wordArray = lineArray[i].split(' ');
-      var wordOne = wordArray[0];
+      // Cut every line in words & store the first word in a var
+      wordArray = lineArray[i].split(' ');
+      wordOne = wordArray[0];
 
-      // Handle commands
+      // Parse commands
       switch(wordOne){
         case "STRING":
           wordArray.shift();
@@ -196,7 +206,7 @@ class Dckuinojs {
           textString = textString.split('\\').join('\\\\').split('"').join('\\"');
           if (textString !== '')
           {
-            parsedOut += '  Keyboard.print("' + textString + '");\n';
+            parsedOut = '  Keyboard.print("' + textString + '");\n';
             commandKnown = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', STRING needs a text');
@@ -213,8 +223,8 @@ class Dckuinojs {
 
           if (! isNaN(wordArray[0]))
           {
-            parsedOut += '  delay(' + wordArray[0] + ');\n';
-            commandKnown = true;
+            parsedOut = '  delay(' + wordArray[0] + ');\n';
+            commandKnown = true; noDelay = true; nextNoDelay = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', DELAY only acceptes numbers');
             return;
@@ -231,8 +241,7 @@ class Dckuinojs {
           if (! isNaN(wordArray[0]))
           {
             defaultDelay = wordArray[0];
-            noOut = true;
-            commandKnown = true;
+            commandKnown = true; noNewline = true; noDelay = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', DEFAULT_DELAY only acceptes numbers');
             return;
@@ -250,7 +259,7 @@ class Dckuinojs {
           {
             commandKnown = true;
             // Replace the DuckyScript key by the Arduino key name
-            parsedOut += '  typeKey(\'' + keyMap[wordArray[0]] + '\');\n';
+            parsedOut = '  typeKey(\'' + keyMap[wordArray[0]] + '\');\n';
           } else {
             console.error('Error: Unknown letter \'' + wordArray[0] +'\' at line: ' + (i + 1));
             return;
@@ -262,8 +271,8 @@ class Dckuinojs {
           // Placing the comment to arduino code
           if (wordArray.length > 0)
           {
-            commandKnown = true;
-            parsedOut += '  // ' + wordArray.join(' ');
+            commandKnown = true; noDelay= true;
+            parsedOut = '  // ' + wordArray.join(' ');
             if (i == (lineArray.length - 1))
               parsedOut += '\n';
           } else {
@@ -302,11 +311,11 @@ class Dckuinojs {
             lastLines = lastLines.replace(/^  /gm,'    ');
 
             // Replace them
-            parsedOut += '  for(int i = 0; i < ' + wordArray[0] + '; i++) {\n';
+            parsedOut = '  for(int i = 0; i < ' + wordArray[0] + '; i++) {\n';
             parsedOut += lastLines;
             parsedOut += '  }\n';
 
-            commandKnown = true;
+            commandKnown = true; noDelay = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', REPEAT/REPLAY only acceptes numbers');
             return;
@@ -319,11 +328,11 @@ class Dckuinojs {
             {
               commandKnown = true;
 
-              parsedOut += '  typeKey(' + comboMap[wordArray[0]] + ');\n';
+              parsedOut = '  typeKey(' + comboMap[wordArray[0]] + ');\n';
             }else if (commandMap[wordArray[0]] !== undefined) {
               commandKnown = true;
 
-              parsedOut += '  typeKey(' + commandMap[wordArray[0]] + ');\n';
+              parsedOut = '  typeKey(' + commandMap[wordArray[0]] + ');\n';
             }else {
               commandKnown = false;
               break;
@@ -336,17 +345,17 @@ class Dckuinojs {
               commandKnown = true;
               releaseAll = true;
 
-              parsedOut += '  Keyboard.press(' + comboMap[wordArray[0]] + ');\n';
+              parsedOut = '  Keyboard.press(' + comboMap[wordArray[0]] + ');\n';
             }else if (commandMap[wordArray[0]] !== undefined) {
               commandKnown = true;
               releaseAll = true;
 
-              parsedOut += '  Keyboard.press(' + commandMap[wordArray[0]] + ');\n';
+              parsedOut = '  Keyboard.press(' + commandMap[wordArray[0]] + ');\n';
             }else if (keyMap[wordArray[0]] !== undefined) {
               commandKnown = true;
               releaseAll = true;
 
-              parsedOut += '  Keyboard.press(\'' + keyMap[wordArray[0]] + '\');\n';
+              parsedOut = '  Keyboard.press(\'' + keyMap[wordArray[0]] + '\');\n';
             }else {
               commandKnown = false;
               break;
@@ -365,10 +374,14 @@ class Dckuinojs {
       if (releaseAll)
         parsedOut += '  Keyboard.releaseAll();\n';
 
-      if (!noOut) {
-        parsedScript += parsedOut; // Add what we parsed
+      // If there is a default delay add it
+      if (defaultDelay > 0 && !noDelay)
+        parsedOut = '  delay(' + defaultDelay + ');\n\n' + parsedOut;
+
+      parsedScript += parsedOut; // Add what we parsed
+
+      if (!noNewline)
         parsedScript += '\n'; // Add new line
-      }
     }
 
     var timerEnd = Date.now();
