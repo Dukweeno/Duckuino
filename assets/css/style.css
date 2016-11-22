@@ -83,7 +83,7 @@ menu a.hoverable:hover {
   resize: none;
 
   margin: 16px; padding: 2px;
-  width: calc(50% - calc(32px + 2px + 6px)); /* Object width - (margin + padding + textarea borders) */
+  width: calc(50% - calc(32px + 2px + 6px)); /* 50% - (margin + padding + textarea borders) */
   height: calc(100% - 50px - 32px); /* Wrapper height - menu - margin */
 }
 .inout .duckyscript {
