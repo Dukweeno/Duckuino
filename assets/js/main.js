@@ -47,18 +47,20 @@ jQuery(function() { // Wait for jQuery
 
   // Download popup
   $(".dl-but").click(function() {
-    $("#dl-popup").fadeIn(400);
+    if ($(".dl-but").hasClass("hoverable")) {
+      $("#dl-popup").fadeIn(400);
 
-    // Fill filename area
-    $("#dl-filename").val("Dckuino.js-" + makeId(4));
+      // Fill filename area
+      $("#dl-filename").val("Dckuino.js-" + makeId(4));
 
-    // Clear locale list
-    $('#locale-select').find('option').remove();
+      // Clear locale list
+      $('#locale-select').find('option').remove();
 
-    // Fill locale list
-    $(LocaleKeyboardjs.listLocales()).each(function() {
-      $("#locale-select").append($("<option>").attr('value',this).text(this));
-    });
+      // Fill locale list
+      $(LocaleKeyboardjs.listLocales()).each(function() {
+        $("#locale-select").append($("<option>").attr('value',this).text(this));
+      });
+    }
   });
   // Close ><
   $("#dl-popup .modal-content .close").click(function() {
