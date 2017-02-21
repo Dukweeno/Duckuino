@@ -106,26 +106,6 @@ menu a.hoverable:hover {
   line-height: 32px;
 }
 
-/* The ribbon */
-.issue-ribbon{
-  width: 300px;
-  background: #333333;
-
-  text-align: center;
-  line-height: 50px;
-  letter-spacing: 1px;
-  color: #f0f0f0;
-
-  z-index: 1;
-
-  box-shadow: 0 0 3px rgba(0,0,0,.3);
-
-  top: 50px;
-  right: -80px;
-  position: fixed;
-  transform: rotate(45deg);
-}
-
 /* The download popup */
 .modal {
   display: none; /* Hidden by default */

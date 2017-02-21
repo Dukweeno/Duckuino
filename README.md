@@ -6,7 +6,7 @@ If you need to perform mouse emulation then use [d4n5h's Duckuino](https://githu
 *NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
 
 # Why Dckuino.js
-You can use the entire project in the [Live](https://thecakeisgit.github.io/Dckuino.js/ "Dckuino.js Live") version, or reuse <code>Dckuino.js</code> for standalone use :
+You can use the entire project in the [Live](https://nurrl.github.io/Dckuino.js/ "Dckuino.js Live") version, or reuse <code>Dckuino.js</code> for standalone use :
 
 ```javascript
 // Create the instance
@@ -71,4 +71,4 @@ void loop() {}
 ```
 
 # Live version:
-https://thecakeisgit.github.io/Dckuino.js/
+https://nurrl.github.io/Dckuino.js/
