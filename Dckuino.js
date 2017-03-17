@@ -6,8 +6,8 @@
 /* jshint laxbreak: true */
 
 var commandMap = { // Key that can be typed
-  ESCAPE:'KEY_LEFT_ESC',
-  ESC:'KEY_LEFT_ESC',
+  ESCAPE:'KEY_ESC',
+  ESC:'KEY_ESC',
   GUI:'KEY_LEFT_GUI',
   WINDOWS:'KEY_LEFT_GUI',
   COMMAND:'KEY_LEFT_GUI',
