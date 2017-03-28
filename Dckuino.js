@@ -255,8 +255,8 @@ var digisparkMap = {
     return '#include <avr/pgmspace.h>\n'
     + '#include "DigiKeyboard.h"\n'
     + constOut + '\n'
-    + 'char buffer[200];\n\n'
-    + '#define GetPsz(x) (strcpy_P(buffer, (char*)x))\n'
+    + 'char buffer[256];\n\n'
+    + '#define GetPsz(x) (strncpy_P(buffer, (char*)x, 256))\n'
     + '#define KEY_UP_ARROW\t\t0x52\n'
     + '#define KEY_DOWN_ARROW\t0x51\n'
     + '#define KEY_LEFT_ARROW\t\t0x50\n'
@@ -434,18 +434,25 @@ class Dckuinojs {
           wordArray.shift();
 
           var textString = wordArray.join(' ');
+          parsedOut = '';
 
-          // Replace all '"' by '\"' and all '\' by '\\'
-          textString = textString.split('\\').join('\\\\').split('"').join('\\"');
-          if (textString !== '')
-          {
-            strCount = strCount + 1
-            parsedOut = this.deviceMap['PARSE_STRING'](textString); 
-            commandKnown = true;
-          } else {
-            console.error('Error: at line: ' + (i + 1) + ', STRING needs a text');
-            return;
+          // Create 256-byte chunks
+          var chunks = textString.match(/[\s\S]{1,256}/g) || [];
+          for (var chunk in chunks) {
+
+            // Replace all '"' by '\"' and all '\' by '\\'
+            textString = chunks[chunk].split('\\').join('\\\\').split('"').join('\\"');
+            if (textString !== '')
+            {
+              strCount = strCount + 1
+              parsedOut += this.deviceMap['PARSE_STRING'](textString); 
+              commandKnown = true;
+            } else {
+              console.error('Error: at line: ' + (i + 1) + ', STRING needs a text');
+              return;
+            }
           }
+
           break;
         case "DELAY":
           wordArray.shift();
