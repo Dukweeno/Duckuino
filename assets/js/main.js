@@ -112,13 +112,6 @@ jQuery(function() { // Wait for jQuery
       }
     );
   });
-
-  // Board
-  $("select").change(function() { 
-      alert("Changed");
-      var selectedValue = parseInt(jQuery(this).val());
-
-  });
 });
 
 function init()
