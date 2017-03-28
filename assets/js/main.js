@@ -2,6 +2,8 @@ jQuery(function() { // Wait for jQuery
 
   init();
 
+  board = 0;
+
   // Check if download button can be used
   try {
     var isFileSaverSupported = !!new Blob();
@@ -28,7 +30,11 @@ jQuery(function() { // Wait for jQuery
 
   // Compile button
   $(".compile-but").click(function(e) {
-    var duckOutput = Duck.toArduino($(".duckyscript").val());
+    $( "select option:selected" ).each(function() {
+      board = $( this ).index()
+    });
+
+    var duckOutput = Duck.toArduino($(".duckyscript").val(), board);
 
     if (duckOutput !== false)
     {
@@ -105,6 +111,13 @@ jQuery(function() { // Wait for jQuery
         saveAs(content, sketchName + ".zip");
       }
     );
+  });
+
+  // Board
+  $("select").change(function() { 
+      alert("Changed");
+      var selectedValue = parseInt(jQuery(this).val());
+
   });
 });
 
