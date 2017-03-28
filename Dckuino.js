@@ -1,6 +1,5 @@
 /*
  *  Dckuino.js, an open source project licenced under MIT License
- *  Modified by Mattijs van Ommeren to support Digispark boards
  */
 
 /* jshint esversion: 6 */
