@@ -53,7 +53,6 @@ var arduinocomboMap = { // Key that can only be used in combos
   SHIFT:'KEY_LEFT_SHIFT',
   CTRL:'KEY_LEFT_CTRL',
   CONTROL:'KEY_LEFT_CTRL',
-  CTRL:'KEY_LEFT_CTRL',
   GUI:'KEY_LEFT_GUI',
 };
 
@@ -305,11 +304,10 @@ var digisparkMap = {
       key = (keys.length > 0 ? keys[0] : (commands.length > 0 ? commands[0] : 0));
       modifier = modifiers.join('|');
       keyparams = (modifier.length>0 ? key + ',' + modifier : key);
-      if (modifiers.length>0) {
+      if (modifiers.length>0)
         return '  DigiKeyboard.sendKeyStroke(' + keyparams + ');\n';
-      } else
+      else
         return '  DigiKeyboard.sendKeyStroke(' + key + ');\n';
-      //return '  DigiKeyboard.sendKeyStroke('+ keyparams + ');\n  DigiKeyboard.update();\n';
     }
 };
 
@@ -374,7 +372,6 @@ class Dckuinojs {
     var parsedOut = '';
 
     var commandKnown = false;
-    var releaseAll = false;
     var noNewline = false;
     var noDelay = false;
     var nextNoDelay = false;
@@ -418,7 +415,6 @@ class Dckuinojs {
       commandKnown = false;
 
       // releaseAll & noNewline & noDelay; *Line Modifiers*
-      releaseAll = false;
       noNewline = false;
       noDelay = nextNoDelay;
       nextNoDelay = false;
@@ -435,8 +431,8 @@ class Dckuinojs {
           var textString = wordArray.join(' ');
           parsedOut = '';
 
-          // Create 256-byte chunks
-          var chunks = textString.match(/[\s\S]{1,256}/g) || [];
+          // Create 255-byte chunks
+          var chunks = textString.match(/[\s\S]{1,255}/g) || [];
           for (var chunk in chunks) {
 
             // Replace all '"' by '\"' and all '\' by '\\'
@@ -466,7 +462,7 @@ class Dckuinojs {
             parsedOut = this.deviceMap['DELAY'](wordArray[0]);
             commandKnown = true; noDelay = true; nextNoDelay = true;
           } else {
-            console.error('Error: at line: ' + (i + 1) + ', DELAY only acceptes numbers');
+            console.error('Error: at line: ' + (i + 1) + ', DELAY only accepts numbers');
             return;
           }
           break;
@@ -484,7 +480,7 @@ class Dckuinojs {
             defaultDelay = wordArray[0];
             commandKnown = true; noNewline = true; noDelay = true;
           } else {
-            console.error('Error: at line: ' + (i + 1) + ', DEFAULT_DELAY only acceptes numbers');
+            console.error('Error: at line: ' + (i + 1) + ', DEFAULT_DELAY only accepts numbers');
             return;
           }
           break;
@@ -531,21 +527,19 @@ class Dckuinojs {
             return;
           }
 
-          if (lastLines === undefined)
-          {
+          if (lastLines === undefined) {
             console.error('Error: at line: ' + (i + 1) + ', nothing to repeat, this is the first line.');
             return;
           }
 
-          if (! isNaN(wordArray[0]))
-          {
+          if (! isNaN(wordArray[0])) {
             // Remove the lines we just created
             var linesTmp = parsedScript.split('\n');
             linesTmp.splice(-lastCount, lastCount);
 
-            if (linesTmp.join('\n') === '')
+            if (linesTmp.join('\n') === '') {
               parsedScript = linesTmp.join('\n');
-            else {
+            } else {
               parsedScript = linesTmp.join('\n') + '\n';
             }
 
@@ -568,37 +562,33 @@ class Dckuinojs {
           var keys = [];
           var commands = [];
 
-          if (wordArray.length == 1)
-          {
+          if (wordArray.length == 1) {
 
             if (this.commandMap[wordArray[0]] !== undefined) {
               commandKnown = true;
               commands = [this.commandMap[wordArray[0]]]
-            }else {
+            } else {
               commandKnown = false;
               break;
             }
             wordArray.shift();
           }
 
-          while (wordArray.length){
-            if (this.comboMap[wordArray[0]] !== undefined)
-            {
+          while (wordArray.length) {
+
+            if (this.comboMap[wordArray[0]] !== undefined) {
               modifiers = modifiers.concat(this.comboMap[wordArray[0]]);
               commandKnown = true;
-              releaseAll = true;
 
-            }else if (this.commandMap[wordArray[0]] !== undefined) {
+            } else if (this.commandMap[wordArray[0]] !== undefined) {
               commands = commands.concat(this.commandMap[wordArray[0]]);
               commandKnown = true;
-              releaseAll = true;
 
-            }else if (this.keyMap[wordArray[0]] !== undefined) {
+            } else if (this.keyMap[wordArray[0]] !== undefined) {
               keys = keys.concat(this.keyMap[wordArray[0]]);
               commandKnown = true;
-              releaseAll = true;
 
-            }else {
+            } else {
               commandKnown = false;
               break;
             }
@@ -607,8 +597,7 @@ class Dckuinojs {
           parsedOut = this.deviceMap['KEYSTROKES'](modifiers, keys, commands);
       }
 
-      if (!commandKnown)
-      {
+      if (!commandKnown) {
         console.error('Error: Unknown command or key \'' + wordArray[0] + '\' at line: ' + (i + 1) + '.');
         return;
       }
