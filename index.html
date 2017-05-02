@@ -22,6 +22,7 @@
     <title>Dckuino.js</title>
   </head>
   <body>
+
     <!-- The popup -->
     <div id="dl-popup" class="modal">
       <!-- Modal content -->
@@ -32,7 +33,6 @@
         <input id="dl-filename" type="text"></input>
         <button id="start-dl">Start Download !</button>
       </div>
-
     </div>
 
     <!-- Menu -->
@@ -47,6 +47,18 @@
           <i class="fa fa-ban text-danger fa-stack-1x" style="color: #DE1B1B;"></i>
         </span>
         Download sketch !
+      </a>
+      
+      <!-- Board selection -->
+      <a class="left">
+        <span class="fa-stack fa">
+          <i class="fa fa-gear fa-stack-1x"></i>
+        </span>
+        Board
+        <select id="board-select" class="styled-select">
+          <option>Arduino</option>
+          <option>Digispark</option>
+        </select>
       </a>
 
       <a class="right hoverable" href="https://github.com/Nurrl/Dckuino.js" target="_blank">

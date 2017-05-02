@@ -1,6 +1,9 @@
 # Duckuino
 Simple DuckyScript to Arduino converter.
 
+This fork from Nurrl/Dckuino.js was created in order to support Digispark boards (http://digistump.com/products/1) aka "$1 Rubber Ducky".
+Code has been refactored to allow easy addition of other Arduino-like boards which have their own USB keyboard implementation.
+
 If you need to perform mouse emulation then use [d4n5h's Duckuino](https://github.com/d4n5h/Duckuino).
 
 *NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
