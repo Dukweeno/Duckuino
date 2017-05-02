@@ -5,8 +5,11 @@ If you need to perform mouse emulation then use [d4n5h's Duckuino](https://githu
 
 *NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
 
+# Live version:
+https://nurrl.github.io/Duckuino/
+
 # Why Duckuino ?
-You can use the entire project in the [Live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Dckuino.js</code> for standalone use :
+You can compile duckyscript to arduino code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Dckuino.js</code> for standalone use :
 ```javascript
 // Create the instance
 Duck = new Dckuinojs();
@@ -72,5 +75,3 @@ void loop() {}
   - [Plazmaz](https://github.com/Plazmaz)
   - [Nurrl](https://github.com/Nurrl)
 
-# Live version:
-https://nurrl.github.io/Duckuino/
