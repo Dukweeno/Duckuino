@@ -1,13 +1,12 @@
-# Dckuino.js
-Simple DuckyScript to Arduino converter, improved version of https://github.com/Plazmaz/Duckuino.
+# Duckuino
+Simple DuckyScript to Arduino converter.
 
 If you need to perform mouse emulation then use [d4n5h's Duckuino](https://github.com/d4n5h/Duckuino).
 
 *NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
 
-# Why Dckuino.js
-You can use the entire project in the [Live](https://nurrl.github.io/Dckuino.js/ "Dckuino.js Live") version, or reuse <code>Dckuino.js</code> for standalone use :
-
+# Why Duckuino ?
+You can use the entire project in the [Live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Dckuino.js</code> for standalone use :
 ```javascript
 // Create the instance
 Duck = new Dckuinojs();
@@ -69,6 +68,9 @@ void setup()
 // Unused
 void loop() {}
 ```
+# Members
+  - [Plazmaz](https://github.com/Plazmaz)
+  - [Nurrl](https://github.com/Nurrl)
 
 # Live version:
-https://nurrl.github.io/Dckuino.js/
+https://nurrl.github.io/Duckuino/
