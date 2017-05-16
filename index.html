@@ -3,14 +3,6 @@
   <head>
     <meta charset="utf-8" />
 
-    <!-- Including libs used by the page -->
-    <script src="assets/js/lib/jquery-3.1.0.min.js"></script>
-    <script src="assets/js/lib/jszip-3.1.2.min.js"></script>
-    <script src="assets/js/lib/FileSaver-1.3.2.min.js"></script>
-
-    <!-- LocaleKeyboard.js -->
-    <script src="https://nurrl.github.io/LocaleKeyboard.js/LocaleKeyboard.js"></script>
-
     <!-- Page style -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 
@@ -19,56 +11,67 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
-    <title>Dckuino.js</title>
+    <title>Duckuino</title>
   </head>
   <body>
-    <!-- The popup -->
-    <div id="dl-popup" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">x</span>
-        Select a locale :
-        <select id="locale-select"></select>
-        <input id="dl-filename" type="text"></input>
-        <button id="start-dl">Start Download !</button>
+    <div class="menu">
+      <a href="https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Payloads" target="_blank"><i class="fa fa-usb"></i> PayLoads list</a>
+      <a href="https://github.com/Nurrl/Duckuino" target="_blank"><i class="fa fa-github"></i> GitHub repository</a>
+    </div>
+
+    <div class="group">
+      <div class="part input">
+        <h1>Input</h1>
+        <h6>This is where you put the DuckyScript</h6>
+        <br>
+
+        <!-- Input textarea -->
+        <textarea placeholder="Enter some DuckyScript to begin :D"></textarea>
       </div>
+      <div class="part process">
+        <div class="combined-but">
+          <button class="process-but" disabled>Compile !</button>
+          <select class="module-select">
 
+          </select>
+        </div>
+
+        <div class="tooltip">
+          <span></span>
+        </div>
+      </div>
+      <div class="part export">
+        <h1>Export</h1>
+        <h6>Time to use !</h6>
+
+        <!-- Compiled code container -->
+        <textarea style="position: absolute; opacity: 0; top: 100%;"></textarea>
+
+        <h4>Option 1: Download (Recommended)</h4>
+        <div class="combined-but">
+          <button class="dl-but" disabled>Download !</button>
+          <select class="locale-select">
+
+          </select>
+        </div>
+
+        <h4>Option 2: Copy/Paste</h4>
+        <button class="copy-but" disabled>Copy !</button>
+      </div>
     </div>
 
-    <!-- Menu -->
-    <menu>
-      <a class="left compile-but hoverable">
-        <i class="fa fa-play"></i>
-        Compile
-      </a>
-      <a class="left dl-but hoverable">
-        <span class="fa-stack fa">
-          <i class="fa fa-download fa-stack-1x"></i>
-          <i class="fa fa-ban text-danger fa-stack-1x" style="color: #DE1B1B;"></i>
-        </span>
-        Download sketch !
-      </a>
+    <!--<textarea class="console" readonly></textarea>-->
 
-      <a class="right hoverable" href="https://github.com/Nurrl/Dckuino.js" target="_blank">
-        <i class="fa fa-github-alt"></i>
-        See this on GitHub &#60;3 !
-      </a>
-      <a class="right hoverable" href="https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Payloads" target="_blank">
-        <i class="fa fa-code"></i>
-        Hak5 Payloads
-      </a>
-    </menu>
+    <!-- Including libs used by the page -->
+    <script src="assets/js/lib/jquery-3.1.0.min.js"></script>
+    <script src="assets/js/lib/jszip-3.1.2.min.js"></script>
+    <script src="assets/js/lib/FileSaver-1.3.2.min.js"></script>
 
-    <!-- I/O Dckuino -->
-    <div class="inout-wrapper">
-      <textarea class="inout duckyscript"></textarea>
-      <textarea class="inout arduino" readonly></textarea>
-    </div>
-
-    <textarea class="console" readonly></textarea>
+    <!-- LocaleKeyboard.js -->
+    <script src="https://nurrl.github.io/LocaleKeyboard.js/LocaleKeyboard.js"></script>
 
     <!-- Handmade js <3 -->
-    <script src="Dckuino.js"></script>
+    <script src="Duckuino.js"></script>
     <script src="assets/js/main.js"></script>
   </body>
 </html>

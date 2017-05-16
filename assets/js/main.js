@@ -1,86 +1,77 @@
-jQuery(function() { // Wait for jQuery
+$(function() { /* Wait for jQuery */
 
-  init();
+  /* Init vars */
+  var isCodeCompiled = false;
+  var LocKey = new LocaleKeyboard();
+  var Duck = new Duckuino();
 
-  // Check if download button can be used
   try {
     var isFileSaverSupported = !!new Blob();
   } catch (e) {}
 
-  // Hijack console.log and console.error
-  (function(){
-    var oldLog = console.log;
-    console.log = function (message) {
-      $(".console").val("  ℹ - " + message + '\n');
-      $(".console").css("color", "#2b2b2b");
-      oldLog.apply(console, arguments);
-    };
-    var oldErrorLog = console.error;
-    console.error = function (message) {
-      $(".console").val("  ⚠ - " + message + '\n');
-      $(".console").css("color", "#ff3434");
-      oldErrorLog.apply(console, arguments);
-    };
-  })();
-
-  // Create a little duck translator
-  Duck = new Dckuinojs();
-
-  // Compile button
-  $(".compile-but").click(function(e) {
-    var duckOutput = Duck.toArduino($(".duckyscript").val());
-
-    if (duckOutput !== false)
-    {
-      $(".arduino").val(duckOutput);
-      if (isFileSaverSupported)
-        enableDl(500); // Enable download button
-    }
-    else {
-      $(".arduino").val('An error occured, the compiler returned undefined content !');
-      disableDl(500); // Disable download button
+  /* Compile button enable/disable */
+  $(".input > textarea").keyup(function() {
+    if($(this).val() !== "") {
+      $(".process-but").prop("disabled", false);
+      $(".export .copy-but").text("Copy !");
+    } else {
+      $(".process-but").prop("disabled", true);
     }
   });
 
-  // Generate locale list
-  var LocaleKeyboardjs = new LocaleKeyboard();
+  /* Compile button click */
+  $(".process-but").click(function() {
+    var duckyScript = $(".input > textarea").val();
+    var selectedModule = $(".process .module-select").find(":selected").text();
 
-  // Download popup
-  $(".dl-but").click(function() {
-    if ($(".dl-but").hasClass("hoverable")) {
-      $("#dl-popup").fadeIn(400);
+    /* Load Duckuino & Compile */
+    Duck.loadModule(selectedModule);
+    var compilerOut = Duck.compileCode(duckyScript);
 
-      // Fill filename area
-      $("#dl-filename").val("Dckuino.js-" + makeId(4));
+    /* Check for error */
+    if(compilerOut.returnCode === 0) {
+      /* Set textarea text */
+      $(".export > textarea").val(compilerOut.compiledCode);
 
-      // Clear locale list
-      $('#locale-select').find('option').remove();
+      /* Enable buttons */
+      $(".dl-but").prop("disabled", false);
+      $(".copy-but").prop("disabled", false);
 
-      // Fill locale list
-      $(LocaleKeyboardjs.listLocales()).each(function() {
-        $("#locale-select").append($("<option>").attr('value',this).text(this));
-      });
+      /* Show compilation infos */
+      $(".process .tooltip > span").text(compilerOut.returnMessage);
+      $(".process .tooltip").removeClass("error"); $(".process .tooltip").addClass("info");
+      $(".process .tooltip").show();
+    } else {
+      /* Disable buttons and show compilation error */
+      $(".dl-but").prop("disabled", true);
+      $(".copy-but").prop("disabled", true);
+
+      /* Compilation error */
+      $(".process .tooltip > span").text(compilerOut.returnMessage);
+      $(".process .tooltip").removeClass("info"); $(".process .tooltip").addClass("error");
+      $(".process .tooltip").show();
     }
   });
-  // Close ><
-  $("#dl-popup .modal-content .close").click(function() {
-    $("#dl-popup").fadeOut(400);
+
+  /* List locales */
+  LocKey.listLocales().forEach(function (localeName) {
+    $(".export .locale-select").append("<option name=\"" + localeName + "\">" + localeName + "</option>");
   });
 
-  // Download button
-  $("#start-dl").click(function() {
-    // Check if all is ready
-    if ($("#dl-filename").val() === "") {
-      alert("You must enter a filename");
-      return;
-    }
+  /* List modules */
+  Duck.listModules().forEach(function (moduleName) {
+    $(".process .module-select").append("<option name=\"" + moduleName + "\">" + moduleName + "</option>");
+  });
 
-    // Create a zip and download
-    var sketchName = $("#dl-filename").val();
+  /* Download button */
+  $(".export .dl-but").click(function() {
+    var compilerOut = $(".export > textarea").val();
+
+    var sketchName = "Sketch";
     var zipHandler = new JSZip();
 
     // Add the payload as .ino
-    zipHandler.file(sketchName + "/" + sketchName + ".ino", $(".arduino").val());
+    zipHandler.file(sketchName + "/" + sketchName + ".ino", compilerOut);
     // Add readme
     zipHandler.file("readme", $.ajax({
       url: 'readme.default',
@@ -90,13 +81,13 @@ jQuery(function() { // Wait for jQuery
     }));
 
     // Add custom version of Keyboard lib if needed
-    if ($("#locale-select").find(":selected").text() !== "en_US") {
+    if ($(".export .locale-select").find(":selected").text() !== "en_US") {
       // Set the locale
-      LocaleKeyboardjs.setLocale($("#locale-select").find(":selected").text());
+      LocKey.setLocale($(".export .locale-select").find(":selected").text());
 
       // Append all to the zip
-      zipHandler.file(sketchName + "/Keyboard.cpp", LocaleKeyboardjs.getSource());
-      zipHandler.file(sketchName + "/Keyboard.h", LocaleKeyboardjs.getHeader());
+      zipHandler.file(sketchName + "/Keyboard.cpp", LocKey.getSource());
+      zipHandler.file(sketchName + "/Keyboard.h", LocKey.getHeader());
     }
 
     // Download
@@ -106,36 +97,17 @@ jQuery(function() { // Wait for jQuery
       }
     );
   });
+
+  /* Copy to clipboard button */
+  $(".export .copy-but").click(function() {
+    var copyTextarea = $(".export > textarea");
+    copyTextarea.select();
+
+    try {
+      document.execCommand('copy');
+
+      $(".export .copy-but").text("Copied !");
+      $(".export .copy-but").prop("disabled", true);
+    } catch (e) {/* Error */}
+  });
 });
-
-function init()
-{
-  // Init page
-
-  // Disable download button by default
-  disableDl(500);
-
-  // Clear console
-  $(".console").val("");
-}
-
-function disableDl(time) {
-  $(".dl-but").addClass("disabled").removeClass("hoverable");
-  $(".dl-but span i.fa-ban").fadeTo(time, 1);
-}
-
-function enableDl(time) {
-  $(".dl-but").removeClass("disabled").addClass("hoverable");
-  $(".dl-but span i.fa-ban").fadeTo(time, 0);
-}
-
-function makeId(idLenght)
-{
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for( var i=0; i < idLenght; i++ )
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-}
