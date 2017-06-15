@@ -206,7 +206,7 @@ class Dckuinojs {
           textString = textString.split('\\').join('\\\\').split('"').join('\\"');
           if (textString !== '')
           {
-            parsedOut = '  Keyboard.print("' + textString + '");\n';
+            parsedOut = '  Keyboard.print(F("' + textString + '"));\n';
             commandKnown = true;
           } else {
             console.error('Error: at line: ' + (i + 1) + ', STRING needs a text');
