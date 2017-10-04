@@ -10,135 +10,211 @@ html, body {
   font-family: Lato, sans-serif;
   font-size: 16px;
 
-  /* Scroll */
+  /* Disable Scroll */
   overflow: hidden;
-
-  /* Background */
-  background: #333333;
 
   /* Size */
   height: 100%; width: 100%;
 }
 
-menu {
+/* Background blured image */
+body::before {
   /* Position */
-  position: relative;
+  position: absolute;
+  top: 0; left: 0;
+
+  /* Size */
+  height: 100%; width: 100%;
+
+  /* Background */
+  background-size: cover;
+  background-image: url(../imgs/background.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* Misc */
+  /*filter: blur(1px);*/
+  content: "";
+  z-index: -1;
+}
+
+/* Text */
+h1 {
+  margin: 0;
+}
+h6 {
+  margin: 0;
+  opacity: .7;
+}
+
+/* Textareas */
+textarea {
+  width: 100%; height: 50vh;
+  border: none; border-radius: 4px;
+  padding: 8px;
+
+  box-sizing: border-box;
+  resize: none;
+}
+
+/* Buttons */
+button {
+  /* Style */
+  color: black;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid white;
+
+  /* Size */
+  width: 128px;
+  height: 32px;
+
+  /* Animation */
+  transition: .2s;
+}
+button:not(:disabled):hover {
+  /* Style */
+  background-color: transparent;
+  color: white;
+
+  /* Animation */
+  transition: .2s;
+}
+button:disabled {
+  /* Style */
+  color: white;
+  background-color: transparent;
+
+  /* Back pattern */
+  background-size: 32px 32px;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 1) 25%, transparent 25%,
+                      transparent 50%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 75%,
+                      transparent 75%, transparent);
+
+  cursor: default;
+
+  /* Opacity */
+  opacity: .5;
+}
+
+/* Top bar */
+.menu {
+  position: absolute;
   top: 0;
 
-  /* Color */
-  background: #f6f6f6;
-
-  /* Size and spacing */
-  margin: 0; padding: 0;
-  width: 100%; height: 48px;
-
-  /* Prepare underligning */
-  padding-bottom: 2px;
-
-  /* Text style overrride */
-  font-size: 16px;
-
-  /* Overflow */
-  overflow: hidden;
+  width: 100%;
 }
-menu .left {float: left;}
-menu .right {float: right;}
-menu a {
-  /* Position */
-  display: block;
-  padding: 0 16px;
-
-  /* Height */
-  height: 48px;
-
-  /* Text styling */
-  text-decoration: none;
-  text-align: center;
-  line-height: 48px;
-  color: #333333;
-}
-menu a.hoverable:hover {
-  /* On hover */
-  background: #eeeeee;
-  box-shadow: 0 2px 0 0 #333333;
-
-  /* Cursor style */
-  cursor: pointer;
-}
-
-.inout-wrapper {
-  position: relative;
+.menu a {
+  float: right;
   margin: 16px;
 
-  width: 100%; height: calc(100% - 38px - 50px - 48px); /* 100% - console - menu - margin */
-}
-.inout {
-  border: 1px solid #f6f6f6;
-  border-radius: 3px;
-
-  background: #f6f6f6;
-  color: #333333;
-
-  resize: none;
-
-  padding: 2px;
-  width: calc(50% - 16px - 8px);
-  height: 100%;
-}
-.inout .duckyscript {float: left;}
-.inout .arduino {float: right;}
-
-.console {
-  border: 1px solid #f6f6f6;
-  border-radius: 3px;
-
-  background: #f6f6f6;
-  color: #333333;
-
-  overflow: hidden;
-  resize: none;
-  
-  position: relative;
- 
-  padding: 2px; margin: 8px 16px;
-  width: calc(100% - 32px - 8px); /* Wrapper width - (margin + padding + textarea borders) */
-  height: 32px;
-  line-height: 32px;
-}
-
-/* The download popup */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Popup Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-.close:hover,
-.close:focus {
-  color: black;
+  text-transform: uppercase;
   text-decoration: none;
-  cursor: pointer;
+  color: white;
+
+  transition: .2s;
+}
+.menu a:hover {
+  transition: .2s;
+  color: black;
+}
+
+/* Page organization */
+.group {
+  /* Size */
+  width: 100%; height: 100%;
+
+  /* Center parts */
+  display: flex;
+}
+
+.part {
+  /* Position */
+  margin: 0 1.5%; padding: 16px;
+  align-self: center;
+  width: 30%;
+  float: left;
+
+  box-sizing: border-box;
+  border-radius: 4px;
+
+  /* Separation */
+	/*box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);*/
+
+  /* Text */
+  color: white;
+}
+
+/* Elements */
+.process {
+  /* Center text */
+  text-align: center;
+}
+
+/* Info/error tooltip */
+.tooltip {
+  position: relative;
+  width: 100%;
+
+  display: none;
+}
+.tooltip > span {
+  /* Size */
+  position: absolute;
+  width: 90%;
+
+  /* Position */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  z-index: -1;
+
+  /* Style */
+  text-align: left;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  padding: 4px;
+  color: white;
+}
+.tooltip > span::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -8px;
+  border-width: 8px;
+  border-style: solid;
+}
+.tooltip.info > span {background-color: #029bc9;}
+.tooltip.info > span::before {border-color: transparent transparent #029bc9 transparent;}
+
+.tooltip.error > span {background-color: #cc0000;}
+.tooltip.error > span::before {border-color: transparent transparent #cc0000 transparent;}
+
+.combined-but > button {
+  width: 112px;
+  border-right: 0;
+}
+.combined-but > select {
+  /* Postion */
+  margin-left: -4px;
+
+  /* Style */
+  color: transparent;
+  border: 1px solid white;
+  border-left: 0;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: url(../imgs/arrow-down.png) no-repeat white center;
+
+  /* Size */
+  width: 16px;
+  height: 32px;
+}
+.combined-but > select:disabled {
+  /* Postion */
+  opacity: .5;
 }
