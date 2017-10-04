@@ -30,7 +30,7 @@ class Duckuino {
   listModules() {
     /* List all modules in the moduleList file */
     if (!this.moduleArray) {
-      this.moduleArray = getFile("modules/moduleList").split('\n');
+      this.moduleArray = getFile("modules/modules").split('\n');
       this.moduleArray.pop();
     }
 
@@ -51,8 +51,10 @@ class Duckuino {
     }
   }
 
-  compileCode(toCompile) {
-    /* Init chronometer */
+  /* TO-DO: getModuleInfos() {} */
+
+  compileCode(compileStr) {
+    /* Init timer */
     var timerStart = window.performance.now();
 
     /* Check if module loaded */
@@ -63,36 +65,39 @@ class Duckuino {
 
         returnCode: 9,
         returnMessage: "Error: No module loaded !",
-        errorsList: this.errorsList
+        errorList: this.errorList
       };
     }
 
-    /* Check if code is not empty */
-    if (toCompile === undefined || toCompile === "") {
+    /* Check if code is empty */
+    if (compileStr === undefined || compileStr === "") {
       return {
         compiledCode: undefined,
         compileTime: -1,
 
         returnCode: 9,
         returnMessage: "Error: No input was entered !",
-        errorsList: this.errorsList
+        errorList: this.errorList
       };
     }
 
     /* Trim whitespaces and tabs */
-    toCompile = toCompile.replace(/^ +| +$/gm, '');
-    toCompile = toCompile.replace(/\t/g, '');
+    compileStr = compileStr.replace(/^ +| +$/gm, '');
+    compileStr = compileStr.replace(/\t/g, '');
 
     /* Errors */
-    this.errorsList = [];
+    this.errorList = [];
 
     /* Preset all used vars */
+    this.dataStorage = new Object();
     this.compiledCode = '';
-    var commandKnown = false;
-    var lastOutput, lastLineCount, currentOutput;
+
+    var commandKnown;
+    var lineStr;
+    var lastLine = ''; var lastLineCount = 0;
 
     /* Cut the input in lines */
-    var lineArray = toCompile.split('\n');
+    var lineArray = compileStr.split('\n');
 
     /* Loop every line */
     for (var i = 0; i < lineArray.length; i++)
@@ -103,88 +108,96 @@ class Duckuino {
 
       /* Reset vars */
       commandKnown = false;
-      currentOutput = '';
+      lineStr = '';
 
       /* Split lines in words */
-      var argArray = lineArray[i].split(' ');
-      var argOne = argArray[0];
+      var argList = lineArray[i].split(' ');
+      var argOne = argList[0];
 
       /* Parse commands */
       if (this.loadedModule.functionMap[argOne] !== undefined) {
-        /* Execute the function add returned string to global string */
-        currentOutput += this.loadedModule.functionMap[argOne](
-          argArray,
+        var µ = new Object({
+          keyMap: this.loadedModule.keyMap,
           /**
-           * This strange behavious returns function with a pointer
-           * to 'this' without losing it, and passes it to module.
+           * Pushes the error to the global error list.
            */
-          function (thisPtr, currentLine) {
+          throwError: function(thisPtr, currentLine) {
             return function(errorMessage) {
-              thisPtr.errorsList.push({
+              thisPtr.errorList.push({
                 errorMessage: errorMessage,
                 errorLine: currentLine
               });
             };
           }(this, (i + 1)),
           /**
-           * This is to reference the global object itself and to allow
-           * acceding it into functionMap.
-           */
-          function (objModule) {
-            return function() {
-              return objModule;
-            };
-          }(this.loadedModule),
-          /**
-           * This one is to get the lastOutput, and in the same way trim
+           * This one is to get the lastLine, and in the same way trim
            * it from from the current compiledCode, this is a workaround for
            * the REPLAY command.
            */
-          function (thisPtr, lastOutput, lastLineCount) {
+          trimLast: function(thisPtr, lastLine, lastLineCount) {
             return function() {
               var tmpVar = thisPtr.compiledCode.split('\n');
+
               tmpVar.splice(-lastLineCount, lastLineCount - 1);
               thisPtr.compiledCode = tmpVar.join('\n');
 
-              return lastOutput;
+              return lastLine;
             };
-          }(this, lastOutput, lastLineCount)
-        );
+          }(this, lastLine, lastLineCount),
+          /**
+           * Those two function are used to store persistent data, i.e:
+           * Default Delay.
+           */
+          setData: function(thisPtr) {
+            return function(dataName, dataValue) {
+              thisPtr.dataStorage[dataName] = dataValue;
+            };
+          }(this),
+          getData: function(thisPtr) {
+            return function(dataName) {
+              return thisPtr.dataStorage[dataName];
+            };
+          }(this),
+        });
+
+        /* Execute the function and add the returned string to the current string */
+        lineStr += this.loadedModule.functionMap[argOne](argList, µ);
+
+        /* Post process the line */
+        lineStr = this.loadedModule.postLine(lineStr, µ);
       } else { /* Parse keystokes */
         var strokeArray = Array();
 
-        for(var y = 0; y < argArray.length; y++) {
+        for(var y = 0; y < argList.length; y++) {
 
-          if(this.loadedModule.commandMap[argArray[y]] !== undefined) {
+          if(this.loadedModule.commandMap[argList[y]] !== undefined) {
             /* Push key to Array */
-            strokeArray.push(this.loadedModule.commandMap[argArray[y]]);
-          } else if(this.loadedModule.comboMap[argArray[y]] !== undefined) {
+            strokeArray.push(this.loadedModule.commandMap[argList[y]]);
+          } else if(this.loadedModule.comboMap[argList[y]] !== undefined) {
             /* Push key to Array */
-            strokeArray.push(this.loadedModule.comboMap[argArray[y]]);
-          } else if(this.loadedModule.keyMap[argArray[y]] !== undefined && y != 0) {
+            strokeArray.push(this.loadedModule.comboMap[argList[y]]);
+          } else if(this.loadedModule.keyMap[argList[y]] !== undefined && y != 0) {
             /* Push key to Array */
-            strokeArray.push('"' + this.loadedModule.keyMap[argArray[y]] + '"');
+            strokeArray.push('"' + this.loadedModule.keyMap[argList[y]] + '"');
           } else {
             /* If command unknown, throw error */
-            this.errorsList.push({
-              errorMessage: "Unknown command or key: '" + argArray[y] + "'",
+            this.errorList.push({
+              errorMessage: "Unknown command or key: '" + argList[y] + "'",
               errorLine: (i + 1)
             });
           }
         }
 
         /* Transform key array to string */
-        currentOutput += this.loadedModule.computeKeys(strokeArray);
+        lineStr += this.loadedModule.computeKeys(strokeArray);
       }
 
-      currentOutput += '\n';
-
       /* Calculate line count */
-      lastLineCount = currentOutput.split('\n').length;
+      lastLineCount = lineStr.split('\n').length;
 
       /* Append this compiled line to global output */
-      lastOutput = currentOutput;
-      this.compiledCode += currentOutput;
+      lastLine = lineStr;
+      this.compiledCode += lineStr;
     }
 
     /* Stop timer */
@@ -192,23 +205,29 @@ class Duckuino {
     var timeElapsed = (timerEnd - timerStart).toFixed(2);
 
     /* Return error if error and code if not */
-    if (this.errorsList.length > 0) {
+    if (this.errorList.length > 0) {
       /* Return error(s) */
       return {
         compiledCode: undefined,
         compileTime: -1,
 
         returnCode: 1,
-        returnMessage: function(errorsList) {
-          var errorString = "The compiler returned some errors:\n";
+        returnMessage: function(errorList) {
+          var errorString;
 
-          errorsList.forEach(function(errorObj) {
+          if(errorList.length > 1) {
+            errorString = "The compiler returned some errors:\n";
+          } else {
+            errorString = "The compiler returned an error:\n";
+          }
+
+          errorList.forEach(function(errorObj) {
             errorString += "Line " + errorObj.errorLine + " -> " + errorObj.errorMessage + "\n";
           });
 
           return errorString;
-        }(this.errorsList),
-        errorsList: this.errorsList
+        }(this.errorList),
+        errorList: this.errorList
       };
     } else {
       /* Return the compiled code */

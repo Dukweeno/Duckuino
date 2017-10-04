@@ -12,17 +12,18 @@ $(function() { /* Wait for jQuery */
   /* Compile button enable/disable */
   $(".input > textarea").keyup(function() {
     if($(this).val() !== "") {
-      $(".process-but").prop("disabled", false);
-      $(".export .copy-but").text("Copy !");
+      $(".process-but button").prop("disabled", false);
+      $(".process-but select").prop("disabled", false);
     } else {
-      $(".process-but").prop("disabled", true);
+      $(".process-but button").prop("disabled", true);
+      $(".process-but select").prop("disabled", true);
     }
   });
 
   /* Compile button click */
-  $(".process-but").click(function() {
+  $(".process-but button").click(function() {
     var duckyScript = $(".input > textarea").val();
-    var selectedModule = $(".process .module-select").find(":selected").text();
+    var selectedModule = $(".process-but select").find(":selected").text();
 
     /* Load Duckuino & Compile */
     Duck.loadModule(selectedModule);
@@ -34,8 +35,10 @@ $(function() { /* Wait for jQuery */
       $(".export > textarea").val(compilerOut.compiledCode);
 
       /* Enable buttons */
-      $(".dl-but").prop("disabled", false);
+      $(".dl-but button").prop("disabled", false);
+      $(".dl-but select").prop("disabled", false);
       $(".copy-but").prop("disabled", false);
+      $(".export .copy-but").text("Copy !");
 
       /* Show compilation infos */
       $(".process .tooltip > span").text(compilerOut.returnMessage);
@@ -43,7 +46,8 @@ $(function() { /* Wait for jQuery */
       $(".process .tooltip").show();
     } else {
       /* Disable buttons and show compilation error */
-      $(".dl-but").prop("disabled", true);
+      $(".dl-but button").prop("disabled", true);
+      $(".dl-but select").prop("disabled", true);
       $(".copy-but").prop("disabled", true);
 
       /* Compilation error */
@@ -55,16 +59,16 @@ $(function() { /* Wait for jQuery */
 
   /* List locales */
   LocKey.listLocales().forEach(function (localeName) {
-    $(".export .locale-select").append("<option name=\"" + localeName + "\">" + localeName + "</option>");
+    $(".dl-but select").append("<option name=\"" + localeName + "\">" + localeName + "</option>");
   });
 
   /* List modules */
   Duck.listModules().forEach(function (moduleName) {
-    $(".process .module-select").append("<option name=\"" + moduleName + "\">" + moduleName + "</option>");
+    $(".process-but select").append("<option name=\"" + moduleName + "\">" + moduleName + "</option>");
   });
 
   /* Download button */
-  $(".export .dl-but").click(function() {
+  $(".dl-but button").click(function() {
     var compilerOut = $(".export > textarea").val();
 
     var sketchName = "Sketch";
@@ -72,6 +76,7 @@ $(function() { /* Wait for jQuery */
 
     // Add the payload as .ino
     zipHandler.file(sketchName + "/" + sketchName + ".ino", compilerOut);
+
     // Add readme
     zipHandler.file("readme", $.ajax({
       url: 'readme.default',
@@ -81,9 +86,9 @@ $(function() { /* Wait for jQuery */
     }));
 
     // Add custom version of Keyboard lib if needed
-    if ($(".export .locale-select").find(":selected").text() !== "en_US") {
+    if ($(".export-but select").find(":selected").text() !== "en_US") {
       // Set the locale
-      LocKey.setLocale($(".export .locale-select").find(":selected").text());
+      LocKey.setLocale($(".dl-but select").find(":selected").text());
 
       // Append all to the zip
       zipHandler.file(sketchName + "/Keyboard.cpp", LocKey.getSource());
@@ -99,15 +104,15 @@ $(function() { /* Wait for jQuery */
   });
 
   /* Copy to clipboard button */
-  $(".export .copy-but").click(function() {
+  $(".copy-but").click(function() {
     var copyTextarea = $(".export > textarea");
     copyTextarea.select();
 
     try {
       document.execCommand('copy');
 
-      $(".export .copy-but").text("Copied !");
-      $(".export .copy-but").prop("disabled", true);
+      $(".copy-but").text("Copied !");
+      $(".copy-but").prop("disabled", true);
     } catch (e) {/* Error */}
   });
 });

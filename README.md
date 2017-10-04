@@ -5,20 +5,15 @@ If you need to perform mouse emulation then use [d4n5h's Duckuino](https://githu
 
 *NOTE: If you are on linux, you might use the Arduino IDE from the website, not from apt, because the apt repo is not up to date.*
 
-### Warning: Version note
-This version is an unstable version, for now some things may not work, the known issues are:  
-Compiler :
-  * DEFAULTDELAY does nothing.
-
-UI :
-  * Merged button and select boxes are not synchronised, so when a button is disabled, the select arrow won't be disabled.
+### Warning: Release note
+This release is an unstable version, for now some things may or may not work, please [*open an issue*](https://github.com/Nurrl/Duckuino/issues/new) if you find a bug.
 
 *The stable version will be released in few days, maybe :D*
-# Live version:
+## Live version:
 https://nurrl.github.io/Duckuino/
 
-# Why Duckuino ?
-You can compile duckyscript to arduino code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Duckuino.js</code> for standalone use :
+## Why Duckuino ?
+You can compile **Duckyscript** to **Arduino** code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Duckuino.js</code> for standalone use :
 ```javascript
 /* Need to fill */
 ```
