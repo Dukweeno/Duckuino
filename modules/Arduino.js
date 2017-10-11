@@ -45,7 +45,7 @@ new Object({
       textString = textString.split('\\').join('\\\\').split('"').join('\\"');
 
       if(textString !== '') {
-        return '  Keyboard.print("' + textString + '");\n\n';
+        return '  Keyboard.print(F("' + textString + '"));\n\n';
       }
     },
 
