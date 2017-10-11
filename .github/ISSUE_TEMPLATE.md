@@ -7,5 +7,10 @@ __Input code:__
 
 __Output code:__
 ```arduino
-/* The code outputted by the script, or 'none' if no script outputted */
+/* The code outputted by the script, 'none' otherwise */
+```
+
+__Error:__
+```js
+/* Any error outputted by the page or the console, 'none' otherwise */
 ```

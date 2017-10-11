@@ -197,12 +197,11 @@ button:disabled {
 }
 .combined-but > select {
   /* Postion */
-  margin-left: -4px;
+  position: absolute;
 
   /* Style */
   color: transparent;
   border: 1px solid white;
-  border-left: 0;
 
   -webkit-appearance: none;
   -moz-appearance: none;

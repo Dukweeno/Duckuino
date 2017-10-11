@@ -1,5 +1,5 @@
-# Duckuino ![release](https://img.shields.io/github/release/Nurrl/Duckuino/all.svg)
-Simple DuckyScript to Arduino converter.
+# Duckuino [![release](https://img.shields.io/github/release/Nurrl/Duckuino/all.svg)](https://github.com/Nurrl/Duckuino/releases) [![GitHub issues](https://img.shields.io/github/issues/Nurrl/Duckuino.svg)](https://github.com/Nurrl/Duckuino/issues)
+Simple **DuckyScript** to **Arduino** converter.
 
 If you need to perform mouse emulation then use [d4n5h's Duckuino](https://github.com/d4n5h/Duckuino).
 

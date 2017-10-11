@@ -85,8 +85,9 @@ new Object({
         return;
       }
     },
+    DEFAULT_DELAY: function() {return this.DEFAULTDELAY.apply(this, [].slice.call(arguments));},
 
-    REPLAY: function(argList, µ) {
+    REPEAT: function(argList, µ) {
       argList.shift();
 
       if(argList.length < 1) {
@@ -111,7 +112,8 @@ new Object({
         µ.throwError("Invalid argument, REPLAY only acceptes numbers");
         return;
       }
-    }
+    },
+    REPLAY: function() {return this.REPEAT.apply(this, [].slice.call(arguments));}
   },
 
   commandMap: { /* Key that can be typed */
