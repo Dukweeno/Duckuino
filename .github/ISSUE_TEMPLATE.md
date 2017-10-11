@@ -1,8 +1,8 @@
-*Short introduction of your problem.*
+*Short introduction to your problem.*
 
 __Input code:__
 ```vb
-/* The code your entered in the input textarea */
+REM The code your entered in the input text area
 ```
 
 __Output code:__

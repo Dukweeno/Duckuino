@@ -13,7 +13,7 @@ This release is an unstable version, for now some things may or may not work, pl
 https://nurrl.github.io/Duckuino/
 
 ## Why Duckuino ?
-You can compile **Duckyscript** to **Arduino** code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse <code>Duckuino.js</code> for standalone use :
+You can compile **Duckyscript** to **Arduino** code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse `Duckuino.js` for standalone use :
 ```javascript
 /* Need to fill */
 ```
