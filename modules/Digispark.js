@@ -45,7 +45,7 @@ new Object({
       textString = textString.split('\\').join('\\\\').split('"').join('\\"');
 
       if(textString !== '') {
-        return '  printText(F("' + textString + '"));\n\n';
+        return '  printText(F("' + textString + '"));\n';
       }
     },
 
@@ -221,13 +221,37 @@ new Object({
   computeKeys: function(keyArray) { /* Function who returns the code for keys combos */
 
     var keys = [];
+    var modifiers = [];
+    var normalkeys = [];
 
     // Get rid of the double quotes that the main module adds for normal keys
-    for(var i = 0; i < keyArray.length; i++) {
+    for (var i = 0; i < keyArray.length; i++) {
       keys.push(keyArray[i].replace(/"/g,''));
     }
 
-    return '  DigiKeyboard.sendKeyStroke('  + keys.join('|') + ');\n';
+
+    for (var i = 0; i < keys.length; i++) {
+      
+      var combis = ['KEY_LEFT_GUI','MOD_ALT_LEFT','MOD_SHIFT_LEFT','MOD_CONTROL_LEFT'];
+
+      if (combis.indexOf(keys[i]) > -1) {
+        if (keys[i] == 'KEY_LEFT_GUI') {
+          modifiers.push('MOD_GUI_LEFT');
+        } else {
+          modifiers.push(keys[i]);
+        }
+      } else {
+        normalkeys.push(keys[i]);
+      }
+    }
+    
+    if (modifiers.length > 0 && normalkeys.length == 1)
+      return '  DigiKeyboard.sendKeyStroke(' + normalkeys[0] + ', ' + modifiers.join('|') + ');\n';
+
+    if (keys.length == 1)
+      return '  DigiKeyboard.sendKeyStroke(' + normalkeys[0] + ');\n';
+    
+    return '  // Unexpected key combination: ' + keyArray.join(', ') + '\n'; 
   },
 
   getFinalCode: function(compiledCode) { /* Function who returns the usable code */
@@ -257,9 +281,9 @@ new Object({
     + '  DigiKeyboard.update();\n' 
     + '}\n\n'
     + 'void setup() {\n'
-    + '  digiBegin();\n\n'
+    + '  digiBegin();\n'
     + compiledCode
-    + '  digiEnd();\n\n'
+    + '  digiEnd();\n'
     + '}\n\n'
     + '/* Unused endless loop */\n'
     + 'void loop() {}';
