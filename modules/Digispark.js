@@ -229,12 +229,11 @@ new Object({
       keys.push(keyArray[i].replace(/"/g,''));
     }
 
-
     for (var i = 0; i < keys.length; i++) {
       
       var combis = ['KEY_LEFT_GUI','MOD_ALT_LEFT','MOD_SHIFT_LEFT','MOD_CONTROL_LEFT'];
 
-      if (combis.indexOf(keys[i]) > -1) {
+      if (keys.length > 1 && combis.indexOf(keys[i]) > -1) {
         if (keys[i] == 'KEY_LEFT_GUI') {
           modifiers.push('MOD_GUI_LEFT');
         } else {
