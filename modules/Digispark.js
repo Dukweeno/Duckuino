@@ -154,7 +154,11 @@ new Object({
     F11:'KEY_F11',
     F12:'KEY_F12',
     PAGEUP:'KEY_PAGE_UP',
-    PAGEDOWN:'KEY_PAGE_DOWN'
+    PAGEDOWN:'KEY_PAGE_DOWN',
+    HOME: 'KEY_HOME',
+    INSERT: 'KEY_INSERT',
+    NUMLOCK: 'KEY_NUM_LOCK',
+    SCROLLOCK:'KEY_SCROLL_LOCK'
   },
 
   comboMap: { /* Key that can only be used in combos */
@@ -261,7 +265,11 @@ new Object({
     + '#define KEY_LEFT_ARROW   0x50\n'
     + '#define KEY_RIGHT_ARROW  0x4F\n'
     + '#define KEY_LEFT_GUI     0xE3\n'
-    + '#define KEY_ESC          0x29\n'  
+    + '#define KEY_ESC          0x29\n'
+    + '#define KEY_HOME         0x4A\n'
+    + '#define KEY_INSERT       0x49\n'
+    + '#define KEY_NUM_LOCK     0x53\n'
+    + '#define KEY_SCROLL_LOCK  0x47\n' 
     + '#define KEY_TAB          0x2B\n\n' 
     + 'void digiBegin() {\n'
     + '  DigiKeyboard.sendKeyStroke(0,0);\n'
