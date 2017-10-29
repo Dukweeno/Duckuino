@@ -158,7 +158,7 @@ new Object({
     HOME: 'KEY_HOME',
     INSERT: 'KEY_INSERT',
     NUMLOCK: 'KEY_NUM_LOCK',
-    SCROLLOCK:'KEY_SCROLL_LOCK'
+    SCROLLLOCK:'KEY_SCROLL_LOCK'
   },
 
   comboMap: { /* Key that can only be used in combos */
