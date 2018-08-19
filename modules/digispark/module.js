@@ -264,7 +264,7 @@ new Object({
     + '#define KEY_INSERT       0x49\n'
     + '#define KEY_NUM_LOCK     0x53\n'
     + '#define KEY_SCROLL_LOCK  0x47\n'
-    + '#define KEY_CAPS_LOCK	0x39\n'
+    + '#define KEY_CAPS_LOCK    0x39\n'
     + '#define KEY_TAB          0x2B\n\n'
     + 'void digiBegin() {\n'
     + '  DigiKeyboard.sendKeyStroke(0,0);\n'

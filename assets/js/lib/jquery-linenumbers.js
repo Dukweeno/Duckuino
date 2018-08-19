@@ -17,7 +17,7 @@ function getCharByRow(e) {
   for (chars = 1; $('#' + name).height() <= inith; chars++)
     $('#' + name).text("*".repeat(chars));
 
-  //$('#' + name).remove();
+  $('#' + name).remove();
   return chars - 2;
 }
 
