@@ -1,15 +1,27 @@
+function getCharByRow(e) {
+  let name = Math.random().toString(36).substr(2, 12);
+  let span = '<span id="' + name + '" style="     \
+    font-family: ' + e.css('font-family') + ';    \
+    font-size: '  + e.css('font-size') + ';       \
+    font-weight: ' + e.css('font-weight') + ';    \
+    display: block;                               \
+    word-wrap: break-word;                        \
+    padding: ' + e.css('padding-left') + ';       \
+    width: ' + e.width() + 'px"></span>';
+  $('body').append(span);
 
-          let textWidth = function (elem, text) {
-            $body = $('body');
-            $this = elem;
-            $text = text;
-            var calc = '<div style="clear:both;display:block;visibility:hidden;"><span style="width;inherit;margin:0;font-family:'  + $this.css('font-family') + ';font-size:'  + $this.css('font-size') + ';font-weight:' + $this.css('font-weight') + '">' + $text + '</span></div>';
-            $body.append(calc);
-            var width = $('body').find('span:last').width();
-            $body.find('span:last').parent().remove();
-            return width;
-          };
-(function($){
+  $('#' + name).text('*');
+  let inith = $('#' + name).height();
+
+  let chars;
+  for (chars = 1; $('#' + name).height() <= inith; chars++)
+    $('#' + name).text("*".repeat(chars));
+
+  //$('#' + name).remove();
+  return chars - 2;
+}
+
+(function($) {
   $.fn.linenumbers = function(inopts){
     let opts = $.extend({
       width: 32,
@@ -35,20 +47,21 @@
               white-space: pre; overflow: hidden;\
           " disabled></textarea>');
       $(this).css({'width': newwidth + 'px', 'height': height + 'px',
-        'padding': opts.padding + 'px', 'float': 'right'});
+        'padding': opts.padding + 'px', 'float': 'right', 'overflow-y': 'hidden'});
       $(this).after('<div style="clear: both;"></div>');
 
       let lnbox = $(this).parent().find('textarea[data-name="linenumbers"]');
+      let charbr = getCharByRow($(this));
 
-      // Determine textarea len with chars
-      let charlen = -1;
-      for (let i = 0; charlen == -1; i++)
-        if (textWidth($(this), "*".repeat(i)) >= newwidth - opts.padding * 2)
-          charlen = i - 2;
-      $(this).bind('blur focus change keyup keydown', function() {
-        // Break apart and regex the lines, everything to spaces sans linebreaks
+      $(this).on('keydown keyup change', function(ev) {
+        // Make change directly
+        if (ev.type == 'keydown') {
+          setTimeout(() => $(this).trigger('change'), 0);
+          return;
+        }
+
+        // Split value into lines
         let lines = $(this).val().split('\n');
-
         // declare output var
         let output='';
         // declare spacers and max_spacers vars, and set defaults
@@ -68,7 +81,8 @@
             output += "\n"
           else {
             output += spacers + (k + opts.start) + ':';
-            output += "\n---".repeat((v.length - 1) / charlen);
+            if (v != "")
+              output += "\n---".repeat((v.length - 1) / charbr);
           }
         });
         // Give the text area out modified content.
@@ -81,7 +95,7 @@
         $(lnbox).scrollTop($(this).scrollTop());
       });
       // Fire it off once to get things started
-      $(this).trigger('keydown');
+      $(this).trigger('change');
     });
   };
 })(jQuery);
