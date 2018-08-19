@@ -36,6 +36,8 @@ textarea {
   border: none; border-radius: 4px;
   padding: 8px;
 
+  word-wrap: break-word;
+  word-break: break-all;
   box-sizing: border-box;
   resize: none;
 }
@@ -151,6 +153,7 @@ button:disabled {
   width: 100%;
 
   display: none;
+  z-index: 2;
 }
 .tooltip > span {
   /* Size */

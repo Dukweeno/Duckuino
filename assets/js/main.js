@@ -1,5 +1,9 @@
 $(function() { /* Wait for jQuery */
 
+
+  /* Textarea */
+  $(".input > #input").linenumbers();
+
   /* Init lets */
   let isCodeCompiled = false;
   let Duck = new Duckuino();
@@ -10,7 +14,13 @@ $(function() { /* Wait for jQuery */
   } catch (e) {}
 
   /* Compile button enable/disable */
-  $(".input > textarea").keyup(function() {
+  $(".input > #input").keyup(function() {
+    // Disable export when input is changed
+    $(".copy-but").prop("disabled", true);
+    $(".export .copy-but").text("Copy !");
+    $(".dl-but button").prop("disabled", true);
+    $(".dl-but select").prop("disabled", true);
+
     if($(this).val() !== "") {
       $(".process-but button").prop("disabled", false);
       $(".process-but select").prop("disabled", false);
@@ -28,7 +38,7 @@ $(function() { /* Wait for jQuery */
 
   /* Compile button click */
   $(".process-but button").click(function() {
-    let duckyScript = $(".input > textarea").val();
+    let duckyScript = $(".input > #input").val();
     let selectedModule = mods[$(".process-but select").find(":selected").val()];
 
     /* Load Duckuino & Compile */
