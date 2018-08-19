@@ -9,7 +9,8 @@
 /* Function to request files */
 function getFile(sUrl) {
   /* Init request */
-  var oReq = new XMLHttpRequest();
+  let oReq = new XMLHttpRequest();
+  //console.log("@<- " + sUrl);
 
   /* Sending request */
   oReq.open("get", sUrl, false);
@@ -24,41 +25,44 @@ function getFile(sUrl) {
   }
 }
 
+class Modules {
+  constructor() {
+    /* Load modules *//* jshint evil:true */
+    let modules = JSON.parse(getFile("modules/modules.json"));
+    for (let x in modules) {
+        let m = modules[x];
+        m.meta = JSON.parse(getFile("modules/" + m.path + m.meta));
+        m.module = eval(getFile("modules/" + m.path + m.module));
+        if (Object.keys(m.meta.locales).length > 0) {
+          let ls = m.meta.locales;
+          for (let y in ls) {
+            let l = ls[y];
+            if (y == "_meta")
+              continue;
+            l.data = getFile("modules/" + m.path + l.path);
+          }
+          ls._meta.header = getFile("modules/" + m.path + ls._meta.header);
+          for (let y in ls._meta.parts) {
+            let f = ls._meta.parts[y];
+            if (f == "_locale_")
+              continue;
+            ls._meta.parts[y] = getFile("modules/" + m.path + f);
+          }
+        }
+    }
+    this.list = modules;
+  }
+}
+
 class Duckuino {
   constructor() {}
 
-  listModules() {
-    /* List all modules in the moduleList file */
-    if (!this.moduleArray) {
-      this.moduleArray = getFile("modules/modules").split('\n');
-      this.moduleArray.pop();
-    }
-
-    /* Return the list */
-    return this.moduleArray;
-  }
-
-  loadModule(moduleName) {
-    /* Check if module exists */
-    if (this.listModules().indexOf(moduleName) == -1) {
-      console.error("Error: This module doesn't exist !");
-
-      /* Module is not loaded */
-      this.loadedModule = undefined;
-    } else {
-      /* Load module *//* jshint evil:true */
-      this.loadedModule = eval(getFile("modules/" + moduleName + ".js"));
-    }
-  }
-
-  /* TO-DO: getModuleInfos() {} */
-
-  compileCode(compileStr) {
+  compileCode(compileStr, withModule) {
     /* Init timer */
-    var timerStart = window.performance.now();
+    let timerStart = window.performance.now();
 
     /* Check if module loaded */
-    if (this.loadedModule === undefined) {
+    if (withModule === undefined) {
       return {
         compiledCode: undefined,
         compileTime: -1,
@@ -92,32 +96,32 @@ class Duckuino {
     this.dataStorage = new Object();
     this.compiledCode = '';
 
-    var commandKnown;
-    var lineStr;
-    var lastLine = ''; var lastLineCount = 0;
+    let commandKnown;
+    let lineStr;
+    let lastLine = ''; let lastLineCount = 0;
 
     /* Cut the input in lines */
-    var lineArray = compileStr.split('\n');
+    let lineArray = compileStr.split('\n');
 
     /* Loop every line */
-    for (var i = 0; i < lineArray.length; i++)
+    for (let i = 0; i < lineArray.length; i++)
     {
       /* Line empty, skip */
       if (lineArray[i] === '' || lineArray[i] === '\n')
         continue;
 
-      /* Reset vars */
+      /* Reset lets */
       commandKnown = false;
       lineStr = '';
 
       /* Split lines in words */
-      var argList = lineArray[i].split(' ');
-      var argOne = argList[0];
+      let argList = lineArray[i].split(' ');
+      let argOne = argList[0];
 
       /* Parse commands */
-      if (this.loadedModule.functionMap[argOne] !== undefined) {
-        var µ = new Object({
-          keyMap: this.loadedModule.keyMap,
+      if (withModule.functionMap[argOne] !== undefined) {
+        let µ = new Object({
+          keyMap: withModule.keyMap,
           /**
            * Pushes the error to the global error list.
            */
@@ -136,10 +140,10 @@ class Duckuino {
            */
           trimLast: function(thisPtr, lastLine, lastLineCount) {
             return function() {
-              var tmpVar = thisPtr.compiledCode.split('\n');
+              let tmplet = thisPtr.compiledCode.split('\n');
 
-              tmpVar.splice(-lastLineCount, lastLineCount - 1);
-              thisPtr.compiledCode = tmpVar.join('\n');
+              tmplet.splice(-lastLineCount, lastLineCount - 1);
+              thisPtr.compiledCode = tmplet.join('\n');
 
               return lastLine;
             };
@@ -161,24 +165,24 @@ class Duckuino {
         });
 
         /* Execute the function and add the returned string to the current string */
-        lineStr += this.loadedModule.functionMap[argOne](argList, µ);
+        lineStr += withModule.functionMap[argOne](argList, µ);
 
         /* Post process the line */
-        lineStr = this.loadedModule.postLine(lineStr, µ);
+        lineStr = withModule.postLine(lineStr, µ);
       } else { /* Parse keystokes */
-        var strokeArray = Array();
+        let strokeArray = Array();
 
-        for(var y = 0; y < argList.length; y++) {
+        for(let y = 0; y < argList.length; y++) {
 
-          if(this.loadedModule.commandMap[argList[y]] !== undefined) {
+          if(withModule.commandMap[argList[y]] !== undefined) {
             /* Push key to Array */
-            strokeArray.push(this.loadedModule.commandMap[argList[y]]);
-          } else if(this.loadedModule.comboMap[argList[y]] !== undefined) {
+            strokeArray.push(withModule.commandMap[argList[y]]);
+          } else if(withModule.comboMap[argList[y]] !== undefined) {
             /* Push key to Array */
-            strokeArray.push(this.loadedModule.comboMap[argList[y]]);
-          } else if(this.loadedModule.keyMap[argList[y]] !== undefined && y != 0) {
+            strokeArray.push(withModule.comboMap[argList[y]]);
+          } else if(withModule.keyMap[argList[y]] !== undefined && y != 0) {
             /* Push key to Array */
-            strokeArray.push('"' + this.loadedModule.keyMap[argList[y]] + '"');
+            strokeArray.push(withModule.keyMap[argList[y]]);
           } else {
             /* If command unknown, throw error */
             this.errorList.push({
@@ -189,7 +193,7 @@ class Duckuino {
         }
 
         /* Transform key array to string */
-        lineStr += this.loadedModule.computeKeys(strokeArray);
+        lineStr += withModule.computeKeys(strokeArray);
       }
 
       /* Calculate line count */
@@ -201,8 +205,8 @@ class Duckuino {
     }
 
     /* Stop timer */
-    var timerEnd = window.performance.now();
-    var timeElapsed = (timerEnd - timerStart).toFixed(2);
+    let timerEnd = window.performance.now();
+    let timeElapsed = (timerEnd - timerStart).toFixed(2);
 
     /* Return error if error and code if not */
     if (this.errorList.length > 0) {
@@ -213,7 +217,7 @@ class Duckuino {
 
         returnCode: 1,
         returnMessage: function(errorList) {
-          var errorString;
+          let errorString;
 
           if(errorList.length > 1) {
             errorString = "The compiler returned some errors:\n";
@@ -232,7 +236,7 @@ class Duckuino {
     } else {
       /* Return the compiled code */
       return {
-        compiledCode: this.loadedModule.getFinalCode(this.compiledCode),
+        compiledCode: withModule.getFinalCode(this.compiledCode),
         compileTime: timeElapsed,
 
         returnCode: 0,

@@ -1,12 +1,6 @@
 /* jshint laxbreak: true */
 
 new Object({
-  moduleMeta: { /* Module infos */
-    displayName: 'Digispark',
-    version: 1.0,
-    author: '@alcyonsecurity / NIXU'
-  },
-
   functionMap: { /* Functions */
     REM: function(argList, µ) {
       argList.shift();
@@ -45,7 +39,7 @@ new Object({
       textString = textString.split('\\').join('\\\\').split('"').join('\\"');
 
       if(textString !== '') {
-        return '  printText(F("' + textString + '"));\n';
+        return '  Keyboard.print(F("' + textString + '"));\n\n';
       }
     },
 
@@ -60,7 +54,7 @@ new Object({
       if(!isNaN(argList[0])) {
         µ.setData('nodelay', true);
 
-        return '  DigiKeyboard.delay(' + argList[0] + ');\n';
+        return '  delay(' + argList[0] + ');\n';
       } else {
         µ.throwError("Invalid argument, DELAY only acceptes numbers");
         return;
@@ -125,11 +119,11 @@ new Object({
     MENU:'229',
     APP:'229',
     END:'KEY_END',
-    SPACE:'KEY_SPACE',
+    SPACE:'\' \'',
     TAB:'KEY_TAB',
     PRINTSCREEN:'206',
-    ENTER:'KEY_ENTER',
-    RETURN:'KEY_ENTER',
+    ENTER:'KEY_RETURN',
+    RETURN:'KEY_RETURN',
     UPARROW:'KEY_UP_ARROW',
     DOWNARROW:'KEY_DOWN_ARROW',
     LEFTARROW:'KEY_LEFT_ARROW',
@@ -154,59 +148,43 @@ new Object({
     F11:'KEY_F11',
     F12:'KEY_F12',
     PAGEUP:'KEY_PAGE_UP',
-    PAGEDOWN:'KEY_PAGE_DOWN',
-    HOME: 'KEY_HOME',
-    INSERT: 'KEY_INSERT',
-    NUMLOCK: 'KEY_NUM_LOCK',
-    SCROLLLOCK:'KEY_SCROLL_LOCK'
+    PAGEDOWN:'KEY_PAGE_DOWN'
   },
 
   comboMap: { /* Key that can only be used in combos */
-    ALT:'MOD_ALT_LEFT',
-    SHIFT:'MOD_SHIFT_LEFT',
-    CTRL:'MOD_CONTROL_LEFT',
-    CONTROL:'MOD_CONTROL_LEFT',
-    GUI:'MOD_GUI_LEFT',
-    WINDOWS:'MOD_GUI_LEFT',
+    ALT:'KEY_LEFT_ALT',
+    SHIFT:'KEY_LEFT_SHIFT',
+    CTRL:'KEY_LEFT_CTRL',
+    CONTROL:'KEY_LEFT_CTRL'
   },
 
   keyMap: { /* Normal keys */
-    a:'KEY_A',
-    b:'KEY_B',
-    c:'KEY_C',
-    d:'KEY_D',
-    e:'KEY_E',
-    f:'KEY_F',
-    g:'KEY_G',
-    h:'KEY_H',
-    i:'KEY_I',
-    j:'KEY_J',
-    k:'KEY_K',
-    l:'KEY_L',
-    m:'KEY_M',
-    n:'KEY_N',
-    o:'KEY_O',
-    p:'KEY_P',
-    q:'KEY_Q',
-    r:'KEY_R',
-    s:'KEY_S',
-    t:'KEY_T',
-    u:'KEY_U',
-    v:'KEY_V',
-    w:'KEY_W',
-    x:'KEY_X',
-    y:'KEY_Y',
-    z:'KEY_Z',
-    1:'KEY_1',
-    2:'KEY_2',
-    3:'KEY_3',
-    4:'KEY_4',
-    5:'KEY_5',
-    6:'KEY_6',
-    7:'KEY_7',
-    8:'KEY_8',
-    9:'KEY_9',
-    0:'KEY_0'
+    a:'\'a\'',
+    b:'\'b\'',
+    c:'\'c\'',
+    d:'\'d\'',
+    e:'\'e\'',
+    f:'\'f\'',
+    g:'\'g\'',
+    h:'\'h\'',
+    i:'\'i\'',
+    j:'\'j\'',
+    k:'\'k\'',
+    l:'\'l\'',
+    m:'\'m\'',
+    n:'\'n\'',
+    o:'\'o\'',
+    p:'\'p\'',
+    q:'\'q\'',
+    r:'\'r\'',
+    s:'\'s\'',
+    t:'\'t\'',
+    u:'\'u\'',
+    v:'\'v\'',
+    w:'\'w\'',
+    x:'\'x\'',
+    y:'\'y\'',
+    z:'\'z\''
   },
 
   postLine: function(lineStr, µ) {
@@ -223,75 +201,43 @@ new Object({
   },
 
   computeKeys: function(keyArray) { /* Function who returns the code for keys combos */
-
-    var keys = [];
-    var modifiers = [];
-    var normalkeys = [];
-
-    // Get rid of the double quotes that the main module adds for normal keys
-    for (var i = 0; i < keyArray.length; i++) {
-      keys.push(keyArray[i].replace(/"/g,''));
-    }
-
-    for (var i = 0; i < keys.length; i++) {
-      
-      var combis = ['KEY_LEFT_GUI','MOD_ALT_LEFT','MOD_SHIFT_LEFT','MOD_CONTROL_LEFT'];
-
-      if (keys.length > 1 && combis.indexOf(keys[i]) > -1) {
-        if (keys[i] == 'KEY_LEFT_GUI') {
-          modifiers.push('MOD_GUI_LEFT');
-        } else {
-          modifiers.push(keys[i]);
-        }
-      } else {
-        normalkeys.push(keys[i]);
+    var toReturn = '';
+    if(keyArray.length == 1) {
+      toReturn = '  typeKey(' + keyArray[0] + ');\n\n';
+    } else {
+      for(var i = 0; i < keyArray.length; i++) {
+        toReturn += '  Keyboard.press(' + keyArray[i] + ');\n';
       }
-    }
-    
-    if (modifiers.length > 0 && normalkeys.length == 1)
-      return '  DigiKeyboard.sendKeyStroke(' + normalkeys[0] + ', ' + modifiers.join('|') + ');\n';
 
-    if (keys.length == 1)
-      return '  DigiKeyboard.sendKeyStroke(' + normalkeys[0] + ');\n';
-    
-    return '  // Unexpected key combination: ' + keyArray.join(', ') + '\n'; 
+      toReturn += '  Keyboard.releaseAll();\n\n';
+    }
+
+    return toReturn;
   },
 
-  getFinalCode: function(compiledCode) { /* Function who returns the usable code */
-
-    return '#include "DigiKeyboard.h"\n'
-    + '#define KEY_UP_ARROW     0x52\n'
-    + '#define KEY_DOWN_ARROW   0x51\n'
-    + '#define KEY_LEFT_ARROW   0x50\n'
-    + '#define KEY_RIGHT_ARROW  0x4F\n'
-    + '#define KEY_LEFT_GUI     0xE3\n'
-    + '#define KEY_ESC          0x29\n'
-    + '#define KEY_HOME         0x4A\n'
-    + '#define KEY_INSERT       0x49\n'
-    + '#define KEY_NUM_LOCK     0x53\n'
-    + '#define KEY_SCROLL_LOCK  0x47\n'
-    + '#define KEY_CAPS_LOCK	0x39\n'
-    + '#define KEY_TAB          0x2B\n\n' 
-    + 'void digiBegin() {\n'
-    + '  DigiKeyboard.sendKeyStroke(0,0);\n'
-    + '  DigiKeyboard.delay(50);\n'
+  getFinalCode: function(code) { /* Function who returns the usable code */
+    return '/**\n'
+    + ' * Made with Duckuino, an open-source project.\n'
+    + ' * Check the license at \'https://github.com/Nurrl/Duckuino/blob/master/LICENSE\'\n'
+    + ' */\n\n'
+    + '#include "Keyboard.h"\n\n'
+    + 'void typeKey(uint8_t key)\n'
+    + '{\n'
+    + '  Keyboard.press(key);\n'
+    + '  delay(50);\n'
+    + '  Keyboard.release(key);\n'
     + '}\n\n'
-    + 'void digiEnd() {\n'
-    + '  const int led=1;\n'
-    + '  pinMode(led, OUTPUT);\n'
-    + '  while (1) {\n'
-    + '    digitalWrite(led, !digitalRead(led));\n'
-    + '    DigiKeyboard.delay(1000);\n'
-    + '  }\n'
-    + '}\n\n'
-    + 'void printText(fstr_t *txt) {\n'
-    + '  DigiKeyboard.print(txt);\n'
-    + '  DigiKeyboard.update();\n' 
-    + '}\n\n'
-    + 'void setup() {\n'
-    + '  digiBegin();\n'
-    + compiledCode
-    + '  digiEnd();\n'
+    + '/* Init function */\n'
+    + 'void setup()\n'
+    + '{\n'
+    + '  // Begining the Keyboard stream\n'
+    + '  Keyboard.begin();\n\n'
+    + '  // Wait 500ms\n'
+    + '  delay(500);\n'
+    + '\n'
+    + code
+    + '  // Ending stream\n'
+    + '  Keyboard.end();\n'
     + '}\n\n'
     + '/* Unused endless loop */\n'
     + 'void loop() {}';

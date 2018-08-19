@@ -1,0 +1,106 @@
+{
+  "displayname":"Arduino",
+  "version":"1.0",
+  "author":"Nurrl",
+  "locales":{
+    "_meta": {
+      "header": "lib/Keyboard.h",
+      "name": "Keyboard",
+      "parts": [
+        "lib/Keyboard@1.cpp",
+        "_locale_",
+        "lib/Keyboard@2.cpp"
+      ]
+    },
+    "us": {
+      "name":"United States - Default",
+      "path": "locales/us.lang",
+      "version":"1.0",
+      "author":"Arduino Team"
+    },
+    "uk": {
+      "name":"United Kingdom",
+      "path": "locales/uk.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "fr": {
+      "name":"France",
+      "path": "locales/fr.lang",
+      "version":"1.1",
+      "author":"Nurrl"
+    },
+    "be": {
+      "name":"Belgium",
+      "path": "locales/be.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "sv": {
+      "name":"Sweden",
+      "path": "locales/sv.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "es": {
+      "name":"Spain",
+      "path": "locales/es.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "it": {
+      "name":"Italy",
+      "path": "locales/it.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "po": {
+      "name":"Portugal",
+      "path": "locales/po.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "pobr": {
+      "name":"Portugal(BR)",
+      "path": "locales/pobr.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "gr": {
+      "name":"Germany",
+      "path": "locales/gr.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "su": {
+      "name":"Finland",
+      "path": "locales/su.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "cz": {
+      "name":"Czech Republic(Qwerty)",
+      "path": "locales/cz.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "czqwertz": {
+      "name":"Czech Republic(Qwertz)",
+      "path": "locales/czqwertz.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "dk": {
+      "name":"Danmark",
+      "path": "locales/dk.lang",
+      "version":"1.0",
+      "author":""
+    },
+    "tr": {
+      "name":"Turkey",
+      "path": "locales/tr.lang",
+      "version":"1.0",
+      "author":""
+    }
+  }
+}

@@ -213,6 +213,10 @@ button:disabled {
   width: 16px;
   height: 32px;
 }
+.combined-but > select option {
+  /* Style */
+  color: black;
+}
 .combined-but > select:disabled {
   /* Postion */
   opacity: .5;
