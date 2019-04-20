@@ -131,7 +131,7 @@ button:disabled {
   color: white;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 860px) {
   .part {
     width: 100%;
   }
