@@ -1,9 +1,9 @@
 ---
-name: 'Feature request'
-about: 'Ask and discuss about new features you want in the software.'
-title: ''
-labels: 'idea'
-assignees: 'Nurrl'
+name: Feature request
+about: Ask and discuss about new features you want in the software.
+title: I need dis !
+labels: idea
+assignees: Nurrl
 
 ---
 
