@@ -1,16 +1,26 @@
 $(function() { /* Wait for jQuery */
 
-  /* Init vars */
-  var isCodeCompiled = false;
-  var LocKey = new LocaleKeyboard();
-  var Duck = new Duckuino();
+
+  /* Textarea */
+  $(".input > #input").linenumbers();
+
+  /* Init lets */
+  let isCodeCompiled = false;
+  let Duck = new Duckuino();
+  let mods = new Modules().list;
 
   try {
-    var isFileSaverSupported = !!new Blob();
+    let isFileSaverSupported = !!new Blob();
   } catch (e) {}
 
   /* Compile button enable/disable */
-  $(".input > textarea").keyup(function() {
+  $(".input > #input").keyup(function() {
+    // Disable export when input is changed
+    $(".copy-but").prop("disabled", true);
+    $(".export .copy-but").text("Copy !");
+    $(".dl-but button").prop("disabled", true);
+    $(".dl-but select").prop("disabled", true);
+
     if($(this).val() !== "") {
       $(".process-but button").prop("disabled", false);
       $(".process-but select").prop("disabled", false);
@@ -20,14 +30,19 @@ $(function() { /* Wait for jQuery */
     }
   });
 
+  /* Reset buttons */
+  $(".copy-but").prop("disabled", true);
+  $(".export .copy-but").text("Copy !");
+  $(".dl-but button").prop("disabled", true);
+  $(".dl-but select").prop("disabled", true);
+
   /* Compile button click */
   $(".process-but button").click(function() {
-    var duckyScript = $(".input > textarea").val();
-    var selectedModule = $(".process-but select").find(":selected").text();
+    let duckyScript = $(".input > #input").val();
+    let selectedModule = mods[$(".process-but select").find(":selected").val()];
 
     /* Load Duckuino & Compile */
-    Duck.loadModule(selectedModule);
-    var compilerOut = Duck.compileCode(duckyScript);
+    let compilerOut = Duck.compileCode(duckyScript, selectedModule.module);
 
     /* Check for error */
     if(compilerOut.returnCode === 0) {
@@ -35,10 +50,22 @@ $(function() { /* Wait for jQuery */
       $(".export > textarea").val(compilerOut.compiledCode);
 
       /* Enable buttons */
-      $(".dl-but button").prop("disabled", false);
-      $(".dl-but select").prop("disabled", false);
       $(".copy-but").prop("disabled", false);
       $(".export .copy-but").text("Copy !");
+
+      /* Reset & (Re)Populate locales */
+      $(".dl-but select").empty();
+      $(".dl-but button").prop("disabled", true);
+      $(".dl-but select").prop("disabled", true);
+      for (let y in selectedModule.meta.locales) {
+        let l = selectedModule.meta.locales[y];
+        if (y == "_meta")
+          continue;
+        $(".dl-but select").append("<option value=\"" + y + "\">" + l.name + "</option>");
+        /* Enable button only if there is one locale */
+        $(".dl-but button").prop("disabled", false);
+        $(".dl-but select").prop("disabled", false);
+      }
 
       /* Show compilation infos */
       $(".process .tooltip > span").text(compilerOut.returnMessage);
@@ -57,22 +84,19 @@ $(function() { /* Wait for jQuery */
     }
   });
 
-  /* List locales */
-  LocKey.listLocales().forEach(function (localeName) {
-    $(".dl-but select").append("<option name=\"" + localeName + "\">" + localeName + "</option>");
-  });
-
   /* List modules */
-  Duck.listModules().forEach(function (moduleName) {
-    $(".process-but select").append("<option name=\"" + moduleName + "\">" + moduleName + "</option>");
-  });
+  for (let x in mods) {
+    let m = mods[x];
+    $(".process-but select")
+      .append("<option value=\"" + x + "\">" + m.meta.displayname + "</option>");
+  }
 
   /* Download button */
   $(".dl-but button").click(function() {
-    var compilerOut = $(".export > textarea").val();
+    let compilerOut = $(".export > textarea").val();
 
-    var sketchName = "Sketch";
-    var zipHandler = new JSZip();
+    let sketchName = "Sketch";
+    let zipHandler = new JSZip();
 
     // Add the payload as .ino
     zipHandler.file(sketchName + "/" + sketchName + ".ino", compilerOut);
@@ -85,15 +109,24 @@ $(function() { /* Wait for jQuery */
       success: function(data) {return data;}
     }));
 
-    // Add custom version of Keyboard lib if needed
-    if ($(".export-but select").find(":selected").text() !== "en_US") {
-      // Set the locale
-      LocKey.setLocale($(".dl-but select").find(":selected").text());
-
-      // Append all to the zip
-      zipHandler.file(sketchName + "/Keyboard.cpp", LocKey.getSource());
-      zipHandler.file(sketchName + "/Keyboard.h", LocKey.getHeader());
+    // Craft the lib
+    let lib = "";
+    let selectedModule = mods[$(".process-but select").find(":selected").val()];
+    let selectedLocale = selectedModule.meta.locales[$(".dl-but select").find(":selected").val()];
+    for (let x in selectedModule.meta.locales._meta.parts) {
+      let p = selectedModule.meta.locales._meta.parts[x];
+      if (p == '_locale_')
+        lib += selectedLocale.data;
+      else
+        lib += p;
     }
+
+    // Append all to the zip
+    zipHandler.file(
+      sketchName + "/" + selectedModule.meta.locales._meta.name + ".cpp", lib);
+    zipHandler.file(
+      sketchName + "/" + selectedModule.meta.locales._meta.name + ".h",
+      selectedModule.meta.locales._meta.header);
 
     // Download
     zipHandler.generateAsync({type:"blob"})
@@ -105,7 +138,7 @@ $(function() { /* Wait for jQuery */
 
   /* Copy to clipboard button */
   $(".copy-but").click(function() {
-    var copyTextarea = $(".export > textarea");
+    let copyTextarea = $(".export > textarea");
     copyTextarea.select();
 
     try {

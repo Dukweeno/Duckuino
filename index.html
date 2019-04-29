@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
 
     <!-- Page style -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
@@ -26,7 +27,7 @@
         <br>
 
         <!-- Input textarea -->
-        <textarea placeholder="Enter some DuckyScript to begin :D"></textarea>
+        <textarea id="input" placeholder="Enter some DuckyScript to begin :D"></textarea>
       </div>
       <div class="part process">
         <div class="combined-but process-but">
@@ -43,8 +44,8 @@
         <h6>Time to use !</h6>
 
         <!-- Compiled code container -->
-        <textarea style="position: absolute; opacity: 0; top: 100%;"></textarea>
-        <!-- DevMode textarea <textarea></textarea> -->
+        <textarea style="position: absolute; opacity: 0; top: 0; left: 0;
+        z-index: -1;"></textarea>
 
         <h4>Option 1: Download (Recommended)</h4>
         <div class="combined-but dl-but">
@@ -57,15 +58,11 @@
       </div>
     </div>
 
-    <!--<textarea class="console" readonly></textarea>-->
-
     <!-- Including libs used by the page -->
     <script src="assets/js/lib/jquery-3.1.0.min.js"></script>
     <script src="assets/js/lib/jszip-3.1.2.min.js"></script>
     <script src="assets/js/lib/FileSaver-1.3.2.min.js"></script>
-
-    <!-- LocaleKeyboard.js -->
-    <script src="https://nurrl.github.io/LocaleKeyboard.js/LocaleKeyboard.js"></script>
+    <script src="assets/js/lib/jquery-linenumbers.js"></script>
 
     <!-- Handmade js <3 -->
     <script src="Duckuino.js"></script>

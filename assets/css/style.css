@@ -10,32 +10,15 @@ html, body {
   font-family: Lato, sans-serif;
   font-size: 16px;
 
-  /* Disable Scroll */
-  overflow: hidden;
-
-  /* Size */
-  height: 100%; width: 100%;
-}
-
-/* Background blured image */
-body::before {
-  /* Position */
-  position: absolute;
-  top: 0; left: 0;
-
-  /* Size */
-  height: 100%; width: 100%;
-
   /* Background */
   background-size: cover;
   background-image: url(../imgs/background.jpg);
   background-repeat: no-repeat;
   background-position: center;
+  background-attachment: fixed;
 
-  /* Misc */
-  /*filter: blur(1px);*/
-  content: "";
-  z-index: -1;
+  /* Size */
+  height: 100%; width: 100%;
 }
 
 /* Text */
@@ -53,6 +36,8 @@ textarea {
   border: none; border-radius: 4px;
   padding: 8px;
 
+  word-wrap: break-word;
+  word-break: break-all;
   box-sizing: border-box;
   resize: none;
 }
@@ -126,6 +111,7 @@ button:disabled {
 
   /* Center parts */
   display: flex;
+  flex-wrap: wrap;
 }
 
 .part {
@@ -139,10 +125,20 @@ button:disabled {
   border-radius: 4px;
 
   /* Separation */
-	/*box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);*/
+  /*box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);*/
 
   /* Text */
   color: white;
+}
+
+@media (max-width: 860px) {
+  .part {
+    width: 100%;
+  }
+
+  .input {
+    margin-top: 28px;
+  }
 }
 
 /* Elements */
@@ -157,6 +153,7 @@ button:disabled {
   width: 100%;
 
   display: none;
+  z-index: 2;
 }
 .tooltip > span {
   /* Size */
@@ -212,6 +209,10 @@ button:disabled {
   /* Size */
   width: 16px;
   height: 32px;
+}
+.combined-but > select option {
+  /* Style */
+  color: black;
 }
 .combined-but > select:disabled {
   /* Postion */

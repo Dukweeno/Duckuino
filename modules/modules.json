@@ -1,0 +1,17 @@
+{
+  "arduino": {
+    "module": "module.js",
+    "meta": "module.meta",
+    "path": "arduino/"
+  },
+  "digispark": {
+    "module": "module.js",
+    "meta": "module.meta",
+    "path": "digispark/"
+  },
+  "mukeyboard": {
+    "module": "module.js",
+    "meta": "module.meta",
+    "path": "mukeyboard/"
+  }
+}

@@ -1,12 +1,6 @@
 /* jshint laxbreak: true */
 
 new Object({
-  moduleMeta: { /* Module infos */
-    displayName: 'Arduino',
-    version: 1.0,
-    author: 'Nurrl'
-  },
-
   functionMap: { /* Functions */
     REM: function(argList, µ) {
       argList.shift();
@@ -60,7 +54,7 @@ new Object({
       if(!isNaN(argList[0])) {
         µ.setData('nodelay', true);
 
-        return '  delay(' + argList[0] + ');\n';
+        return '  wait(' + argList[0] + ');\n';
       } else {
         µ.throwError("Invalid argument, DELAY only acceptes numbers");
         return;
@@ -165,32 +159,32 @@ new Object({
   },
 
   keyMap: { /* Normal keys */
-    a:'a',
-    b:'b',
-    c:'c',
-    d:'d',
-    e:'e',
-    f:'f',
-    g:'g',
-    h:'h',
-    i:'i',
-    j:'j',
-    k:'k',
-    l:'l',
-    m:'m',
-    n:'n',
-    o:'o',
-    p:'p',
-    q:'q',
-    r:'r',
-    s:'s',
-    t:'t',
-    u:'u',
-    v:'v',
-    w:'w',
-    x:'x',
-    y:'y',
-    z:'z'
+    a:'\'a\'',
+    b:'\'b\'',
+    c:'\'c\'',
+    d:'\'d\'',
+    e:'\'e\'',
+    f:'\'f\'',
+    g:'\'g\'',
+    h:'\'h\'',
+    i:'\'i\'',
+    j:'\'j\'',
+    k:'\'k\'',
+    l:'\'l\'',
+    m:'\'m\'',
+    n:'\'n\'',
+    o:'\'o\'',
+    p:'\'p\'',
+    q:'\'q\'',
+    r:'\'r\'',
+    s:'\'s\'',
+    t:'\'t\'',
+    u:'\'u\'',
+    v:'\'v\'',
+    w:'\'w\'',
+    x:'\'x\'',
+    y:'\'y\'',
+    z:'\'z\''
   },
 
   postLine: function(lineStr, µ) {
@@ -198,7 +192,7 @@ new Object({
 
     /* If the defaultdelay has been set, push delay to the line start */
     if(µ.getData('defaultdelay') !== undefined && µ.getData('nodelay') == false)
-      processedLine = '  delay(' + µ.getData('defaultdelay') + ');\n' + processedLine;
+      processedLine = '  wait(' + µ.getData('defaultdelay') + ');\n' + processedLine;
 
     /* Reset the nodelay statement */
     µ.setData('nodelay', false);
@@ -223,14 +217,15 @@ new Object({
 
   getFinalCode: function(compiledCode) { /* Function who returns the usable code */
     return '/**\n'
-    + ' * Made with Duckuino, an open-source project.\n'
-    + ' * Check the license at \'https://github.com/Nurrl/Duckuino/blob/master/LICENSE\'\n'
+    + ' * Made for Duckuino with MuKeyboard.\n'
+    + ' * Check the Duckuino\'s license at \'https://github.com/Nurrl/Duckuino/blob/master/LICENSE\'\n'
+    + ' * Check the MuKeyboard project at \'https://github.com/MrMoDDoM/MuKeyboard\'\n'
     + ' */\n\n'
-    + '#include "Keyboard.h"\n\n'
+    + '#include "MuKeyboard.h"\n\n'
     + 'void typeKey(uint8_t key)\n'
     + '{\n'
     + '  Keyboard.press(key);\n'
-    + '  delay(50);\n'
+    + '  wait(50);\n'
     + '  Keyboard.release(key);\n'
     + '}\n\n'
     + '/* Init function */\n'
@@ -239,7 +234,7 @@ new Object({
     + '  // Begining the Keyboard stream\n'
     + '  Keyboard.begin();\n\n'
     + '  // Wait 500ms\n'
-    + '  delay(500);\n'
+    + '  wait(500);\n'
     + '\n'
     + compiledCode
     + '  // Ending stream\n'
