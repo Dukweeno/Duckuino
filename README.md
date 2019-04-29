@@ -15,12 +15,17 @@ https://nurrl.github.io/Duckuino/
 ## Why Duckuino ?
 You can compile **Duckyscript** to **Arduino** code directly through the [live](https://nurrl.github.io/Duckuino/ "Duckuino Live") version, or reuse `Duckuino.js` for standalone use :
 ```javascript
-/* Need to fill */
-```
-Output:
+let Duck = new Duckuino();
+let mods = new Modules().list;
 
-```c
-/* Need to fill */
+let output = Duck.compileCode("STRING This is a test string !", mods[0].module);
+/*   ^- Here will be the final compiled code                         |
+**        and errors if applicable.                                  |
+**                                      Here is the selected module -/
+**
+** Note: You can iterate through the list and find the desired one,
+** by default, `0` will be the first module.
+*/
 ```
 # Members
   - [Plazmaz](https://github.com/Plazmaz)
