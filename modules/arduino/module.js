@@ -218,7 +218,7 @@ new Object({
   getFinalCode: function(code) { /* Function who returns the usable code */
     return '/**\n'
     + ' * Made with Duckuino, an open-source project.\n'
-    + ' * Check the license at \'https://github.com/Nurrl/Duckuino/blob/master/LICENSE\'\n'
+    + ' * Check the license at \'https://github.com/Dukweeno/Duckuino/blob/master/LICENSE\'\n'
     + ' */\n\n'
     + '#include "Keyboard.h"\n\n'
     + 'void typeKey(uint8_t key)\n'
