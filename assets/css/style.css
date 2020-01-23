@@ -1,44 +1,4 @@
-/* Main css stylesheet */
 
-@import 'https://fonts.googleapis.com/css?family=Lato:900,300';
-
-html, body {
-  /* Margin & Padding */
-  margin: 0; padding: 0;
-
-  /* Global text params */
-  font-family: Lato, sans-serif;
-  font-size: 16px;
-
-  /* Background */
-  background-size: cover;
-  background-image: url(../imgs/background.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-
-  /* Size */
-  height: 100%; width: 100%;
-}
-
-/* Text */
-h1 {
-  margin: 0;
-}
-h6 {
-  margin: 0;
-  opacity: .7;
-}
-
-/* Textareas */
-textarea {
-  width: 100%; height: 50vh;
-  border: none; border-radius: 4px;
-  padding: 8px;
-
-  word-wrap: break-word;
-  word-break: break-all;
-  box-sizing: border-box;
   resize: none;
 }
 
