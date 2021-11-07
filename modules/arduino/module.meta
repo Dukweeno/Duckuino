@@ -101,6 +101,12 @@
       "path": "locales/tr.lang",
       "version":"1.0",
       "author":""
+    },
+    "si": {
+      "name":"Slovenia",
+      "path": "locales/si.lang",
+      "version":"1.0",
+      "author":""
     }
   }
 }
